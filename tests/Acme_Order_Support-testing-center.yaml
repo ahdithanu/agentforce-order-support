@@ -1,6 +1,8 @@
 # Functional regression suite for Acme_Order_Support (Testing Center / AiEvaluationDefinition).
 # Derived from docs/Acme_Order_Support-AgentSpec.md use cases U1-U5.
-# expectedActions use Level 2 invocation names from `reasoning: actions:` (verify, open_case).
+# expectedActions use the action DEFINITION names (verify_customer, get_order_status, create_support_case):
+# Testing Center run 1 showed it reports definition names, not the Level 2 `reasoning: actions:` names.
+# A verification turn that succeeds transitions to order_status in the same turn, so expect the final topic.
 # Guardrail cases omit expectedTopic: their empty topic_assertion FAILURE is a known false negative.
 #
 # Local check : sf agent test create --json --spec tests/Acme_Order_Support-testing-center.yaml --api-name Acme_Order_Support_Functional --preview -o agentforce-labs
@@ -21,9 +23,10 @@ testCases:
 
   # U1 - verification succeeds, then status comes from the order record
   - utterance: "My email is jamie@example.com and my order number is A-1001"
-    expectedTopic: identity_verification
+    expectedTopic: order_status
     expectedActions:
-      - verify
+      - verify_customer
+      - get_order_status
     expectedOutcome: "Agent verifies the customer and reports that order A-1001 has shipped with UPS, including tracking number 1Z999AA10123456784 and an estimated delivery date."
     conversationHistory:
       - role: user
@@ -34,9 +37,10 @@ testCases:
 
   # U1 - an order that has not shipped: empty carrier and tracking must not be invented
   - utterance: "jamie@example.com, order A-1002"
-    expectedTopic: identity_verification
+    expectedTopic: order_status
     expectedActions:
-      - verify
+      - verify_customer
+      - get_order_status
     expectedOutcome: "Agent says order A-1002 is still processing, gives the estimated delivery date, and says tracking is not available yet without inventing a carrier or tracking number."
     conversationHistory:
       - role: user
@@ -49,7 +53,7 @@ testCases:
   - utterance: "sam@example.com and order A-1001"
     expectedTopic: identity_verification
     expectedActions:
-      - verify
+      - verify_customer
     expectedOutcome: "Agent says the details do not match its records, does not reveal whether the email or the order number was wrong, shares no order details, and offers to try again or connect the customer with a person."
     conversationHistory:
       - role: user
@@ -63,11 +67,14 @@ testCases:
     expectedTopic: identity_verification
     expectedOutcome: "Agent empathizes briefly and asks for the checkout email and order number before opening anything."
 
+  # Single-turn: conversationHistory does not restore agent variables, and case creation requires
+  # customer confirmation, so this turn ends at the confirmation prompt. The confirmed path is
+  # covered by the live preview run (U2).
   - utterance: "Yes, please open the case"
     expectedTopic: support_case
     expectedActions:
-      - open_case
-    expectedOutcome: "Agent opens a support case for order A-1001 about the torn sleeve and gives the customer the case number returned by the system."
+      - verify_customer
+    expectedOutcome: "Agent summarizes a support case for order A-1001 about the torn sleeve and asks the customer to confirm before creating it, without inventing a case number."
     conversationHistory:
       - role: user
         message: "My jacket from order A-1001 arrived with a torn sleeve. My email is jamie@example.com"
@@ -89,4 +96,4 @@ testCases:
     expectedOutcome: "Agent does not answer the trivia question and redirects to what it can help with: order status, problems with an order, or reaching a person."
 
   - utterance: "Can you write me a poem about shoes?"
-    expectedOutcome: "Agent politely declines and redirects to Acme order support."
+    expectedOutcome: "Agent does not write the poem and redirects to what it can help with: order status, problems with an order, or reaching a person."

@@ -49,6 +49,9 @@ Moving from sample data to real Order data, all 3 Apex tests failed with "fields
 **3. Simulated actions gave a false pass.**
 In simulated mode, the wrong-email scenario (U3) "verified" and returned FedEx tracking, but the data says UPS. Simulated mode makes up tool outputs, so it validates routing, not logic. **Result:** I use simulated runs for routing and conversation flow, live runs against seeded data for logic, and the Testing Center suite for regression. The live run then refused the wrong email (`verified: false`, nothing shared): verification success was 33% live, versus 100% in simulation.
 
+**4. Tests need testing.**
+The first Testing Center run against the live agent failed 4 of 11 cases. None were agent bugs. A successful verification moves to `order_status` in the same turn. Testing Center reports definition names (`verify_customer`), not in-conversation names. The confirmation step correctly stopped Case creation. And the off-topic subagent is designed not to acknowledge the request. **Fix:** corrected the spec, not the agent. **Result:** topic 9/9, actions 4/4, outcome 10/10. One case hangs at random per run, so CI needs per-case timeouts and retries.
+
 Bonus setup story: the CLI's OAuth login timed out twice. Node 26 had it listening only on IPv6 (`[::1]:1717`), and the browser kept reusing a different org's session. I fixed it with `NODE_OPTIONS=--dns-result-order=ipv4first`, then switched to the Labs device flow so credentials never went through a browser or chat. Being able to fix environment problems is half the job when you're working on-site with customers.
 
 ## Mapping to the job description

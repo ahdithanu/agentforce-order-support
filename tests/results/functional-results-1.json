@@ -1,0 +1,603 @@
+{
+  "status": 0,
+  "result": {
+    "startTime": "2026-09-29T16:58:05Z",
+    "status": "IN_PROGRESS",
+    "subjectName": "Acme_Order_Support_Functional",
+    "testCases": [
+      {
+        "endTime": "2026-09-29T16:58:16Z",
+        "generatedData": {
+          "actionsSequence": "[]",
+          "generatedResponse": "To check your order status, I’ll need the email address you used at checkout and your order number (for example, A-1001). Could you please provide those details?",
+          "invokedActions": "[]",
+          "outcome": "To check your order status, I’ll need the email address you used at checkout and your order number (for example, A-1001). Could you please provide those details?",
+          "sessionId": "01a0ee1a-2ac0-7244-ad31-26a897758368",
+          "topic": "identity_verification"
+        },
+        "inputs": {
+          "utterance": "Where is my order?"
+        },
+        "startTime": "2026-09-29T16:58:05Z",
+        "status": "COMPLETED",
+        "testNumber": 1,
+        "testResults": [
+          {
+            "actualValue": "identity_verification",
+            "endTime": "2026-09-29T16:59:37Z",
+            "errorCode": 0,
+            "expectedValue": "identity_verification",
+            "metricLabel": "topic_assertion",
+            "name": "topic_assertion",
+            "result": "PASS",
+            "score": 1,
+            "startTime": "2026-09-29T16:58:06Z",
+            "status": "COMPLETED",
+            "metricExplainability": ""
+          },
+          {
+            "actualValue": "[]",
+            "endTime": "2026-09-29T16:59:37Z",
+            "errorCode": 0,
+            "expectedValue": "[]",
+            "metricLabel": "actions_assertion",
+            "name": "actions_assertion",
+            "result": "PASS",
+            "score": 1,
+            "startTime": "2026-09-29T16:58:06Z",
+            "status": "COMPLETED",
+            "metricExplainability": ""
+          },
+          {
+            "actualValue": "To check your order status, I’ll need the email address you used at checkout and your order number (for example, A-1001). Could you please provide those details?",
+            "endTime": "2026-09-29T16:59:37Z",
+            "errorCode": 0,
+            "expectedValue": "Agent asks for the checkout email address and the order number before sharing any order details.",
+            "metricExplainability": "The bot response correctly asks for the email address and order number, which aligns with the expected response. It does not provide unnecessary information and is clear in its request.",
+            "metricLabel": "output_validation",
+            "name": "output_validation",
+            "result": "PASS",
+            "score": 5,
+            "startTime": "2026-09-29T16:58:06Z",
+            "status": "COMPLETED"
+          }
+        ]
+      },
+      {
+        "endTime": "2026-09-29T16:58:17Z",
+        "generatedData": {
+          "actionsSequence": "[]",
+          "generatedResponse": "To provide your tracking number, I need to verify your order. Please share the email address you used at checkout and your order number (for example, A-1001).",
+          "invokedActions": "[]",
+          "outcome": "To provide your tracking number, I need to verify your order. Please share the email address you used at checkout and your order number (for example, A-1001).",
+          "sessionId": "01a0ee1a-2b3c-7abf-9734-e85d681a4708",
+          "topic": "identity_verification"
+        },
+        "inputs": {
+          "utterance": "Can you give me the tracking number for my package?"
+        },
+        "startTime": "2026-09-29T16:58:05Z",
+        "status": "COMPLETED",
+        "testNumber": 2,
+        "testResults": [
+          {
+            "actualValue": "identity_verification",
+            "endTime": "2026-09-29T16:59:38Z",
+            "errorCode": 0,
+            "expectedValue": "identity_verification",
+            "metricLabel": "topic_assertion",
+            "name": "topic_assertion",
+            "result": "PASS",
+            "score": 1,
+            "startTime": "2026-09-29T16:58:06Z",
+            "status": "COMPLETED",
+            "metricExplainability": ""
+          },
+          {
+            "actualValue": "[]",
+            "endTime": "2026-09-29T16:59:38Z",
+            "errorCode": 0,
+            "expectedValue": "[]",
+            "metricLabel": "actions_assertion",
+            "name": "actions_assertion",
+            "result": "PASS",
+            "score": 1,
+            "startTime": "2026-09-29T16:58:06Z",
+            "status": "COMPLETED",
+            "metricExplainability": ""
+          },
+          {
+            "actualValue": "To provide your tracking number, I need to verify your order. Please share the email address you used at checkout and your order number (for example, A-1001).",
+            "endTime": "2026-09-29T16:59:38Z",
+            "errorCode": 0,
+            "expectedValue": "Agent asks for the checkout email and order number and does not state any tracking number.",
+            "metricExplainability": "The bot response correctly asks for the checkout email and order number to retrieve the tracking number, aligning with the expected response. It does not provide the tracking number itself, which is appropriate since the user hasn't provided the required information yet. The response is precise, clear, and contains no irrelevant information.",
+            "metricLabel": "output_validation",
+            "name": "output_validation",
+            "result": "PASS",
+            "score": 5,
+            "startTime": "2026-09-29T16:58:06Z",
+            "status": "COMPLETED"
+          }
+        ]
+      },
+      {
+        "endTime": "2026-09-29T16:58:20Z",
+        "generatedData": {
+          "actionsSequence": "[&#39;verify_customer&#39;, &#39;get_order_status&#39;]",
+          "generatedResponse": "Your order A-1001 has shipped with UPS. The tracking number is 1Z999AA10123456784. The estimated delivery date is September 30, 2026. Would you like the tracking link or need help with anything else?",
+          "invokedActions": "[[{\"function\":{\"name\":\"verify_customer\"}},{\"function\":{\"name\":\"get_order_status\"}}]]",
+          "outcome": "Your order A-1001 has shipped with UPS. The tracking number is 1Z999AA10123456784. The estimated delivery date is September 30, 2026. Would you like the tracking link or need help with anything else?",
+          "sessionId": "01a0ee1a-2b59-77c1-aca1-f2fdb2d7c2ac",
+          "topic": "order_status"
+        },
+        "inputs": {
+          "utterance": "My email is jamie@example.com and my order number is A-1001"
+        },
+        "startTime": "2026-09-29T16:58:05Z",
+        "status": "COMPLETED",
+        "testNumber": 3,
+        "testResults": [
+          {
+            "actualValue": "order_status",
+            "endTime": "2026-09-29T16:59:38Z",
+            "errorCode": 0,
+            "expectedValue": "identity_verification",
+            "metricLabel": "topic_assertion",
+            "name": "topic_assertion",
+            "result": "FAILURE",
+            "score": 0,
+            "startTime": "2026-09-29T16:58:07Z",
+            "status": "COMPLETED",
+            "metricExplainability": ""
+          },
+          {
+            "actualValue": "['verify_customer', 'get_order_status']",
+            "endTime": "2026-09-29T16:59:38Z",
+            "errorCode": 0,
+            "expectedValue": "['verify']",
+            "metricLabel": "actions_assertion",
+            "name": "actions_assertion",
+            "result": "FAILURE",
+            "score": 0,
+            "startTime": "2026-09-29T16:58:07Z",
+            "status": "COMPLETED",
+            "metricExplainability": ""
+          },
+          {
+            "actualValue": "Your order A-1001 has shipped with UPS. The tracking number is 1Z999AA10123456784. The estimated delivery date is September 30, 2026. Would you like the tracking link or need help with anything else?",
+            "endTime": "2026-09-29T16:59:38Z",
+            "errorCode": 0,
+            "expectedValue": "Agent verifies the customer and reports that order A-1001 has shipped with UPS, including tracking number 1Z999AA10123456784 and an estimated delivery date.",
+            "metricExplainability": "The bot response provides the shipping status, tracking number, and estimated delivery date as requested, and also offers additional help, which aligns with the expected response. No irrelevant information is included, and the response is clear and complete.",
+            "metricLabel": "output_validation",
+            "name": "output_validation",
+            "result": "PASS",
+            "score": 5,
+            "startTime": "2026-09-29T16:58:07Z",
+            "status": "COMPLETED"
+          }
+        ]
+      },
+      {
+        "endTime": "2026-09-29T16:58:18Z",
+        "generatedData": {
+          "actionsSequence": "[&#39;verify_customer&#39;, &#39;get_order_status&#39;]",
+          "generatedResponse": "Your order A-1002 is currently processing. Shipping and tracking details are not available yet. The estimated delivery date is 10/4/2026.\n\nWould you like updates sent to your email, or do you have any other questions about this order?",
+          "invokedActions": "[[{\"function\":{\"name\":\"verify_customer\"}},{\"function\":{\"name\":\"get_order_status\"}}]]",
+          "outcome": "Your order A-1002 is currently processing. Shipping and tracking details are not available yet. The estimated delivery date is 10/4/2026.\n\nWould you like updates sent to your email, or do you have any other questions about this order?",
+          "sessionId": "01a0ee1a-2acf-79b5-9e35-f310c23f984a",
+          "topic": "order_status"
+        },
+        "inputs": {
+          "utterance": "jamie@example.com, order A-1002"
+        },
+        "startTime": "2026-09-29T16:58:05Z",
+        "status": "COMPLETED",
+        "testNumber": 4,
+        "testResults": [
+          {
+            "actualValue": "order_status",
+            "endTime": "2026-09-29T16:59:38Z",
+            "errorCode": 0,
+            "expectedValue": "identity_verification",
+            "metricLabel": "topic_assertion",
+            "name": "topic_assertion",
+            "result": "FAILURE",
+            "score": 0,
+            "startTime": "2026-09-29T16:58:07Z",
+            "status": "COMPLETED",
+            "metricExplainability": ""
+          },
+          {
+            "actualValue": "['verify_customer', 'get_order_status']",
+            "endTime": "2026-09-29T16:59:38Z",
+            "errorCode": 0,
+            "expectedValue": "['verify']",
+            "metricLabel": "actions_assertion",
+            "name": "actions_assertion",
+            "result": "FAILURE",
+            "score": 0,
+            "startTime": "2026-09-29T16:58:07Z",
+            "status": "COMPLETED",
+            "metricExplainability": ""
+          },
+          {
+            "actualValue": "Your order A-1002 is currently processing. Shipping and tracking details are not available yet. The estimated delivery date is 10/4/2026.\n\nWould you like updates sent to your email, or do you have any other questions about this order?",
+            "endTime": "2026-09-29T16:59:38Z",
+            "errorCode": 0,
+            "expectedValue": "Agent says order A-1002 is still processing, gives the estimated delivery date, and says tracking is not available yet without inventing a carrier or tracking number.",
+            "metricExplainability": "The bot response accurately provides the order status, estimated delivery date, and lack of tracking details as specified in the expected response. It also offers to send updates to the user's email, which is a relevant and helpful addition. No irrelevant information is included, and the response is clear and complete.",
+            "metricLabel": "output_validation",
+            "name": "output_validation",
+            "result": "PASS",
+            "score": 5,
+            "startTime": "2026-09-29T16:58:07Z",
+            "status": "COMPLETED"
+          }
+        ]
+      },
+      {
+        "endTime": "2026-09-29T16:58:18Z",
+        "generatedData": {
+          "actionsSequence": "[&#39;verify_customer&#39;]",
+          "generatedResponse": "The details you provided did not match our records. Please double-check your email address and order number, and try again. If you prefer, I can connect you with a person for further help. Would you like to try again or speak with someone?",
+          "invokedActions": "[[{\"function\":{\"name\":\"verify_customer\"}}]]",
+          "outcome": "The details you provided did not match our records. Please double-check your email address and order number, and try again. If you prefer, I can connect you with a person for further help. Would you like to try again or speak with someone?",
+          "sessionId": "01a0ee1a-2b57-73b4-88b8-a5fa777dcea1",
+          "topic": "identity_verification"
+        },
+        "inputs": {
+          "utterance": "sam@example.com and order A-1001"
+        },
+        "startTime": "2026-09-29T16:58:05Z",
+        "status": "COMPLETED",
+        "testNumber": 5,
+        "testResults": [
+          {
+            "actualValue": "identity_verification",
+            "endTime": "2026-09-29T16:59:38Z",
+            "errorCode": 0,
+            "expectedValue": "identity_verification",
+            "metricLabel": "topic_assertion",
+            "name": "topic_assertion",
+            "result": "PASS",
+            "score": 1,
+            "startTime": "2026-09-29T16:58:07Z",
+            "status": "COMPLETED",
+            "metricExplainability": ""
+          },
+          {
+            "actualValue": "['verify_customer']",
+            "endTime": "2026-09-29T16:59:38Z",
+            "errorCode": 0,
+            "expectedValue": "['verify']",
+            "metricLabel": "actions_assertion",
+            "name": "actions_assertion",
+            "result": "FAILURE",
+            "score": 0,
+            "startTime": "2026-09-29T16:58:07Z",
+            "status": "COMPLETED",
+            "metricExplainability": ""
+          },
+          {
+            "actualValue": "The details you provided did not match our records. Please double-check your email address and order number, and try again. If you prefer, I can connect you with a person for further help. Would you like to try again or speak with someone?",
+            "endTime": "2026-09-29T16:59:38Z",
+            "errorCode": 0,
+            "expectedValue": "Agent says the details do not match its records, does not reveal whether the email or the order number was wrong, shares no order details, and offers to try again or connect the customer with a person.",
+            "metricExplainability": "The bot response matches the expected response by stating the details do not match records, not revealing which is wrong, and offering to retry or connect to a person. It is clear, precise, and contains no irrelevant information.",
+            "metricLabel": "output_validation",
+            "name": "output_validation",
+            "result": "PASS",
+            "score": 5,
+            "startTime": "2026-09-29T16:58:07Z",
+            "status": "COMPLETED"
+          }
+        ]
+      },
+      {
+        "endTime": "2026-09-29T16:59:12Z",
+        "generatedData": {
+          "actionsSequence": "[]",
+          "generatedResponse": "I&#39;m sorry your jacket arrived damaged. To help you with this, could you please provide the email address you used at checkout and your order number (for example, A-1001)? Once I have both, I can look into this for you right away.",
+          "invokedActions": "[]",
+          "outcome": "I&#39;m sorry your jacket arrived damaged. To help you with this, could you please provide the email address you used at checkout and your order number (for example, A-1001)? Once I have both, I can look into this for you right away.",
+          "sessionId": "01a0ee1b-1558-78a5-8524-fcf3d41efdf0",
+          "topic": "identity_verification"
+        },
+        "inputs": {
+          "utterance": "My jacket arrived with a torn sleeve"
+        },
+        "startTime": "2026-09-29T16:58:05Z",
+        "status": "COMPLETED",
+        "testNumber": 6,
+        "testResults": [
+          {
+            "actualValue": "identity_verification",
+            "endTime": "2026-09-29T16:59:38Z",
+            "errorCode": 0,
+            "expectedValue": "identity_verification",
+            "metricLabel": "topic_assertion",
+            "name": "topic_assertion",
+            "result": "PASS",
+            "score": 1,
+            "startTime": "2026-09-29T16:59:07Z",
+            "status": "COMPLETED",
+            "metricExplainability": ""
+          },
+          {
+            "actualValue": "[]",
+            "endTime": "2026-09-29T16:59:38Z",
+            "errorCode": 0,
+            "expectedValue": "[]",
+            "metricLabel": "actions_assertion",
+            "name": "actions_assertion",
+            "result": "PASS",
+            "score": 1,
+            "startTime": "2026-09-29T16:59:07Z",
+            "status": "COMPLETED",
+            "metricExplainability": ""
+          },
+          {
+            "actualValue": "I'm sorry your jacket arrived damaged. To help you with this, could you please provide the email address you used at checkout and your order number (for example, A-1001)? Once I have both, I can look into this for you right away.",
+            "endTime": "2026-09-29T16:59:38Z",
+            "errorCode": 0,
+            "expectedValue": "Agent empathizes briefly and asks for the checkout email and order number before opening anything.",
+            "metricExplainability": "The bot response appropriately empathizes with the user's issue and requests the necessary information (checkout email and order number) to proceed, aligning with the expected response. No irrelevant information is included, and the request is clear.",
+            "metricLabel": "output_validation",
+            "name": "output_validation",
+            "result": "PASS",
+            "score": 5,
+            "startTime": "2026-09-29T16:59:07Z",
+            "status": "COMPLETED"
+          }
+        ]
+      },
+      {
+        "endTime": "2026-09-29T16:59:15Z",
+        "generatedData": {
+          "actionsSequence": "[&#39;verify_customer&#39;]",
+          "generatedResponse": "You reported that your jacket from order A-1001 arrived with a torn sleeve. I will create a support case with the subject “Jacket arrived with torn sleeve” and the description “Jacket from order A-1001 arrived with a torn sleeve.” Please confirm if this accurately describes the issue, or let me know if you’d like to add any details before I open the case.",
+          "invokedActions": "[[{\"function\":{\"name\":\"verify_customer\"}}]]",
+          "outcome": "You reported that your jacket from order A-1001 arrived with a torn sleeve. I will create a support case with the subject “Jacket arrived with torn sleeve” and the description “Jacket from order A-1001 arrived with a torn sleeve.” Please confirm if this accurately describes the issue, or let me know if you’d like to add any details before I open the case.",
+          "sessionId": "01a0ee1b-1577-79f9-b681-9566fa3ca5d0",
+          "topic": "support_case"
+        },
+        "inputs": {
+          "utterance": "Yes, please open the case"
+        },
+        "startTime": "2026-09-29T16:58:05Z",
+        "status": "COMPLETED",
+        "testNumber": 7,
+        "testResults": [
+          {
+            "actualValue": "support_case",
+            "endTime": "2026-09-29T16:59:39Z",
+            "errorCode": 0,
+            "expectedValue": "support_case",
+            "metricLabel": "topic_assertion",
+            "name": "topic_assertion",
+            "result": "PASS",
+            "score": 1,
+            "startTime": "2026-09-29T16:59:07Z",
+            "status": "COMPLETED",
+            "metricExplainability": ""
+          },
+          {
+            "actualValue": "['verify_customer']",
+            "endTime": "2026-09-29T16:59:39Z",
+            "errorCode": 0,
+            "expectedValue": "['open_case']",
+            "metricLabel": "actions_assertion",
+            "name": "actions_assertion",
+            "result": "FAILURE",
+            "score": 0,
+            "startTime": "2026-09-29T16:59:07Z",
+            "status": "COMPLETED",
+            "metricExplainability": ""
+          },
+          {
+            "actualValue": "You reported that your jacket from order A-1001 arrived with a torn sleeve. I will create a support case with the subject “Jacket arrived with torn sleeve” and the description “Jacket from order A-1001 arrived with a torn sleeve.” Please confirm if this accurately describes the issue, or let me know if you’d like to add any details before I open the case.",
+            "endTime": "2026-09-29T16:59:39Z",
+            "errorCode": 0,
+            "expectedValue": "Agent opens a support case for order A-1001 about the torn sleeve and gives the customer the case number returned by the system.",
+            "metricExplainability": "The bot's response attempts to open a case but requires user confirmation and does not provide the case number, which is part of the expected outcome. It also prompts for additional details unnecessarily.",
+            "metricLabel": "output_validation",
+            "name": "output_validation",
+            "result": "FAILURE",
+            "score": 2,
+            "startTime": "2026-09-29T16:59:07Z",
+            "status": "COMPLETED"
+          }
+        ]
+      },
+      {
+        "endTime": "2026-09-29T16:59:13Z",
+        "generatedData": {
+          "actionsSequence": "[]",
+          "generatedResponse": "I&#39;ll connect you with a real person now. Please hold on while I transfer you to a live agent.",
+          "invokedActions": "[]",
+          "outcome": "I&#39;ll connect you with a real person now. Please hold on while I transfer you to a live agent.",
+          "sessionId": "01a0ee1b-15a4-7ba8-8385-87e0d09cb9fa",
+          "topic": "escalation"
+        },
+        "inputs": {
+          "utterance": "I want to talk to a real person"
+        },
+        "startTime": "2026-09-29T16:58:05Z",
+        "status": "COMPLETED",
+        "testNumber": 8,
+        "testResults": [
+          {
+            "actualValue": "escalation",
+            "endTime": "2026-09-29T16:59:39Z",
+            "errorCode": 0,
+            "expectedValue": "escalation",
+            "metricLabel": "topic_assertion",
+            "name": "topic_assertion",
+            "result": "PASS",
+            "score": 1,
+            "startTime": "2026-09-29T16:59:07Z",
+            "status": "COMPLETED",
+            "metricExplainability": ""
+          },
+          {
+            "actualValue": "[]",
+            "endTime": "2026-09-29T16:59:39Z",
+            "errorCode": 0,
+            "expectedValue": "[]",
+            "metricLabel": "actions_assertion",
+            "name": "actions_assertion",
+            "result": "PASS",
+            "score": 1,
+            "startTime": "2026-09-29T16:59:07Z",
+            "status": "COMPLETED",
+            "metricExplainability": ""
+          },
+          {
+            "actualValue": "I'll connect you with a real person now. Please hold on while I transfer you to a live agent.",
+            "endTime": "2026-09-29T16:59:39Z",
+            "errorCode": 0,
+            "expectedValue": "Agent transfers the customer to a human agent without asking them to verify first.",
+            "metricExplainability": "The bot's response directly transfers the user to a live agent without unnecessary verification, aligning perfectly with the expected outcome.",
+            "metricLabel": "output_validation",
+            "name": "output_validation",
+            "result": "PASS",
+            "score": 5,
+            "startTime": "2026-09-29T16:59:07Z",
+            "status": "COMPLETED"
+          }
+        ]
+      },
+      {
+        "generatedData": {
+          "invokedActions": ""
+        },
+        "inputs": {
+          "utterance": ""
+        },
+        "startTime": "2026-09-29T16:58:05Z",
+        "status": "IN_PROGRESS",
+        "testNumber": 9,
+        "testResults": []
+      },
+      {
+        "endTime": "2026-09-29T16:59:12Z",
+        "generatedData": {
+          "actionsSequence": "[]",
+          "generatedResponse": "I can help you check your Acme Outfitters order, report a problem, or connect you with our team. What would you like to do today?",
+          "invokedActions": "[]",
+          "outcome": "I can help you check your Acme Outfitters order, report a problem, or connect you with our team. What would you like to do today?",
+          "sessionId": "01a0ee1b-15b7-7760-a6b6-dc2ddd93aaa8",
+          "topic": "off_topic"
+        },
+        "inputs": {
+          "utterance": "What's the capital of France?"
+        },
+        "startTime": "2026-09-29T16:58:05Z",
+        "status": "COMPLETED",
+        "testNumber": 10,
+        "testResults": [
+          {
+            "actualValue": "off_topic",
+            "endTime": "2026-09-29T16:59:38Z",
+            "errorCode": 0,
+            "metricLabel": "topic_assertion",
+            "name": "topic_assertion",
+            "result": "FAILURE",
+            "score": 0,
+            "startTime": "2026-09-29T16:59:07Z",
+            "status": "COMPLETED",
+            "expectedValue": "",
+            "metricExplainability": ""
+          },
+          {
+            "actualValue": "[]",
+            "endTime": "2026-09-29T16:59:38Z",
+            "errorCode": 0,
+            "expectedValue": "[]",
+            "metricLabel": "actions_assertion",
+            "name": "actions_assertion",
+            "result": "PASS",
+            "score": 1,
+            "startTime": "2026-09-29T16:59:07Z",
+            "status": "COMPLETED",
+            "metricExplainability": ""
+          },
+          {
+            "actualValue": "I can help you check your Acme Outfitters order, report a problem, or connect you with our team. What would you like to do today?",
+            "endTime": "2026-09-29T16:59:39Z",
+            "errorCode": 0,
+            "expectedValue": "Agent does not answer the trivia question and redirects to what it can help with: order status, problems with an order, or reaching a person.",
+            "metricExplainability": "The bot's response redirects the user to available services (order status, problem reporting, or team contact), which aligns with the expected response's instruction to not answer the trivia question and instead offer assistance with relevant services. The response is clear, precise, and contains no irrelevant information.",
+            "metricLabel": "output_validation",
+            "name": "output_validation",
+            "result": "PASS",
+            "score": 5,
+            "startTime": "2026-09-29T16:59:07Z",
+            "status": "COMPLETED"
+          }
+        ]
+      },
+      {
+        "endTime": "2026-09-29T16:59:13Z",
+        "generatedData": {
+          "actionsSequence": "[]",
+          "generatedResponse": "I can help you check your order status, report a problem, or connect you with our team. What would you like assistance with today?",
+          "invokedActions": "[]",
+          "outcome": "I can help you check your order status, report a problem, or connect you with our team. What would you like assistance with today?",
+          "sessionId": "01a0ee1b-15fd-728c-b5b7-bd2ac29a3de5",
+          "topic": "off_topic"
+        },
+        "inputs": {
+          "utterance": "Can you write me a poem about shoes?"
+        },
+        "startTime": "2026-09-29T16:58:05Z",
+        "status": "COMPLETED",
+        "testNumber": 11,
+        "testResults": [
+          {
+            "actualValue": "off_topic",
+            "endTime": "2026-09-29T16:59:39Z",
+            "errorCode": 0,
+            "metricLabel": "topic_assertion",
+            "name": "topic_assertion",
+            "result": "FAILURE",
+            "score": 0,
+            "startTime": "2026-09-29T16:59:07Z",
+            "status": "COMPLETED",
+            "expectedValue": "",
+            "metricExplainability": ""
+          },
+          {
+            "actualValue": "[]",
+            "endTime": "2026-09-29T16:59:39Z",
+            "errorCode": 0,
+            "expectedValue": "[]",
+            "metricLabel": "actions_assertion",
+            "name": "actions_assertion",
+            "result": "PASS",
+            "score": 1,
+            "startTime": "2026-09-29T16:59:07Z",
+            "status": "COMPLETED",
+            "metricExplainability": ""
+          },
+          {
+            "actualValue": "I can help you check your order status, report a problem, or connect you with our team. What would you like assistance with today?",
+            "endTime": "2026-09-29T16:59:39Z",
+            "errorCode": 0,
+            "expectedValue": "Agent politely declines and redirects to Acme order support.",
+            "metricExplainability": "The bot's response does not address the user's request for a poem about shoes and instead offers unrelated assistance options. This does not align with the expected response, which is to politely decline and redirect to Acme order support.",
+            "metricLabel": "output_validation",
+            "name": "output_validation",
+            "result": "FAILURE",
+            "score": 0,
+            "startTime": "2026-09-29T16:59:07Z",
+            "status": "COMPLETED"
+          }
+        ]
+      }
+    ]
+  },
+  "warnings": []
+}

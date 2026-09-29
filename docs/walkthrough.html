@@ -296,8 +296,8 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
 
   <section>
     <div class="section-head">
-      <span class="eyebrow">Three stories</span>
-      <h2>What broke, how I found it, what changed</h2>
+      <span class="eyebrow">Stories</span>
+      <h2>Four things that broke, how I found them, what changed</h2>
     </div>
     <div class="stories">
       <article class="story">
@@ -333,6 +333,17 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
           <div class="a"><b>Action</b>Split the evidence: simulation for routing, live runs on seeded data for logic, and the Testing Center suite for regression.</div>
           <div class="r"><b>Result</b>The live run refused the wrong email (<code>verified: false</code>, nothing shared). Simulation showed 100% verification success; live showed 33%, which matches the scenarios.</div>
         </div>
+      </article>
+
+      <article class="story">
+        <span class="tag">Tests need testing</span>
+        <h3>The first Testing Center run failed 4 cases, and none were agent bugs</h3>
+        <div class="flow">
+          <div class="s"><b>Situation</b>Run 1 of the 11-case regression suite against the live agent: topic, action and outcome failures on cases 3, 4, 7 and 11.</div>
+          <div class="a"><b>Action</b>Read each assertion's actual value before touching the agent. The agent verifies and moves to order status in one turn; Testing Center reports definition names (<code>verify_customer</code>), not in-conversation names; the confirmation gate correctly stopped case creation; the off-topic subagent is designed not to acknowledge the request.</div>
+          <div class="r"><b>Result</b>Fixed the spec, not the agent. Run 2: topic 9/9, actions 4/4, outcome 10/10. One case hangs at random per run (case 9 in run 1, case 11 in run 2), so CI needs per-case timeouts and retries.</div>
+        </div>
+        <p class="lesson"><strong>Lesson:</strong> a failing eval is a hypothesis, not a verdict. Check the expectation against the design before "fixing" the agent.</p>
       </article>
     </div>
   </section>
@@ -407,9 +418,9 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
           <tr><td>Explain why a prompt failed and what you'd change</td><td>Story 1: diagnosed from the trace, fixed in two layers, turned into a metric</td></tr>
           <tr><td>Own components end-to-end, observable in production</td><td>Local compile → org validation → draft deploy → preview traces → KPI report</td></tr>
           <tr><td>Data modeling, APIs, integration patterns</td><td>Order extension with an external-ID upsert key, Case→Order lookup, idempotent seed, USER_MODE Apex</td></tr>
-          <tr><td>Evaluate AI outputs with engineering rigor</td><td>11 functional + 12 OWASP security cases, each tied to a construct in the agent</td></tr>
+          <tr><td>Evaluate AI outputs with engineering rigor</td><td>Testing Center regression against the live agent: topic 9/9, actions 4/4, outcome 10/10 after correcting 4 spec errors. Plus 12 OWASP security cases tied to specific agent constructs.</td></tr>
           <tr><td>Agent performance dashboards and KPI reporting</td><td>Containment, escalation, tool errors, unbacked claims, groundedness, safety, latency</td></tr>
-          <tr><td>Surface platform gaps to product</td><td>The LabBox doc queries a field that doesn't exist in API v67; <code>--sfdx-url-stdin</code> needs <code>-</code>; <code>sf agent test run</code> has no simulate mode</td></tr>
+          <tr><td>Surface platform gaps to product</td><td>Testing Center reports action definition names (docs say invocation names); random per-case hangs; the LabBox doc queries a field that doesn't exist in API v67; <code>--sfdx-url-stdin</code> needs <code>-</code>; <code>sf agent test run</code> has no simulate mode; the consumer secret can't be retrieved when the admin email is a provisioning mailbox</td></tr>
         </tbody>
       </table>
     </div>
