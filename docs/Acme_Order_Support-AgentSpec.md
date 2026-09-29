@@ -1,6 +1,6 @@
 # Agent Spec: Acme Order Support
 
-**Status:** Draft, awaiting approval · **Owner:** Ahdi · **Target org:** `agentforce-dev` (draft only; nothing published or activated)
+**Status:** Approved 2026-09-28; draft deployed to `agentforce-labs` · **Owner:** Ahdi · **Target org:** `agentforce-dev` (draft only; nothing published or activated)
 
 ## 1. Purpose
 
@@ -42,9 +42,9 @@ flowchart TD
 
 | Action | Target | Inputs | Outputs | Gate | Status |
 |--------|--------|--------|---------|------|--------|
-| `verify_customer` | `apex://Acme_VerifyCustomer` | `email`, `orderNumber` (slot-filled) | `verified`, `verifiedEmail` (hidden from LLM), `customerFirstName`, `canonicalOrderNumber` | none | Stub (mock data, no DML) |
-| `get_order_status` | `apex://Acme_GetOrderStatus` | `orderNumber`, `customerEmail` (both bound from verified state) | `status`, `carrier`, `trackingNumber`, `estimatedDelivery` | `customer_verified == True` | Stub |
-| `create_support_case` | `apex://Acme_CreateSupportCase` | `orderNumber`, `customerEmail` (bound), `subject`, `description` (slot-filled) | `success`, `caseNumber` | verified, and no Case yet this session | Stub; `require_user_confirmation: True` |
+| `verify_customer` | `apex://Acme_VerifyCustomer` | `email`, `orderNumber` (slot-filled) | `verified`, `verifiedEmail` (hidden from LLM), `customerFirstName`, `canonicalOrderNumber` | none | Apex, USER_MODE read |
+| `get_order_status` | `apex://Acme_GetOrderStatus` | `orderNumber`, `customerEmail` (both bound from verified state) | `status`, `carrier`, `trackingNumber`, `estimatedDelivery` | `customer_verified == True` | Apex, USER_MODE read; re-checks email |
+| `create_support_case` | `apex://Acme_CreateSupportCase` | `orderNumber`, `customerEmail` (bound), `subject`, `description` (slot-filled) | `success`, `caseNumber` | verified, and no Case yet this session | Apex, USER_MODE insert; `require_user_confirmation: True` |
 | `escalate_to_human` | `@utils.escalate` | none | none | none | Platform utility |
 
 ## 5. Variables
@@ -73,5 +73,5 @@ flowchart TD
 ## 8. Known limitations / next iteration
 
 - No three-failed-attempts lockout yet. It needs a failure counter kept by the verification action, since the agent itself shouldn't count attempts.
-- The stubs return mock data. The real implementation is an invocable Apex class or Flow that queries `Order`/`Contact` with the running user's access rules applied (`WITH USER_MODE`).
-- The org `agentforce-dev` has no Einstein Agent license. So `default_agent_user` is a placeholder, and a live preview of the service agent may be blocked. Fallback: an employee-agent variant for preview.
+- Actions query real `Order`/`Contact` data in USER_MODE (custom fields on Order, `Case.Order__c`). Seed: `scripts/seed-acme-orders.apex`. Access: `Acme_Order_Support_Agent` (agent user) and `Acme_Order_Data_Admin` (seed/integration).
+- Build org is the LabBox `agentforce-labs`; `default_agent_user` is its Einstein Agent User.

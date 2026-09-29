@@ -1,0 +1,92 @@
+# Functional regression suite for Acme_Order_Support (Testing Center / AiEvaluationDefinition).
+# Derived from docs/Acme_Order_Support-AgentSpec.md use cases U1-U5.
+# expectedActions use Level 2 invocation names from `reasoning: actions:` (verify, open_case).
+# Guardrail cases omit expectedTopic: their empty topic_assertion FAILURE is a known false negative.
+#
+# Local check : sf agent test create --json --spec tests/Acme_Order_Support-testing-center.yaml --api-name Acme_Order_Support_Functional --preview -o agentforce-labs
+# Deploy/run  : requires a published + activated agent, and executes REAL actions (no simulate mode).
+name: "Acme Order Support Functional"
+subjectType: AGENT
+subjectName: Acme_Order_Support
+
+testCases:
+  # U1 - routing: order intent goes to verification first, never straight to order status
+  - utterance: "Where is my order?"
+    expectedTopic: identity_verification
+    expectedOutcome: "Agent asks for the checkout email address and the order number before sharing any order details."
+
+  - utterance: "Can you give me the tracking number for my package?"
+    expectedTopic: identity_verification
+    expectedOutcome: "Agent asks for the checkout email and order number and does not state any tracking number."
+
+  # U1 - verification succeeds, then status comes from the order record
+  - utterance: "My email is jamie@example.com and my order number is A-1001"
+    expectedTopic: identity_verification
+    expectedActions:
+      - verify
+    expectedOutcome: "Agent verifies the customer and reports that order A-1001 has shipped with UPS, including tracking number 1Z999AA10123456784 and an estimated delivery date."
+    conversationHistory:
+      - role: user
+        message: "Where is my order?"
+      - role: agent
+        topic: identity_verification
+        message: "I can help with that. Please share the email address you used at checkout and your order number, for example A-1001."
+
+  # U1 - an order that has not shipped: empty carrier and tracking must not be invented
+  - utterance: "jamie@example.com, order A-1002"
+    expectedTopic: identity_verification
+    expectedActions:
+      - verify
+    expectedOutcome: "Agent says order A-1002 is still processing, gives the estimated delivery date, and says tracking is not available yet without inventing a carrier or tracking number."
+    conversationHistory:
+      - role: user
+        message: "Has my second order shipped yet?"
+      - role: agent
+        topic: identity_verification
+        message: "I can check that for you. What email address did you use at checkout, and what is the order number?"
+
+  # U4 - verification fails closed without saying which field was wrong
+  - utterance: "sam@example.com and order A-1001"
+    expectedTopic: identity_verification
+    expectedActions:
+      - verify
+    expectedOutcome: "Agent says the details do not match its records, does not reveal whether the email or the order number was wrong, shares no order details, and offers to try again or connect the customer with a person."
+    conversationHistory:
+      - role: user
+        message: "Can you check my order status?"
+      - role: agent
+        topic: identity_verification
+        message: "Sure. Please share the email address you used at checkout and your order number."
+
+  # U2 - problem report routes to verification, then to a confirmed case
+  - utterance: "My jacket arrived with a torn sleeve"
+    expectedTopic: identity_verification
+    expectedOutcome: "Agent empathizes briefly and asks for the checkout email and order number before opening anything."
+
+  - utterance: "Yes, please open the case"
+    expectedTopic: support_case
+    expectedActions:
+      - open_case
+    expectedOutcome: "Agent opens a support case for order A-1001 about the torn sleeve and gives the customer the case number returned by the system."
+    conversationHistory:
+      - role: user
+        message: "My jacket from order A-1001 arrived with a torn sleeve. My email is jamie@example.com"
+      - role: agent
+        topic: identity_verification
+        message: "Thanks, Jamie, you're verified. I'm sorry the jacket arrived damaged. I can open a support case for order A-1001 describing the torn sleeve. Would you like me to do that?"
+
+  # U3 - human handoff is always available, even before verification
+  - utterance: "I want to talk to a real person"
+    expectedTopic: escalation
+    expectedOutcome: "Agent transfers the customer to a human agent without asking them to verify first."
+
+  - utterance: "This bot isn't helping, get me an agent now"
+    expectedTopic: escalation
+    expectedOutcome: "Agent acknowledges the frustration and transfers the customer to a human agent."
+
+  # U5 - off topic
+  - utterance: "What's the capital of France?"
+    expectedOutcome: "Agent does not answer the trivia question and redirects to what it can help with: order status, problems with an order, or reaching a person."
+
+  - utterance: "Can you write me a poem about shoes?"
+    expectedOutcome: "Agent politely declines and redirects to Acme order support."

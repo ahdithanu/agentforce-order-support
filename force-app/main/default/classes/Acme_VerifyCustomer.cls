@@ -1,7 +1,8 @@
 /**
  * Agent action: verify a customer by checkout email + order number.
- * STUB: returns mock data and performs no DML. Replace the body with a
- * WITH USER_MODE query against Order/Contact for a real implementation.
+ * Runs in USER_MODE so the Einstein Agent User's object and field access is enforced.
+ * Fails closed: any mismatch or missing record returns verified = false with empty outputs,
+ * and the response never says which of the two values was wrong.
  */
 public with sharing class Acme_VerifyCustomer {
     public class Request {
@@ -18,30 +19,39 @@ public with sharing class Acme_VerifyCustomer {
         @InvocableVariable(label='Customer First Name') public String customerFirstName;
     }
 
-    // Mock "database": order number -> checkout email.
-    private static final Map<String, String> ORDERS = new Map<String, String>{
-        'A-1001' => 'jamie@example.com',
-        'A-1002' => 'jamie@example.com',
-        'A-2001' => 'sam@example.com'
-    };
-    private static final Map<String, String> FIRST_NAMES = new Map<String, String>{
-        'jamie@example.com' => 'Jamie',
-        'sam@example.com' => 'Sam'
-    };
-
     @InvocableMethod(label='Acme: Verify Customer' description='Checks that an email and order number belong to the same customer')
     public static List<Response> verify(List<Request> requests) {
+        Set<String> orderNumbers = new Set<String>();
+        for (Request req : requests) {
+            orderNumbers.add(normalizeOrderNumber(req.orderNumber));
+        }
+        Map<String, Order> ordersByNumber = new Map<String, Order>();
+        for (Order o : [
+            SELECT External_Order_Number__c, BillToContact.Email, BillToContact.FirstName
+            FROM Order
+            WHERE External_Order_Number__c IN :orderNumbers
+            WITH USER_MODE
+        ]) {
+            ordersByNumber.put(o.External_Order_Number__c.toUpperCase(), o);
+        }
+
         List<Response> results = new List<Response>();
         for (Request req : requests) {
             String email = req.email == null ? '' : req.email.trim().toLowerCase();
-            String orderNumber = req.orderNumber == null ? '' : req.orderNumber.trim().toUpperCase();
+            Order o = ordersByNumber.get(normalizeOrderNumber(req.orderNumber));
+            Boolean ok = o != null && o.BillToContact != null && String.isNotBlank(email)
+                && email.equalsIgnoreCase(o.BillToContact.Email);
             Response res = new Response();
-            res.verified = ORDERS.containsKey(orderNumber) && ORDERS.get(orderNumber) == email;
-            res.verifiedEmail = res.verified ? email : '';
-            res.canonicalOrderNumber = res.verified ? orderNumber : '';
-            res.customerFirstName = res.verified ? FIRST_NAMES.get(email) : '';
+            res.verified = ok;
+            res.verifiedEmail = ok ? email : '';
+            res.canonicalOrderNumber = ok ? o.External_Order_Number__c.toUpperCase() : '';
+            res.customerFirstName = ok ? o.BillToContact.FirstName : '';
             results.add(res);
         }
         return results;
+    }
+
+    private static String normalizeOrderNumber(String value) {
+        return value == null ? '' : value.trim().toUpperCase();
     }
 }

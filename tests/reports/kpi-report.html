@@ -1,0 +1,16 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">
+<title>Agent Health Report</title><style>
+:root{--bg:#fbfbfa;--fg:#1d1d1b;--muted:#6b6b66;--line:#e4e4df;--up:#1f7a4d;--down:#b3261e;--card:#fff}
+@media (prefers-color-scheme:dark){:root{--bg:#161615;--fg:#ecece8;--muted:#9a9a93;--line:#2c2c29;--up:#5cc28d;--down:#f08a80;--card:#1e1e1c}}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,sans-serif}
+main{max-width:880px;margin:0 auto;padding:32px 16px} h1{font-size:22px;margin:0 0 4px} p.sub{color:var(--muted);margin:0 0 24px}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-bottom:28px}
+th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;font-variant-numeric:tabular-nums}
+thead th{font-size:13px;color:var(--muted);font-weight:600} th small{display:block;color:var(--muted);font-weight:400;font-size:12px}
+td.up{color:var(--up);font-weight:600} td.down{color:var(--down);font-weight:600} h2{font-size:16px;margin:0 0 8px}
+.wrap{overflow-x:auto}</style></head><body><main>
+<h1>Acme Order Support: deployment health</h1>
+<p class=sub>Computed from Agentforce preview traces (six scripted scenarios per run). Green/red marks change versus the first run.</p>
+<div class=wrap><table><thead><tr><th>Metric</th><th>preview-run-1</th><th>preview-run-2</th></tr></thead><tbody><tr><th scope=row>Containment<small>Sessions resolved without a human handoff</small></th><td class="">83.3%</td><td class="">83.3%</td></tr><tr><th scope=row>Escalation rate<small>Scripted to be 1 of 6 (U4)</small></th><td class="">16.7%</td><td class="">16.7%</td></tr><tr><th scope=row>Tool-availability errors<small>Actions withheld at runtime (e.g. NO_USER_ACCESS)</small></th><td class="">8</td><td class="up">0</td></tr><tr><th scope=row>Unbacked progress claims<small>Says it is checking/verifying without calling a tool</small></th><td class="">3</td><td class="up">0</td></tr><tr><th scope=row>Verification calls<small>verify_customer invocations</small></th><td class="">0</td><td class="">3</td></tr><tr><th scope=row>Verification success<small>Share of verify calls that returned verified=true</small></th><td class="">n/a</td><td class="">100.0%</td></tr><tr><th scope=row>Cases created<small>create_support_case success=true</small></th><td class="">0</td><td class="">1</td></tr><tr><th scope=row>Groundedness<small>Platform groundedness evaluator verdicts</small></th><td class="">60.0%</td><td class="up">66.7%</td></tr><tr><th scope=row>Min safety score<small>Lowest per-response safety score</small></th><td class="">0.9993</td><td class="up">0.9995</td></tr></tbody></table></div>
+<h2>Action latency</h2><div class=wrap><table><thead><tr><th>Run</th><th>Action</th><th>Calls</th><th>p50</th><th>Max</th></tr></thead><tbody><tr><td>preview-run-2</td><td><code>create_support_case</code></td><td>1</td><td>4131 ms</td><td>4131 ms</td></tr><tr><td>preview-run-2</td><td><code>get_order_status</code></td><td>2</td><td>610 ms</td><td>624 ms</td></tr><tr><td>preview-run-2</td><td><code>verify_customer</code></td><td>3</td><td>550 ms</td><td>608 ms</td></tr></tbody></table></div>
+</main></body></html>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Order__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Order this support case is about.</description>
+    <label>Order</label>
+    <referenceTo>Order</referenceTo>
+    <relationshipLabel>Support Cases</relationshipLabel>
+    <relationshipName>Support_Cases</relationshipName>
+    <required>false</required>
+    <type>Lookup</type>
+</CustomField>
