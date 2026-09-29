@@ -51,4 +51,4 @@ python3 scripts/preview_scenarios.py my-org --live   # real Apex
 ## Operations
 
 - Web chat routing: the `Salesforce_Agent_V2` messaging channel's `SessionHandlerId` points at the `Acme_Order_Support` bot. To give the chat back to the org's previous agent, set it to that agent's `BotDefinition` Id.
-- The GitHub Pages origin (`https://ahdithanu.github.io`) is on the org's CORS allowlist so the embedded chat widget can load.
+- Embedding the chat on GitHub Pages took two org changes: `https://ahdithanu.github.io` on the CORS allowlist (`CorsWhitelistEntry`), and `ahdithanu.github.io` in the chat site's **Trusted Domains for Inline Frames** (`CustomSite.siteIframeWhiteListUrls` on `ESW_Salesforce_Agent_Web_*`). Without the second, the widget fails silently because of the site's `frame-ancestors` CSP.
