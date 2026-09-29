@@ -55,6 +55,8 @@ variables:
         description: "Estimated delivery date returned by the order lookup"
     case_number: mutable string = ""
         description: "Case number returned after a support case is created"
+    failed_attempts: mutable number = 0
+        description: "Authoritative failed verification count returned by the verification action"
 
 language:
     default_locale: "en_US"
@@ -73,6 +75,9 @@ start_agent agent_router:
             if @variables.customer_verified == True:
                 | The customer is already verified. Route order status or tracking questions to
                   order status, and problems with an order to the support case subagent.
+            else if @variables.failed_attempts >= 3:
+                | The customer could not be verified after three attempts. Route any
+                  order-specific request to escalation.
             else:
                 | The customer is not verified yet. Route any order-specific request to
                   identity verification.
@@ -82,7 +87,7 @@ start_agent agent_router:
         actions:
             go_to_verification: @utils.transition to @subagent.identity_verification
                 description: "Verify the customer's identity before any order-specific help"
-                available when @variables.customer_verified == False
+                available when @variables.customer_verified == False and @variables.failed_attempts < 3
             go_to_order_status: @utils.transition to @subagent.order_status
                 description: "Check order status, tracking, or estimated delivery"
                 available when @variables.customer_verified == True
@@ -107,22 +112,28 @@ subagent identity_verification:
                   originally asked: use the order status tool for status or tracking questions,
                   or the support case tool for a problem with the order. If their original need
                   is unclear, ask how you can help with order {!@variables.verified_order_number}.
+            else if @variables.failed_attempts >= 3:
+                | For the customer's security, verification is locked after three unsuccessful
+                  attempts. Tell them briefly that you are connecting them with a team member.
             else:
                 | Before sharing any order details, you must verify the customer. Ask for the
                   email address used at checkout and the order number (for example A-1001).
                   When you have both, call {!@actions.verify}. Do not call it with guessed values.
                   If verification fails, say the details did not match our records without saying
                   which one was wrong, and offer to try again or connect them with a person.
+                  Unsuccessful attempts so far: {!@variables.failed_attempts} of 3.
         actions:
             verify: @actions.verify_customer
                 description: "Verify the customer using their checkout email and order number"
                 with email = ...
                 with orderNumber = ...
+                with priorFailedAttempts = @variables.failed_attempts
                 set @variables.customer_verified = @outputs.verified
+                set @variables.failed_attempts = @outputs.failedAttempts
                 set @variables.verified_email = @outputs.verifiedEmail
                 set @variables.verified_order_number = @outputs.canonicalOrderNumber
                 set @variables.customer_first_name = @outputs.customerFirstName
-                available when @variables.customer_verified == False
+                available when @variables.customer_verified == False and @variables.failed_attempts < 3
             go_to_order_status: @utils.transition to @subagent.order_status
                 description: "Verified customer wants order status, tracking, or delivery date"
                 available when @variables.customer_verified == True
@@ -131,6 +142,10 @@ subagent identity_verification:
                 available when @variables.customer_verified == True
             go_to_escalation: @utils.transition to @subagent.escalation
                 description: "The customer wants a person or cannot complete verification"
+
+    after_reasoning:
+        if @variables.failed_attempts >= 3:
+            transition to @subagent.escalation
 
     actions:
         verify_customer:
@@ -145,6 +160,8 @@ subagent identity_verification:
                 orderNumber: string
                     description: "Order number, for example A-1001"
                     is_required: True
+                priorFailedAttempts: number
+                    description: "Failed attempts so far in this session (bound from state)"
             outputs:
                 verified: boolean
                     description: "Whether the email and order number match"
@@ -155,6 +172,9 @@ subagent identity_verification:
                     description: "Normalized order number, empty when not verified"
                 customerFirstName: string
                     description: "Customer first name, empty when not verified"
+                failedAttempts: number
+                    description: "Authoritative failed attempt count after this call"
+                    filter_from_agent: True
 
 subagent order_status:
     label: "Order Status"
@@ -267,6 +287,9 @@ subagent escalation:
 
     reasoning:
         instructions: ->
+            if @variables.failed_attempts >= 3:
+                | The customer could not be verified after three attempts. Tell them briefly
+                  that you are connecting them with a team member, then escalate.
             | If a user explicitly asks to transfer to a live agent, escalate the conversation.
               If escalation to a live agent fails for any reason, acknowledge the issue and ask the user whether they would like to log a support case instead.
         actions:

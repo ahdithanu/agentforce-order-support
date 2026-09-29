@@ -67,6 +67,22 @@ private class Acme_AgentActionsTest {
         Assert.isFalse(res[1].verified);
         Assert.areEqual('', res[1].verifiedEmail);
         Assert.isFalse(res[2].verified);
+        Assert.areEqual(0, res[0].failedAttempts);
+        Assert.areEqual(1, res[1].failedAttempts);
+    }
+
+    @IsTest
+    static void failedAttemptsAccumulateFromBoundCount() {
+        System.runAs(actingUser()) {
+            Acme_VerifyCustomer.Request third = new Acme_VerifyCustomer.Request();
+            third.email = 'wrong@example.com';
+            third.orderNumber = 'A-1001';
+            third.priorFailedAttempts = 2;
+            Acme_VerifyCustomer.Response res = Acme_VerifyCustomer.verify(
+                new List<Acme_VerifyCustomer.Request>{ third })[0];
+            Assert.isFalse(res.verified);
+            Assert.areEqual(Acme_VerifyCustomer.MAX_ATTEMPTS, res.failedAttempts);
+        }
     }
 
     @IsTest
