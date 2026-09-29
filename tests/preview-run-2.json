@@ -13,7 +13,7 @@
     "planId": "35acdfee-a663-4e3e-8bc2-d415c02af484"
    }
   ],
-  "tracesPath": "/Users/ahdithebomb/agentforce-service-agent/.sfdx/agents/Acme_Order_Support/sessions/02d72ed7-4a30-4f91-9091-e9f54e296570"
+  "tracesPath": ".sfdx/agents/Acme_Order_Support/sessions/02d72ed7-4a30-4f91-9091-e9f54e296570"
  },
  "U2_damaged_item_case": {
   "sessionId": "47a2ba7a-f673-4645-abee-d59259ecad3d",
@@ -39,7 +39,7 @@
     "planId": "7b479177-bcfa-4c8b-a1c2-4916e138df6d"
    }
   ],
-  "tracesPath": "/Users/ahdithebomb/agentforce-service-agent/.sfdx/agents/Acme_Order_Support/sessions/47a2ba7a-f673-4645-abee-d59259ecad3d"
+  "tracesPath": ".sfdx/agents/Acme_Order_Support/sessions/47a2ba7a-f673-4645-abee-d59259ecad3d"
  },
  "U3_failed_verification": {
   "sessionId": "143fc506-f608-4bdf-8138-978b8cce3646",
@@ -55,7 +55,7 @@
     "planId": "5b56ef23-2e2f-4498-9670-38254fa60d2f"
    }
   ],
-  "tracesPath": "/Users/ahdithebomb/agentforce-service-agent/.sfdx/agents/Acme_Order_Support/sessions/143fc506-f608-4bdf-8138-978b8cce3646"
+  "tracesPath": ".sfdx/agents/Acme_Order_Support/sessions/143fc506-f608-4bdf-8138-978b8cce3646"
  },
  "U4_escalation": {
   "sessionId": "a4f2e9f1-1e65-4302-b4f4-db170dd8e0bd",
@@ -66,7 +66,7 @@
     "planId": "e0bfc4bf-55cc-4fd7-a9b0-d5189ecb58dd"
    }
   ],
-  "tracesPath": "/Users/ahdithebomb/agentforce-service-agent/.sfdx/agents/Acme_Order_Support/sessions/a4f2e9f1-1e65-4302-b4f4-db170dd8e0bd"
+  "tracesPath": ".sfdx/agents/Acme_Order_Support/sessions/a4f2e9f1-1e65-4302-b4f4-db170dd8e0bd"
  },
  "U5_off_topic": {
   "sessionId": "3f281eb8-eca6-4d04-8ec7-69fc27bc64e9",
@@ -77,7 +77,7 @@
     "planId": "229616d7-9707-438e-8620-2437bbf31202"
    }
   ],
-  "tracesPath": "/Users/ahdithebomb/agentforce-service-agent/.sfdx/agents/Acme_Order_Support/sessions/3f281eb8-eca6-4d04-8ec7-69fc27bc64e9"
+  "tracesPath": ".sfdx/agents/Acme_Order_Support/sessions/3f281eb8-eca6-4d04-8ec7-69fc27bc64e9"
  },
  "U6_injection": {
   "sessionId": "82d96456-3ad4-43d5-bb80-cc1653a38c16",
@@ -88,6 +88,6 @@
     "planId": "d6dcf42f-361f-40b7-9227-e1ec4274345c"
    }
   ],
-  "tracesPath": "/Users/ahdithebomb/agentforce-service-agent/.sfdx/agents/Acme_Order_Support/sessions/82d96456-3ad4-43d5-bb80-cc1653a38c16"
+  "tracesPath": ".sfdx/agents/Acme_Order_Support/sessions/82d96456-3ad4-43d5-bb80-cc1653a38c16"
  }
 }

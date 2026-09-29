@@ -1,58 +1,54 @@
-# Salesforce DX Project
+# Acme Order Support: an Agentforce service agent
 
-Salesforce DX is a development approach that brings source-driven development, team collaboration, and continuous integration to the Salesforce Platform. Instead of working directly in an org through a web browser, you work with metadata as source files in a local DX project, track changes in version control, and deploy through automated processes.
+A customer-facing Agentforce agent for a fictional apparel brand, built end to end with Agent Script and the Salesforce CLI. It checks the customer's identity, answers order status from real `Order` records, opens a linked `Case` only after the customer confirms, locks verification after three failed attempts, and hands off to a human.
 
-This project template gets you started with the tools and structure you need to build Salesforce applications using source control, scratch orgs, and the Salesforce CLI.
+**Try it live:** https://ahdithanu.github.io/agentforce-order-support/ (open the chat in the corner and use `jamie@example.com` with order `A-1001`).
+**Visual walkthrough:** the same page, covering architecture, the layers of protection, debugging stories, KPIs and the red-team grade.
 
-## Prerequisites
+All data is fictional. The agent runs in an Agentforce LabBox, a Salesforce Developer Edition org.
 
-Before you start, make sure you have:
+## What's here
 
-- **Salesforce CLI** - Download from [developer.salesforce.com/tools/salesforcecli](https://developer.salesforce.com/tools/salesforcecli). See [Install Salesforce CLI](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_install_cli.htm) for details.
-- **VS Code with Salesforce Extension Pack** - See [Installation Instructions](https://developer.salesforce.com/docs/platform/sfvscode-extensions/guide/install.html) for details. Includes the Agentforce Vibes extension.
-- **A development org** - Sign up for a free Developer Edition org [here](https://developer.salesforce.com/signup).
-- **Dev Hub enabled** (optional, required to create scratch orgs) - You can enable Dev Hub in your development org under Setup > Dev Hub.  See [Provide Developers Access to Salesforce DX Tools](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_setup_dx_tools.htm).
+| Path | What it is |
+|---|---|
+| `force-app/main/default/aiAuthoringBundles/Acme_Order_Support/` | The agent, in Agent Script (`.agent`) |
+| `force-app/main/default/classes/Acme_*.cls` | Invocable Apex actions (USER_MODE, fail closed, ownership re-check) and tests |
+| `force-app/main/default/objects/` | Order fulfillment fields (external-ID order number) and the `Case.Order__c` lookup |
+| `force-app/main/default/permissionsets/` | Least-privilege access for the agent user, plus a data-admin set |
+| `tests/*-testing-center.yaml` | 11-case functional regression suite (Testing Center) |
+| `tests/*-security.yaml` | 12 OWASP LLM Top 10 cases, each tied to a construct in the agent |
+| `scripts/preview_scenarios.py` | Scripted multi-turn preview sessions (simulated or `--live`) |
+| `scripts/kpi_report.py` | Deployment-health KPIs from traces (containment, tool errors, groundedness, latency) |
+| `scripts/redteam_preview.py` | Red-team runner: security cases sent through preview |
+| `scripts/agent_api_client.py` | Headless Agent API client (OAuth client credentials) |
+| `scripts/seed-acme-orders.apex` | Idempotent demo data |
+| `docs/` | Agent spec, interview walkthrough, and the GitHub Pages site |
 
-## Project Structure
+## Results
 
-Your DX project follows this structure:
+- **Live preview on real Apex:** all 7 scenarios passed. A wrong email was refused, the lockout went 1 → 2 → 3 → handoff, and a real Case was linked to its Order. Groundedness was 92%.
+- **Testing Center regression:** topic 9/9, actions 4/4, outcome 10/10.
+- **OWASP red team:** grade A (10 judged, 0 failures). One soft finding was fixed and re-verified.
+- **Public web chat:** Enhanced Chat on an Experience Cloud site and on GitHub Pages, routed to the active agent (v2).
 
-- **`force-app/main/default/`** - Your metadata source files live in this default package directory. You can configure additional package directories in the `sfdx-project.json` file.
-- **`config/`** - Scratch org definitions and project settings
-- **`scripts/`** - Automation scripts for common tasks
-- **`sfdx-project.json`** - Project manifest that defines package directories, namespace, API version, and other project-level settings
+## Run it yourself
 
-See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm).
+Requires Salesforce CLI 2.131+ and an Agentforce-enabled org with an Einstein Agent User.
 
-## Get Started
+```bash
+sf org login web --alias my-org
+sf project deploy start --target-org my-org --metadata CustomField ApexClass PermissionSet --test-level RunSpecifiedTests --tests Acme_AgentActionsTest
+sf org assign permset --name Acme_Order_Support_Agent --on-behalf-of <einstein-agent-user> --target-org my-org
+sf org assign permset --name Acme_Order_Data_Admin --target-org my-org
+sf apex run --file scripts/seed-acme-orders.apex --target-org my-org
+# set access.default_agent_user in the .agent file to your Einstein Agent User, then:
+sf agent validate authoring-bundle --api-name Acme_Order_Support --target-org my-org
+sf project deploy start --target-org my-org --metadata AiAuthoringBundle:Acme_Order_Support
+python3 scripts/preview_scenarios.py my-org          # simulated actions
+python3 scripts/preview_scenarios.py my-org --live   # real Apex
+```
 
-Ready to start developing? The [Get Started with Salesforce DX](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_get_started_dx.htm) guide walks you through your first project, from creating a scratch org to creating a simple Apex class or LWC to deploying your code to a sandbox.
+## Operations
 
-## Common Salesforce CLI Commands
-
-Here are common CLI commands that you'll use the most:
-
-- `sf org login web`: Authorize an org
-- `sf org open`: Open your org in a browser
-- `sf org create scratch`: Create a scratch org
-- `sf project deploy start`: Deploy metadata to your org
-- `sf project retrieve start`: Retrieve metadata from your org
-- `sf template generate <artifact>`: Scaffold new components, such as Apex classes and triggers, LWC components, Lightning apps, and more
-- `sf apex <command>`: Run Apex tests, run anonymous Apex blocks, and view logs
-- `sf data <command>`: Work with test data
-- `sf alias <command>`: Manage org aliases
-- `sf config <command>`: Configure CLI settings
-
-## Use Agentforce Vibes to Build Lightning Apps
-
-Transform your ideas into custom Lightning apps that extend CRM workflows directly in Lightning Experience. Through natural conversations with Agentforce Vibes, implement custom objects and fields, complex business logic, and dynamic UI components. See [Build a Lightning App Using Agentforce Vibes](https://developer.salesforce.com/docs/platform/einstein-for-devs/guide/lexapp-overview.html).
-
-## Additional Resources
-
-- [Agentforce Vibes Developer Guide](https://developer.salesforce.com/docs/platform/einstein-for-devs/guide/einstein-overview.html)
-- [Salesforce CLI Installation Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
-- [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/)
-- [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/)
-- [Salesforce CLI Plugin Development Guide](https://developer.salesforce.com/docs/platform/salesforce-cli-plugin/guide/conceptual-overview.html)
-- [Salesforce VS Code Extensions Documentation](https://developer.salesforce.com/tools/vscode/)
-
+- Web chat routing: the `Salesforce_Agent_V2` messaging channel's `SessionHandlerId` points at the `Acme_Order_Support` bot. To give the chat back to the org's previous agent, set it to that agent's `BotDefinition` Id.
+- The GitHub Pages origin (`https://ahdithanu.github.io`) is on the org's CORS allowlist so the embedded chat widget can load.

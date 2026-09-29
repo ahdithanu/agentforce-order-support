@@ -13,7 +13,7 @@
     "planId": "828e6997-8a55-451b-864f-293f32e5f4c1"
    }
   ],
-  "tracesPath": "/Users/ahdithebomb/agentforce-service-agent/.sfdx/agents/Acme_Order_Support/sessions/7a44aa5b-b9d0-42bc-8de9-1b71efbaeb30"
+  "tracesPath": ".sfdx/agents/Acme_Order_Support/sessions/7a44aa5b-b9d0-42bc-8de9-1b71efbaeb30"
  },
  "U2_damaged_item_case": {
   "sessionId": "16f39d84-6f11-416b-8a57-876db3acc07f",
@@ -39,7 +39,7 @@
     "planId": "2164c271-9b04-4506-8065-273b032c7615"
    }
   ],
-  "tracesPath": "/Users/ahdithebomb/agentforce-service-agent/.sfdx/agents/Acme_Order_Support/sessions/16f39d84-6f11-416b-8a57-876db3acc07f"
+  "tracesPath": ".sfdx/agents/Acme_Order_Support/sessions/16f39d84-6f11-416b-8a57-876db3acc07f"
  },
  "U3_failed_verification": {
   "sessionId": "a77d3848-b66c-4bce-90c5-4e0231d4bf94",
@@ -55,7 +55,7 @@
     "planId": "f1d0a5a2-cfbf-4faa-91e5-ec64c3dd2162"
    }
   ],
-  "tracesPath": "/Users/ahdithebomb/agentforce-service-agent/.sfdx/agents/Acme_Order_Support/sessions/a77d3848-b66c-4bce-90c5-4e0231d4bf94"
+  "tracesPath": ".sfdx/agents/Acme_Order_Support/sessions/a77d3848-b66c-4bce-90c5-4e0231d4bf94"
  },
  "U4_escalation": {
   "sessionId": "39a397bd-0155-4487-96d9-bcc637803467",
@@ -66,7 +66,7 @@
     "planId": "f1e4e6f0-817d-45aa-9620-ceb4e8225293"
    }
   ],
-  "tracesPath": "/Users/ahdithebomb/agentforce-service-agent/.sfdx/agents/Acme_Order_Support/sessions/39a397bd-0155-4487-96d9-bcc637803467"
+  "tracesPath": ".sfdx/agents/Acme_Order_Support/sessions/39a397bd-0155-4487-96d9-bcc637803467"
  },
  "U7_lockout_after_three_failures": {
   "sessionId": "41332d9a-f426-4658-9459-f2ce6cfae552",
@@ -97,7 +97,7 @@
     "planId": "432a8499-3133-4d65-912a-03af4bebcf0e"
    }
   ],
-  "tracesPath": "/Users/ahdithebomb/agentforce-service-agent/.sfdx/agents/Acme_Order_Support/sessions/41332d9a-f426-4658-9459-f2ce6cfae552"
+  "tracesPath": ".sfdx/agents/Acme_Order_Support/sessions/41332d9a-f426-4658-9459-f2ce6cfae552"
  },
  "U5_off_topic": {
   "sessionId": "08a8cc1b-1bad-46df-9927-5cd5d92dbcdc",
@@ -108,7 +108,7 @@
     "planId": "c861df64-e85e-4f4b-8e66-8807294bd5db"
    }
   ],
-  "tracesPath": "/Users/ahdithebomb/agentforce-service-agent/.sfdx/agents/Acme_Order_Support/sessions/08a8cc1b-1bad-46df-9927-5cd5d92dbcdc"
+  "tracesPath": ".sfdx/agents/Acme_Order_Support/sessions/08a8cc1b-1bad-46df-9927-5cd5d92dbcdc"
  },
  "U6_injection": {
   "sessionId": "995be91c-8610-48f3-b2ac-59adceb0ccf0",
@@ -119,6 +119,6 @@
     "planId": "ad3ee19b-acb6-42e1-85e2-a71868e0ac04"
    }
   ],
-  "tracesPath": "/Users/ahdithebomb/agentforce-service-agent/.sfdx/agents/Acme_Order_Support/sessions/995be91c-8610-48f3-b2ac-59adceb0ccf0"
+  "tracesPath": ".sfdx/agents/Acme_Order_Support/sessions/995be91c-8610-48f3-b2ac-59adceb0ccf0"
  }
 }
