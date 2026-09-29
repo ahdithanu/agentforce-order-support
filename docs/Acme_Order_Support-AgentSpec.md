@@ -72,6 +72,6 @@ flowchart TD
 
 ## 8. Known limitations / next iteration
 
-- No three-failed-attempts lockout yet. It needs a failure counter kept by the verification action, since the agent itself shouldn't count attempts.
+- Session lockout is implemented: `verify_customer` returns `failedAttempts` (the agent passes its current count in from `failed_attempts`), verification is hidden at 3, and `after_reasoning` hands off to escalation. Still missing: a lockout per order that persists across chats.
 - Actions query real `Order`/`Contact` data in USER_MODE (custom fields on Order, `Case.Order__c`). Seed: `scripts/seed-acme-orders.apex`. Access: `Acme_Order_Support_Agent` (agent user) and `Acme_Order_Data_Admin` (seed/integration).
 - Build org is the LabBox `agentforce-labs`; `default_agent_user` is its Einstein Agent User.

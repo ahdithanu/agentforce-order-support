@@ -31,6 +31,7 @@ Access: Acme_Order_Support_Agent permission set (read Order/Contact, create Case
 | Order and Case inputs are **bound from verified state**, not filled in by the LLM | The model can't be talked into looking up someone else's order after verifying as Jamie (security case SEC-03). |
 | Apex **re-checks** that the email matches the order in the status and case actions | Defense in depth: the action doesn't trust that the agent only calls it after verification. |
 | Verification **fails closed** and never says which field was wrong | Stops people guessing which email goes with which order. |
+| **Lockout after 3 failed checks**: Apex returns the count, the agent passes it back in from saved state, hides verification at 3, and hands off to a person | Rules that must always hold go in code. The model can't reset the count. Live: 1 → 2 → 3 → handoff. |
 | `WITH USER_MODE` and `AccessLevel.USER_MODE` everywhere | The agent user's permissions are the real boundary. Tests run as a least-privilege user to prove it. |
 | Order status runs **deterministically** (`run`) and the model is told the exact values | No chance the model skips the lookup or paraphrases the tracking number. |
 | Customer confirms before a Case is created, and there's one Case per session | Writes are consequential; also blocks the "open five more cases" abuse (SEC-07). |
@@ -46,7 +47,7 @@ The first preview answered politely: "I'll verify your details, one moment." The
 Moving from sample data to real Order data, all 3 Apex tests failed with "fields being inaccessible on Order". That's because new custom fields have no field-level access for anyone until you grant it, and user-mode writes enforce that. **Fix:** instead of giving admins broad access, I added a data-admin permission set and made the tests run as a dedicated Standard User holding only the two Acme permission sets. **Result:** 3/3 pass, and the tests now prove the agent's real access works, not the admin's.
 
 **3. Simulated actions gave a false pass.**
-In simulated mode, the wrong-email scenario (U3) "verified" and returned FedEx tracking, but the data says UPS. Simulated mode makes up tool outputs, so it validates routing, not logic. **Result:** I use simulated runs for routing and conversation flow, live runs against seeded data for logic, and the Testing Center suite for regression. The KPI report shows verification success at 100% in simulation, which is itself the warning sign.
+In simulated mode, the wrong-email scenario (U3) "verified" and returned FedEx tracking, but the data says UPS. Simulated mode makes up tool outputs, so it validates routing, not logic. **Result:** I use simulated runs for routing and conversation flow, live runs against seeded data for logic, and the Testing Center suite for regression. The live run then refused the wrong email (`verified: false`, nothing shared): verification success was 33% live, versus 100% in simulation.
 
 Bonus setup story: the CLI's OAuth login timed out twice. Node 26 had it listening only on IPv6 (`[::1]:1717`), and the browser kept reusing a different org's session. I fixed it with `NODE_OPTIONS=--dns-result-order=ipv4first`, then switched to the Labs device flow so credentials never went through a browser or chat. Being able to fix environment problems is half the job when you're working on-site with customers.
 
@@ -58,6 +59,7 @@ Bonus setup story: the CLI's OAuth login timed out twice. Node 26 had it listeni
 | Explain why a prompt failed and what you'd change | Story 1, found from the trace, fixed in two layers, tracked as a metric |
 | Own components end-to-end, deployed, validated, observable | Local compile, then org validation, draft deploy, preview traces, KPI report |
 | Data modeling, APIs, integration patterns | Order extension with an external ID upsert key, Case→Order lookup, idempotent seed, USER_MODE Apex |
+| Validated live, not just simulated | 7/7 live scenarios on real Apex: wrong email refused, lockout, real Case 00001026 linked to its Order, 92% groundedness |
 | Evaluate AI outputs with engineering rigor | `tests/*-testing-center.yaml` (11 functional), `tests/*-security.yaml` (12 OWASP cases, each tied to a specific construct in the agent) |
 | Agent performance dashboards and KPI reporting | `scripts/kpi_report.py`: containment, escalation, tool errors, unbacked claims, groundedness, safety, latency |
 | POCs from sketch to deployable in days | Empty folder to deployed, tested agent in one evening |
@@ -67,7 +69,7 @@ Bonus setup story: the CLI's OAuth login timed out twice. Node 26 had it listeni
 
 1. **Channel:** connect to the existing Enhanced Chat channel and `Agentforce_Service_Queue`, and pass the chat's customer context through so logged-in customers can skip verification.
 2. **Integration:** swap the seed data for the commerce system, using an upsert on `External_Order_Number__c` via a Named Credential and a platform-event or scheduled sync. Put the carrier API behind External Services if we want live tracking.
-3. **Hardening:** a failed-attempt counter kept in Apex (lock out after 3 tries and escalate), rate limits, and an audit field for who created the Case (the agent vs. a human).
+3. **Hardening:** session lockout is done. Next: a lockout per order that persists across chats, rate limits, and a review queue for Cases the agent created.
 4. **Evals in CI:** deploy both suites to a sandbox, run them on every change to the agent file, and block the release on any critical security failure.
 5. **Observability:** turn on Session Tracing and Agent Analytics, feed the same KPIs from production sessions (containment, escalations with reasons, tool errors), and review weekly with the Deployment Strategist against the customer's business KPI (cost per contact, CSAT).
 
