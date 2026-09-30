@@ -1,0 +1,194 @@
+{
+ "Acme_Order_Support": {
+  "rows": [
+   {
+    "conversation": "order_status",
+    "turn": 1,
+    "user": "Where is my order?",
+    "reply": "To check your order status, I need to verify your information. Please provide the email address you used at checkout and your order number (for example, A-1001).",
+    "sentences": 2,
+    "too_long": false,
+    "raw_symbols": false,
+    "digit_runs": 1,
+    "list_or_markdown": false
+   },
+   {
+    "conversation": "order_status",
+    "turn": 2,
+    "user": "It's order A-1001, email jamie@example.com",
+    "reply": "Your order A-1001 has shipped with FedEx. The tracking number is 1234567890. The estimated delivery date is 2024-06-17.\n\nWould you like the tracking link, or do you have any other questions about your order?",
+    "sentences": 4,
+    "too_long": true,
+    "raw_symbols": false,
+    "digit_runs": 3,
+    "list_or_markdown": false,
+    "read_back": false
+   },
+   {
+    "conversation": "policy_shipping_cost",
+    "turn": 1,
+    "user": "How much is express shipping?",
+    "reply": "According to Acme's shipping policy, express shipping costs vary depending on your destination, package size, and total order value. The exact rate is shown at checkout based on your order details, and extra fees may apply for remote locations or oversized items. Would you like help with a specific order, or do you want to talk to a person for more details?",
+    "sentences": 3,
+    "too_long": false,
+    "raw_symbols": false,
+    "digit_runs": 0,
+    "list_or_markdown": false,
+    "filler": false
+   },
+   {
+    "conversation": "policy_refund_timing",
+    "turn": 1,
+    "user": "How long do refunds take?",
+    "reply": "According to Acme's refund policy, refunds are typically processed within 5-7 business days after we receive and inspect your returned item. Once approved, the refund will be credited back to your original payment method, but processing times may vary depending on your bank or payment provider. Is there anything else I can help you with regarding refunds or your order?",
+    "sentences": 3,
+    "too_long": false,
+    "raw_symbols": false,
+    "digit_runs": 0,
+    "list_or_markdown": false,
+    "filler": false
+   },
+   {
+    "conversation": "damaged_item",
+    "turn": 1,
+    "user": "My jacket arrived torn",
+    "reply": "I'm sorry your jacket arrived torn. To help you with this, I need to verify your order. Please provide the email address you used at checkout and your order number (for example, A-1001).",
+    "sentences": 3,
+    "too_long": false,
+    "raw_symbols": false,
+    "digit_runs": 1,
+    "list_or_markdown": false
+   },
+   {
+    "conversation": "damaged_item",
+    "turn": 2,
+    "user": "Order A-1001, jamie@example.com",
+    "reply": "You reported that your jacket arrived torn. I can open a support case to get this resolved.\n\nSubject: Jacket arrived torn\nDescription: Customer reports their jacket arrived torn in order A-1001.\n\nWould you like me to proceed and open a support case for you?",
+    "sentences": 4,
+    "too_long": true,
+    "raw_symbols": false,
+    "digit_runs": 1,
+    "list_or_markdown": false,
+    "read_back": false
+   },
+   {
+    "conversation": "damaged_item",
+    "turn": 3,
+    "user": "The left sleeve seam ripped. Please open a case.",
+    "reply": "I'm about to open a case for you regarding the ripped left sleeve seam on your jacket from order A-1001. Once you confirm, I'll get this process started to help resolve the issue. Please reply \"yes\" to proceed or \"no\" to cancel.",
+    "sentences": 3,
+    "too_long": false,
+    "raw_symbols": false,
+    "digit_runs": 1,
+    "list_or_markdown": false,
+    "filler": false
+   }
+  ],
+  "summary": {
+   "replies": 7,
+   "avg_sentences": 3.14,
+   "too_long": 2,
+   "raw_symbols": 0,
+   "digit_runs": 7,
+   "list_or_markdown": 0,
+   "read_back": "0/2",
+   "filler": "0/3"
+  }
+ },
+ "Acme_Order_Support_Voice": {
+  "rows": [
+   {
+    "conversation": "order_status",
+    "turn": 1,
+    "user": "Where is my order?",
+    "reply": "I can help with that. Could you please tell me your order number?",
+    "sentences": 2,
+    "too_long": false,
+    "raw_symbols": false,
+    "digit_runs": 0,
+    "list_or_markdown": false
+   },
+   {
+    "conversation": "order_status",
+    "turn": 2,
+    "user": "It's order A-1001, email jamie@example.com",
+    "reply": "Jamie, your order A, ten oh one has shipped with FedEx and is expected to arrive on June seventeenth, twenty twenty-four. Is there anything else I can help you with today?",
+    "sentences": 2,
+    "too_long": false,
+    "raw_symbols": false,
+    "digit_runs": 0,
+    "list_or_markdown": false,
+    "read_back": false
+   },
+   {
+    "conversation": "policy_shipping_cost",
+    "turn": 1,
+    "user": "How much is express shipping?",
+    "reply": "According to Acme's shipping policy, express shipping costs extra and depends on your destination and the total weight of your order. You can see the exact charge during checkout before you pay. Would you like help with a specific order today?",
+    "sentences": 3,
+    "too_long": false,
+    "raw_symbols": false,
+    "digit_runs": 0,
+    "list_or_markdown": false,
+    "filler": false
+   },
+   {
+    "conversation": "policy_refund_timing",
+    "turn": 1,
+    "user": "How long do refunds take?",
+    "reply": "According to Acme's refund policy, refunds are usually processed within five to seven business days after we receive your returned item. The time for the money to show up in your account may depend on your bank or credit card company. Is there anything else I can check for you?",
+    "sentences": 3,
+    "too_long": false,
+    "raw_symbols": false,
+    "digit_runs": 0,
+    "list_or_markdown": false,
+    "filler": false
+   },
+   {
+    "conversation": "damaged_item",
+    "turn": 1,
+    "user": "My jacket arrived torn",
+    "reply": "I'm sorry your jacket arrived torn. I can help report this for you. Could you please tell me your order number?",
+    "sentences": 3,
+    "too_long": false,
+    "raw_symbols": false,
+    "digit_runs": 0,
+    "list_or_markdown": false
+   },
+   {
+    "conversation": "damaged_item",
+    "turn": 2,
+    "user": "Order A-1001, jamie@example.com",
+    "reply": "Thanks, Jamie. You said your jacket arrived torn. I\u2019ll report this for you\u2014can you tell me where the tear is, or any other details?",
+    "sentences": 3,
+    "too_long": false,
+    "raw_symbols": false,
+    "digit_runs": 0,
+    "list_or_markdown": false,
+    "read_back": true
+   },
+   {
+    "conversation": "damaged_item",
+    "turn": 3,
+    "user": "The left sleeve seam ripped. Please open a case.",
+    "reply": "You received a jacket with the left sleeve seam ripped, and you'd like to open a case. Is that all correct before I submit the report?",
+    "sentences": 2,
+    "too_long": false,
+    "raw_symbols": false,
+    "digit_runs": 0,
+    "list_or_markdown": false,
+    "filler": false
+   }
+  ],
+  "summary": {
+   "replies": 7,
+   "avg_sentences": 2.57,
+   "too_long": 0,
+   "raw_symbols": 0,
+   "digit_runs": 0,
+   "list_or_markdown": 0,
+   "read_back": "1/2",
+   "filler": "0/3"
+  }
+ }
+}

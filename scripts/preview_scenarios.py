@@ -8,7 +8,8 @@ import re
 import subprocess
 import sys
 
-BUNDLE = "Acme_Order_Support"
+import os
+BUNDLE = os.environ.get("BUNDLE", "Acme_Order_Support")
 ORG = sys.argv[1]
 MODE = "--use-live-actions" if "--live" in sys.argv else "--simulate-actions"
 
