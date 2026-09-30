@@ -1,0 +1,8 @@
+{
+  "name": "acme-agent-ci",
+  "private": true,
+  "description": "Pinned toolchain for CI checks of the Agent Script bundle",
+  "dependencies": {
+    "@sf-agentscript/agentforce": "2.9.27"
+  }
+}

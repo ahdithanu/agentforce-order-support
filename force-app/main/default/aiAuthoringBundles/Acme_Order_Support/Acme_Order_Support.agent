@@ -99,7 +99,7 @@ start_agent agent_router:
               If it is unclear what they need, route to ambiguous question.
         actions:
             go_to_verification: @utils.transition to @subagent.identity_verification
-                description: "Verify the customer's identity before any order-specific help"
+                description: "Anything about an order the customer placed: its status, tracking, a late or missing delivery, or an item that arrived damaged, wrong, or defective. Requires identity verification first. Not for general policy questions."
                 available when @variables.customer_verified == False and @variables.failed_attempts < 3
             go_to_order_status: @utils.transition to @subagent.order_status
                 description: "Check order status, tracking, or estimated delivery"
@@ -108,7 +108,7 @@ start_agent agent_router:
                 description: "Report a problem with an order and open a support case"
                 available when @variables.customer_verified == True
             go_to_store_policies: @utils.transition to @subagent.store_policies
-                description: "General question about returns, shipping, warranty, repairs, or product care"
+                description: "General policy questions that are not about a specific order the customer placed: return rules and windows, shipping options, costs, destinations and typical delivery times, warranty terms, repairs, product care. Not for reporting a problem with an order."
             go_to_escalation: @utils.transition to @subagent.escalation
                 description: "The customer wants to talk to a human"
             go_to_off_topic: @utils.transition to @subagent.off_topic

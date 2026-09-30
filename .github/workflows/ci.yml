@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  agent-script:
+    name: Compile Agent Script
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install --prefix ci --no-audit --no-fund
+      - run: node scripts/compile_agent.mjs force-app/main/default/aiAuthoringBundles/Acme_Order_Support/Acme_Order_Support.agent
+
+  specs-and-scripts:
+    name: Test specs, scripts, retrieval regression
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml numpy scikit-learn beautifulsoup4
+      - name: Validate test specs
+        run: python scripts/validate_specs.py
+      - name: Byte-compile scripts
+        run: python -m py_compile scripts/*.py
+      - name: Retrieval lab (lexical) with a recall floor
+        run: |
+          python scripts/retrieval_lab.py
+          python - <<'PY'
+          import json, sys
+          rows = json.load(open("tests/results/retrieval-lab.json"))
+          best = max(r["all"]["recall@3"] for r in rows if r["chunking"] == "section")
+          print(f"best section-chunk recall@3 (lexical): {best}")
+          sys.exit(0 if best >= 0.70 else 1)
+          PY

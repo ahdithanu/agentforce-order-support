@@ -1,5 +1,7 @@
 # Acme Order Support: an Agentforce service agent
 
+[![CI](https://github.com/ahdithanu/agentforce-order-support/actions/workflows/ci.yml/badge.svg)](https://github.com/ahdithanu/agentforce-order-support/actions/workflows/ci.yml)
+
 A customer-facing Agentforce agent for a fictional apparel brand, built end to end with Agent Script and the Salesforce CLI. It checks the customer's identity, answers order status from real `Order` records, opens a linked `Case` only after the customer confirms, locks verification after three failed attempts, and hands off to a human.
 
 **Try it live:** https://ahdithanu.github.io/agentforce-order-support/ (open the chat in the corner and use `jamie@example.com` with order `A-1001`).
@@ -25,6 +27,8 @@ All data is fictional. The agent runs in an Agentforce LabBox, a Salesforce Deve
 | `knowledge/` | Fictional Acme policy docs (returns, shipping, warranty and care) indexed in the Data Library `Acme_Store_Policies` |
 | `tests/rag-eval.yaml`, `scripts/rag_eval.py` | 18-case RAG eval: answerable (facts + source), unanswerable (must decline), routing near-misses |
 | `scripts/retrieval_lab.py`, `tests/retrieval-gold.yaml` | Offline retrieval lab: 24 labeled questions, 5 chunking strategies, BM25 / TF-IDF / LSA / embeddings / hybrid RRF, recall@k and MRR |
+| `scripts/routing_eval.py`, `tests/routing-set.yaml` | Router experiment: 30 labeled utterances, default LLM router vs Einstein HyperClassifier, accuracy and routing latency |
+| `scripts/compile_agent.mjs`, `scripts/validate_specs.py`, `.github/workflows/ci.yml` | CI: compile the agent with the public AgentScript SDK, validate every test spec, retrieval recall floor |
 | `scripts/agent_api_client.py` | Headless Agent API client (OAuth client credentials) |
 | `scripts/seed-acme-orders.apex` | Idempotent demo data |
 | `docs/` | Agent spec, interview walkthrough, and the GitHub Pages site |
@@ -35,6 +39,7 @@ All data is fictional. The agent runs in an Agentforce LabBox, a Salesforce Deve
 - **Testing Center regression:** topic 9/9, actions 4/4, outcome 10/10.
 - **OWASP red team:** grade A (10 judged, 0 failures). One soft finding was fixed and re-verified.
 - **RAG eval (live retrieval):** retrieval 12/12, correct source 12/12, answer facts 12/12, declined 4/4 unanswerable, routing 2/2, retrieval p50 about 2 s. Run 1 retrieved 0/12 because the agent user had the Data Cloud license but not the Data Cloud User permission set; the agent declined rather than inventing a policy.
+- **Routing experiment (30 utterances):** default router 30/30 at p50 688 ms; HyperClassifier 26/30 at 243 ms with the original route descriptions, 29/30 at 241 ms after moving the order-vs-policy boundary into the descriptions. Default kept for text; HyperClassifier is the voice option.
 - **Public web chat:** Enhanced Chat on an Experience Cloud site and on GitHub Pages, routed to the active agent (v3).
 
 ## Run it yourself

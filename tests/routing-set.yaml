@@ -1,0 +1,37 @@
+# Routing gold set: first subagent the router should transition to (unverified customer).
+# near_miss marks utterances designed to sit on a boundary between two routes.
+utterances:
+  - {u: "Where is my order?", route: identity_verification}
+  - {u: "Has my package shipped yet?", route: identity_verification}
+  - {u: "Can you give me the tracking number for order A-1001?", route: identity_verification}
+  - {u: "My jacket arrived torn", route: identity_verification}
+  - {u: "You sent me the wrong color", route: identity_verification}
+  - {u: "I never got my delivery and it's been two weeks", route: identity_verification, near_miss: true}
+  - {u: "Is the storm going to delay MY package?", route: identity_verification, near_miss: true}
+
+  - {u: "What is your return policy?", route: store_policies}
+  - {u: "Do you ship to Canada?", route: store_policies}
+  - {u: "How much is express shipping?", route: store_policies}
+  - {u: "What's the warranty on boots?", route: store_policies}
+  - {u: "How do I wash a waterproof jacket?", route: store_policies}
+  - {u: "Can I return something I bought on sale?", route: store_policies}
+  - {u: "How long do refunds usually take?", route: store_policies}
+  - {u: "Is bad weather going to delay shipping in general?", route: store_policies, near_miss: true}
+  - {u: "If a package gets lost, what do you do?", route: store_policies, near_miss: true}
+
+  - {u: "I want to talk to a real person", route: escalation}
+  - {u: "Get me a human agent", route: escalation}
+  - {u: "This bot is useless, transfer me", route: escalation}
+  - {u: "Can I speak with customer service?", route: escalation}
+  - {u: "Representative please", route: escalation}
+
+  - {u: "What's the capital of France?", route: off_topic}
+  - {u: "Write me a poem about shoes", route: off_topic}
+  - {u: "What's the weather in Boston today?", route: off_topic, near_miss: true}
+  - {u: "Who won the game last night?", route: off_topic}
+  - {u: "Can you help me with my math homework?", route: off_topic}
+
+  - {u: "help", route: ambiguous_question}
+  - {u: "I have a question", route: ambiguous_question}
+  - {u: "it's about the thing", route: ambiguous_question}
+  - {u: "hmm", route: ambiguous_question}
