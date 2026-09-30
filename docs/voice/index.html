@@ -58,7 +58,7 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
   <section class="card">
     <h2>Try saying</h2>
     <ol class="say">
-      <li><q>Where's my order?</q><span>It asks for the order number, then the email, one at a time. Use order A ten oh one and jamie at example dot com. The answer comes back as "A, ten oh one has shipped with UPS and should arrive on October first."</span></li>
+      <li><q>Where's my order?</q><span>It asks for the order number, then the email, reads both back, and only checks them after you say yes. Use order A ten oh one and jamie at example dot com. The answer comes back as "A, ten oh one has shipped with UPS and should arrive on October first."</span></li>
       <li><q>How much is express shipping?</q><span>Answered from the shipping policy: "Express shipping costs fifteen dollars."</span></li>
       <li><q>Can I put merino wool in the dryer?</q><span>Answered from the care policy.</span></li>
       <li><q>I'd like to talk to a person.</q><span>Hands off to the service queue (nobody is staffed in this demo).</span></li>
@@ -70,7 +70,7 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
     <div class="diff">
       <div><b>Replies</b>One or two short sentences, one question at a time, no lists or links.</div>
       <div><b>Numbers and IDs</b>Spoken form: "A, ten oh one", "September thirtieth", "six ninety-five".</div>
-      <div><b>One question at a time</b>Order number first, then email. Read-back before checking is instructed but not guaranteed (it happened in 1 of 3 test conversations), so the next step is a coded confirmation step.</div>
+      <div><b>Confirmation in code</b>Order number, then email, then a read-back. The verify tool only exists after you say "yes": 3/3 live runs, up from 1/3 when it was only an instruction.</div>
       <div><b>Routing</b>Einstein HyperClassifier router: 29/30 on the routing set at about 240 ms, versus about 700 ms for the default.</div>
     </div>
     <p class="muted" style="font-size:14px">Measured in the project's voice-readiness audit: replies over three sentences 2 → 0, hard-to-speak digit strings 7 → 0. Phone-number (telephony) wiring would be the next step and is done in Agent Builder.</p>

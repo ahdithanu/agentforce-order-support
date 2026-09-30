@@ -70,6 +70,14 @@ variables:
         description: "Estimated delivery date returned by the order lookup"
     case_number: mutable string = ""
         description: "Case number returned after a support case is created"
+    pending_order_number: mutable string = ""
+        description: "Order number the caller gave, not yet confirmed or verified"
+    pending_email: mutable string = ""
+        description: "Email the caller gave, not yet confirmed or verified"
+    readback_given: mutable boolean = False
+        description: "Set by code after a turn in which both pending details existed, so the caller has heard them read back"
+    details_confirmed: mutable boolean = False
+        description: "The caller confirmed the read-back; verification is only available after this"
     failed_attempts: mutable number = 0
         description: "Authoritative failed verification count returned by the verification action"
 
@@ -159,26 +167,51 @@ subagent identity_verification:
             else if @variables.failed_attempts >= 3:
                 | For the customer's security, verification is locked after three unsuccessful
                   attempts. Tell them briefly that you are connecting them with a team member.
-            else:
-                | Before sharing any order details, you must verify the customer. Ask for the
-                  order number first, then the email address used at checkout, and read both back
-                  to confirm before checking them.
-                  When you have both, call {!@actions.verify}. Do not call it with guessed values.
+            else if @variables.details_confirmed == True:
+                | The caller confirmed their details. Call {!@actions.verify} now.
                   If verification fails, say the details did not match our records without saying
                   which one was wrong, and offer to try again or connect them with a person.
                   Unsuccessful attempts so far: {!@variables.failed_attempts} of 3.
+            else if @variables.pending_order_number != "" and @variables.pending_email != "":
+                | Read the details back in spoken form and ask the caller to confirm: order
+                  {!@variables.pending_order_number} and email {!@variables.pending_email}.
+                  Ask exactly one question: "Is that right?"
+                  Only after the caller clearly says yes, use the confirm tool. If they correct
+                  either detail, capture the corrected value instead.
+            else:
+                | Before sharing any order details, you must verify the caller. Ask for the order
+                  number first, then the email address used at checkout, one at a time.
+                  Capture each value with its capture tool as soon as the caller says it.
         actions:
+            capture_order_number: @utils.setVariables
+                description: "Record the order number the caller just said"
+                with pending_order_number = ...
+                set @variables.readback_given = False
+                set @variables.details_confirmed = False
+                available when @variables.customer_verified == False and @variables.failed_attempts < 3
+            capture_email: @utils.setVariables
+                description: "Record the checkout email address the caller just said"
+                with pending_email = ...
+                set @variables.readback_given = False
+                set @variables.details_confirmed = False
+                available when @variables.customer_verified == False and @variables.failed_attempts < 3
+            confirm_details: @utils.setVariables
+                description: "The caller said yes, the read-back order number and email are correct"
+                set @variables.details_confirmed = True
+                available when @variables.readback_given == True and @variables.details_confirmed == False
             verify: @actions.verify_customer
-                description: "Verify the customer using their checkout email and order number"
-                with email = ...
-                with orderNumber = ...
+                description: "Verify the caller using the confirmed order number and email"
+                with email = @variables.pending_email
+                with orderNumber = @variables.pending_order_number
                 with priorFailedAttempts = @variables.failed_attempts
                 set @variables.customer_verified = @outputs.verified
                 set @variables.failed_attempts = @outputs.failedAttempts
                 set @variables.verified_email = @outputs.verifiedEmail
                 set @variables.verified_order_number = @outputs.canonicalOrderNumber
                 set @variables.customer_first_name = @outputs.customerFirstName
-                available when @variables.customer_verified == False and @variables.failed_attempts < 3
+                set @variables.details_confirmed = @outputs.verified
+                set @variables.readback_given = @outputs.verified
+                available when @variables.customer_verified == False and @variables.failed_attempts < 3 and @variables.details_confirmed == True
             go_to_order_status: @utils.transition to @subagent.order_status
                 description: "Verified customer wants order status, tracking, or delivery date"
                 available when @variables.customer_verified == True
@@ -189,6 +222,8 @@ subagent identity_verification:
                 description: "The customer wants a person or cannot complete verification"
 
     after_reasoning:
+        if @variables.pending_order_number != "" and @variables.pending_email != "" and @variables.details_confirmed == False:
+            set @variables.readback_given = True
         if @variables.failed_attempts >= 3:
             transition to @subagent.escalation
 
