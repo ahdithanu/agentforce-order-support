@@ -62,7 +62,8 @@ variables:
 
 knowledge:
     rag_feature_config_id: "ARFPC_1JDfj00000CY17dGAD"
-    citations_enabled: True
+    # Off for the public demo: citation links are presigned S3 URLs carrying AWS tokens.
+    citations_enabled: False
     citations_url: ""
 
 language:

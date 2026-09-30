@@ -3,6 +3,7 @@
 A customer-facing Agentforce agent for a fictional apparel brand, built end to end with Agent Script and the Salesforce CLI. It checks the customer's identity, answers order status from real `Order` records, opens a linked `Case` only after the customer confirms, locks verification after three failed attempts, and hands off to a human.
 
 **Try it live:** https://ahdithanu.github.io/agentforce-order-support/ (open the chat in the corner and use `jamie@example.com` with order `A-1001`).
+**Knowledge (RAG):** policy questions ("Do you ship to Canada?") are answered from the documents in `knowledge/` via an Agentforce Data Library.
 **Visual walkthrough:** the same page, covering architecture, the layers of protection, debugging stories, KPIs and the red-team grade.
 
 All data is fictional. The agent runs in an Agentforce LabBox, a Salesforce Developer Edition org.
@@ -20,6 +21,8 @@ All data is fictional. The agent runs in an Agentforce LabBox, a Salesforce Deve
 | `scripts/preview_scenarios.py` | Scripted multi-turn preview sessions (simulated or `--live`) |
 | `scripts/kpi_report.py` | Deployment-health KPIs from traces (containment, tool errors, groundedness, latency) |
 | `scripts/redteam_preview.py` | Red-team runner: security cases sent through preview |
+| `knowledge/` | Fictional Acme policy docs (returns, shipping, warranty and care) indexed in the Data Library `Acme_Store_Policies` |
+| `tests/rag-eval.yaml`, `scripts/rag_eval.py` | 18-case RAG eval: answerable (facts + source), unanswerable (must decline), routing near-misses |
 | `scripts/agent_api_client.py` | Headless Agent API client (OAuth client credentials) |
 | `scripts/seed-acme-orders.apex` | Idempotent demo data |
 | `docs/` | Agent spec, interview walkthrough, and the GitHub Pages site |
@@ -29,7 +32,8 @@ All data is fictional. The agent runs in an Agentforce LabBox, a Salesforce Deve
 - **Live preview on real Apex:** all 7 scenarios passed. A wrong email was refused, the lockout went 1 → 2 → 3 → handoff, and a real Case was linked to its Order. Groundedness was 92%.
 - **Testing Center regression:** topic 9/9, actions 4/4, outcome 10/10.
 - **OWASP red team:** grade A (10 judged, 0 failures). One soft finding was fixed and re-verified.
-- **Public web chat:** Enhanced Chat on an Experience Cloud site and on GitHub Pages, routed to the active agent (v2).
+- **RAG eval (live retrieval):** retrieval 12/12, correct source 12/12, answer facts 12/12, declined 4/4 unanswerable, routing 2/2, retrieval p50 about 2 s. Run 1 retrieved 0/12 because the agent user had the Data Cloud license but not the Data Cloud User permission set; the agent declined rather than inventing a policy.
+- **Public web chat:** Enhanced Chat on an Experience Cloud site and on GitHub Pages, routed to the active agent (v3).
 
 ## Run it yourself
 

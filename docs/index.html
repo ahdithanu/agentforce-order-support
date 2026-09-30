@@ -203,6 +203,7 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
       <li>Open the chat and ask <em>"Where is my order?"</em></li>
       <li>Verify with <code>jamie@example.com</code> and order <code>A-1001</code> (or <code>A-1002</code>, which hasn't shipped yet).</li>
       <li>Try a wrong email three times to see the lockout, or say the item arrived damaged to open a Case.</li>
+      <li>Ask a policy question, like <em>"Do you ship to Canada?"</em> or <em>"Can I put merino in the dryer?"</em>. It's answered from Acme's policy documents through retrieval (RAG), with no verification needed. Ask something the policies don't cover and it says so instead of guessing.</li>
     </ol>
     <p class="note">Runs on Salesforce Messaging and Agentforce in a demo org. All customers and orders are fictional; please don't enter real personal details.</p>
     <p class="repo">Source: <a href="https://github.com/ahdithanu/agentforce-order-support">github.com/ahdithanu/agentforce-order-support</a></p>
