@@ -1,0 +1,227 @@
+<title>Acme Agent Observability</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column; findings first, then two charts (recall vs k, keyword vs semantic), then the table. */
+:root {
+  --bg: #f6f7f4; --surface: #fcfcfb; --ink: #0b0b0b; --muted: #52514e; --faint: #8a8984; --line: #e2e3de; --grid: #ecece8;
+  --accent: #0f6b5c;
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100;
+  --display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", sans-serif;
+  --body: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111110; --surface: #1a1a19; --ink: #ffffff; --muted: #c3c2b7; --faint: #8f8e87; --line: #2e2e2c; --grid: #262624;
+    --accent: #4fc2a9; --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111110; --surface: #1a1a19; --ink: #ffffff; --muted: #c3c2b7; --faint: #8f8e87; --line: #2e2e2c; --grid: #262624;
+  --accent: #4fc2a9; --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 16px/1.6 var(--body); margin: 0; }
+.page { max-width: 880px; margin: 0 auto; padding-inline: 20px; padding-block: 40px 72px; display: grid; gap: 36px; }
+h1, h2 { font-family: var(--display); line-height: 1.15; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(30px, 5.5vw, 42px); }
+h2 { font-size: 20px; }
+p { margin: 0; max-width: 70ch; }
+code { font-family: var(--mono); font-size: 0.86em; }
+.eyebrow { font: 600 12px/1 var(--body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+.muted { color: var(--muted); }
+header, section { display: grid; gap: 12px; }
+.findings { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.finding { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: grid; gap: 4px; min-width: 0; }
+.finding b { font: 700 22px/1.1 var(--display); font-variant-numeric: tabular-nums; }
+.finding span { font-size: 14px; color: var(--muted); }
+@media (max-width: 620px) { .findings { grid-template-columns: 1fr; } }
+.chart { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; position: relative; }
+.chart svg { display: block; width: 100%; height: auto; min-width: 560px; }
+.scroll { overflow-x: auto; }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+.legend i { display: inline-block; width: 14px; height: 3px; border-radius: 2px; margin-right: 6px; vertical-align: 3px; }
+.legend i.box { height: 10px; width: 10px; vertical-align: -1px; }
+.tip { position: absolute; pointer-events: none; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font-size: 13px; box-shadow: 0 4px 16px rgba(0,0,0,.12); min-width: 180px; }
+.tip[hidden] { display: none; }
+.tip .row { display: flex; justify-content: space-between; gap: 12px; font-variant-numeric: tabular-nums; }
+.tip .sw { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; background: var(--surface); }
+th, td { padding: 8px 10px; border-bottom: 1px solid var(--line); text-align: left; font-variant-numeric: tabular-nums; }
+th { font-size: 12px; color: var(--muted); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+details summary { cursor: pointer; font-weight: 600; color: var(--accent); }
+footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 14px; }
+</style>
+<style>
+.tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: grid; gap: 2px; min-width: 0; }
+.tile b { font: 700 26px/1.1 var(--display); font-variant-numeric: tabular-nums; }
+.tile span { font-size: 13px; color: var(--muted); line-height: 1.35; }
+.pill { display: inline-block; font: 600 11px/1 var(--body); padding: 4px 8px; border-radius: 999px; background: var(--grid); color: var(--muted); margin-left: 8px; vertical-align: 3px; }
+@media (max-width: 700px) { .tiles { grid-template-columns: 1fr 1fr; } }
+.hbar { display: grid; grid-template-columns: 170px 1fr 70px; gap: 10px; align-items: center; font-size: 13px; padding: 5px 0; }
+.hbar .track { height: 12px; background: var(--grid); border-radius: 3px; position: relative; }
+.hbar .fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 3px; }
+.hbar .v { text-align: right; font-variant-numeric: tabular-nums; color: var(--muted); }
+.hbar code { font-size: 12px; }
+</style>
+<main class="page">
+  <header>
+    <span class="eyebrow">Acme Order Support · production observability</span>
+    <h1>What the agent actually did, from session tracing</h1>
+    <p class="muted">Aggregated from Agentforce session-tracing objects in Data Cloud (<code>ssot__AiAgentSession</code>, <code>Interaction</code>, <code>InteractionStep</code>). Traffic is split by the topic suffix the runtime records: published-planner ids are real channels and Testing Center; <code>PlannerPreview</code> ids are development and eval runs. Generated 2026-09-29 22:29:46.</p>
+  </header>
+
+  <section>
+    <h2>Published traffic <span class="pill">real chat + Testing Center</span></h2>
+    <div class="tiles">
+      <div class="tile"><b>22</b><span>sessions (46 turns)</span></div>
+      <div class="tile"><b>86%</b><span>containment: no human handoff</span></div>
+      <div class="tile"><b>2.5 s</b><span>turn latency p50 (p90 5.4 s)</span></div>
+      <div class="tile"><b>0</b><span>action errors across all traced calls</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Where the time goes</h2>
+    <div class="chart" id="lat"></div>
+    <p class="muted" style="font-size:14px">Median action time vs median end-to-end turn time. Actions are a small slice of each turn; the rest is model calls and the Trust Layer checks (input guardrail, groundedness validation, instruction adherence), which run on every response.</p>
+  </section>
+
+  <section>
+    <h2>What customers asked for</h2>
+    <div class="chart" id="topics"></div>
+    <p class="muted" style="font-size:14px">Turns by subagent. Published traffic is mostly order-specific (verification first); the preview mix is dominated by the policy RAG eval runs.</p>
+  </section>
+
+  <section>
+    <details>
+      <summary>Raw aggregates (JSON)</summary>
+      <pre style="white-space:pre-wrap;font:12px/1.5 var(--mono);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px;overflow-x:auto">{
+ "generated": "2026-09-29T22:29:46",
+ "org_sessions_total": 243,
+ "acme_sessions": 187,
+ "published": {
+  "sessions": 22,
+  "turns": 46,
+  "turns_per_session": 2.09,
+  "escalation_rate": 0.136,
+  "containment_rate": 0.864,
+  "injection_blocked_sessions": 0,
+  "turn_latency_ms": {
+   "p50": 2537,
+   "p90": 5397,
+   "max": 8940
+  },
+  "topics": {
+   "identity_verification": 18,
+   "store_policies": 3,
+   "escalation": 3
+  },
+  "actions": {
+   "get_order_status": {
+    "calls": 6,
+    "errors": 0,
+    "p50_ms": 190,
+    "p90_ms": 294
+   },
+   "verify_customer": {
+    "calls": 10,
+    "errors": 0,
+    "p50_ms": 256,
+    "p90_ms": 397
+   }
+  },
+  "trust_layer_steps": {
+   "InstructionAdherence": 24,
+   "pre_orchestration.guardrail": 24,
+   "Atlas__GroundednessValidationPrompt": 24
+  },
+  "sessions_by_hour": {
+   "2026-09-29 16:00": 8,
+   "2026-09-29 17:00": 9,
+   "2026-09-29 22:00": 2,
+   "2026-09-30 03:00": 3
+  }
+ },
+ "preview": {
+  "sessions": 165,
+  "turns": 353,
+  "turns_per_session": 2.14,
+  "escalation_rate": 0.145,
+  "containment_rate": 0.855,
+  "injection_blocked_sessions": 0,
+  "turn_latency_ms": {
+   "p50": 1640,
+   "p90": 5116,
+   "max": 8633
+  },
+  "topics": {
+   "store_policies": 96,
+   "identity_verification": 63,
+   "escalation": 24,
+   "order_status": 1,
+   "ambiguous_question": 1,
+   "support_case": 1
+  },
+  "actions": {
+   "AnswerQuestionsWithKnowledge": {
+    "calls": 96,
+    "errors": 0,
+    "p50_ms": 1657,
+    "p90_ms": 2568
+   },
+   "verify_customer": {
+    "calls": 12,
+    "errors": 0,
+    "p50_ms": 510,
+    "p90_ms": 912
+   },
+   "get_order_status": {
+    "calls": 4,
+    "errors": 0,
+    "p50_ms": 618,
+    "p90_ms": 1018
+   },
+   "create_support_case": {
+    "calls": 2,
+    "errors": 0,
+    "p50_ms": 651,
+    "p90_ms": 2438
+   }
+  },
+  "trust_layer_steps": {
+   "Atlas__GroundednessValidationPrompt": 177,
+   "InstructionAdherence": 175,
+   "pre_orchestration.guardrail": 188
+  },
+  "sessions_by_hour": {
+   "2026-09-29 05:00": 8,
+   "2026-09-29 06:00": 5,
+   "2026-09-29 19:00": 10,
+   "2026-09-30 01:00": 16,
+   "2026-09-30 02:00": 21,
+   "2026-09-30 03:00": 22,
+   "2026-09-30 05:00": 83
+  }
+ }
+}</pre>
+    </details>
+  </section>
+  <footer>Regenerate: <code>python3 scripts/observability_report.py &lt;org-alias&gt;</code>. Limitation: sessions that only hit generic topics (off-topic, prompt injection) carry no agent-specific suffix and can't be attributed to this agent, so they're excluded.</footer>
+</main>
+<script>
+const D = {"actions": [{"name": "knowledge search", "prev_p50": 1657, "prev_p90": 2568, "pub_p50": null}, {"name": "create_support_case", "prev_p50": 651, "prev_p90": 2438, "pub_p50": null}, {"name": "get_order_status", "prev_p50": 618, "prev_p90": 1018, "pub_p50": 190}, {"name": "verify_customer", "prev_p50": 510, "prev_p90": 912, "pub_p50": 256}], "turn": {"pub": {"p50": 2537, "p90": 5397, "max": 8940}, "prev": {"p50": 1640, "p90": 5116, "max": 8633}}, "topics": {"identity_verification": 18, "store_policies": 3, "escalation": 3}, "topics_prev": {"store_policies": 96, "identity_verification": 63, "escalation": 24, "order_status": 1, "ambiguous_question": 1, "support_case": 1}};
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+function bars(id, rows, max, unit, color) {
+  document.getElementById(id).innerHTML = rows.map(r =>
+    `<div class="hbar"><span>${r.label}</span><div class="track"><div class="fill" style="width:${(r.value / max * 100).toFixed(1)}%;background:var(${r.color || color})"></div></div><span class="v">${r.value.toLocaleString()}${unit}</span></div>`).join("");
+}
+const lat = [{ label: "Turn, end to end (published)", value: D.turn.pub.p50, color: "--s2" },
+  ...D.actions.map(a => ({ label: a.name + (a.pub_p50 ? " (published)" : " (preview)"), value: a.pub_p50 || a.prev_p50, color: "--s1" }))];
+bars("lat", lat, Math.max(...lat.map(r => r.value)), " ms", "--s1");
+const t = Object.entries(D.topics).map(([k, v]) => ({ label: k, value: v }));
+bars("topics", t, Math.max(...t.map(r => r.value)), " turns", "--s1");
+</script>

@@ -1,0 +1,109 @@
+{
+ "generated": "2026-09-29T22:29:46",
+ "org_sessions_total": 243,
+ "acme_sessions": 187,
+ "published": {
+  "sessions": 22,
+  "turns": 46,
+  "turns_per_session": 2.09,
+  "escalation_rate": 0.136,
+  "containment_rate": 0.864,
+  "injection_blocked_sessions": 0,
+  "turn_latency_ms": {
+   "p50": 2537,
+   "p90": 5397,
+   "max": 8940
+  },
+  "topics": {
+   "identity_verification": 18,
+   "store_policies": 3,
+   "escalation": 3
+  },
+  "actions": {
+   "get_order_status": {
+    "calls": 6,
+    "errors": 0,
+    "p50_ms": 190,
+    "p90_ms": 294
+   },
+   "verify_customer": {
+    "calls": 10,
+    "errors": 0,
+    "p50_ms": 256,
+    "p90_ms": 397
+   }
+  },
+  "trust_layer_steps": {
+   "InstructionAdherence": 24,
+   "pre_orchestration.guardrail": 24,
+   "Atlas__GroundednessValidationPrompt": 24
+  },
+  "sessions_by_hour": {
+   "2026-09-29 16:00": 8,
+   "2026-09-29 17:00": 9,
+   "2026-09-29 22:00": 2,
+   "2026-09-30 03:00": 3
+  }
+ },
+ "preview": {
+  "sessions": 165,
+  "turns": 353,
+  "turns_per_session": 2.14,
+  "escalation_rate": 0.145,
+  "containment_rate": 0.855,
+  "injection_blocked_sessions": 0,
+  "turn_latency_ms": {
+   "p50": 1640,
+   "p90": 5116,
+   "max": 8633
+  },
+  "topics": {
+   "store_policies": 96,
+   "identity_verification": 63,
+   "escalation": 24,
+   "order_status": 1,
+   "ambiguous_question": 1,
+   "support_case": 1
+  },
+  "actions": {
+   "AnswerQuestionsWithKnowledge": {
+    "calls": 96,
+    "errors": 0,
+    "p50_ms": 1657,
+    "p90_ms": 2568
+   },
+   "verify_customer": {
+    "calls": 12,
+    "errors": 0,
+    "p50_ms": 510,
+    "p90_ms": 912
+   },
+   "get_order_status": {
+    "calls": 4,
+    "errors": 0,
+    "p50_ms": 618,
+    "p90_ms": 1018
+   },
+   "create_support_case": {
+    "calls": 2,
+    "errors": 0,
+    "p50_ms": 651,
+    "p90_ms": 2438
+   }
+  },
+  "trust_layer_steps": {
+   "Atlas__GroundednessValidationPrompt": 177,
+   "InstructionAdherence": 175,
+   "pre_orchestration.guardrail": 188
+  },
+  "sessions_by_hour": {
+   "2026-09-29 05:00": 8,
+   "2026-09-29 06:00": 5,
+   "2026-09-29 19:00": 10,
+   "2026-09-30 01:00": 16,
+   "2026-09-30 02:00": 21,
+   "2026-09-30 03:00": 22,
+   "2026-09-30 05:00": 83
+  }
+ }
+}
