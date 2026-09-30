@@ -4,6 +4,7 @@ A customer-facing Agentforce agent for a fictional apparel brand, built end to e
 
 **Try it live:** https://ahdithanu.github.io/agentforce-order-support/ (open the chat in the corner and use `jamie@example.com` with order `A-1001`).
 **Knowledge (RAG):** policy questions ("Do you ship to Canada?") are answered from the documents in `knowledge/` via an Agentforce Data Library.
+**Retrieval lab:** https://ahdithanu.github.io/agentforce-order-support/retrieval-lab/ (recall@k for keyword, vector, hybrid, and embeddings; chunking strategies; paraphrase robustness)
 **Visual walkthrough:** the same page, covering architecture, the layers of protection, debugging stories, KPIs and the red-team grade.
 
 All data is fictional. The agent runs in an Agentforce LabBox, a Salesforce Developer Edition org.
@@ -23,6 +24,7 @@ All data is fictional. The agent runs in an Agentforce LabBox, a Salesforce Deve
 | `scripts/redteam_preview.py` | Red-team runner: security cases sent through preview |
 | `knowledge/` | Fictional Acme policy docs (returns, shipping, warranty and care) indexed in the Data Library `Acme_Store_Policies` |
 | `tests/rag-eval.yaml`, `scripts/rag_eval.py` | 18-case RAG eval: answerable (facts + source), unanswerable (must decline), routing near-misses |
+| `scripts/retrieval_lab.py`, `tests/retrieval-gold.yaml` | Offline retrieval lab: 24 labeled questions, 5 chunking strategies, BM25 / TF-IDF / LSA / embeddings / hybrid RRF, recall@k and MRR |
 | `scripts/agent_api_client.py` | Headless Agent API client (OAuth client credentials) |
 | `scripts/seed-acme-orders.apex` | Idempotent demo data |
 | `docs/` | Agent spec, interview walkthrough, and the GitHub Pages site |

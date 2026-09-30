@@ -1,0 +1,30 @@
+# Retrieval gold set for the Acme policy corpus (knowledge/*.html).
+# gold = "<document stem>#<section heading>" of the section that answers the question.
+# style: "direct" reuses the policy's own words; "paraphrase" deliberately avoids them
+# (vocabulary mismatch is where keyword search fails and semantic search earns its keep).
+questions:
+  - {q: "How long do I have to return something?", gold: "Acme_Returns_and_Exchanges#Return window", style: direct}
+  - {q: "Do I have to pay for return shipping?", gold: "Acme_Returns_and_Exchanges#Return shipping cost", style: direct}
+  - {q: "Can I return a monogrammed item?", gold: "Acme_Returns_and_Exchanges#Items that cannot be returned", style: direct}
+  - {q: "How long until I see my refund?", gold: "Acme_Returns_and_Exchanges#How long refunds take", style: direct}
+  - {q: "Is shipping free?", gold: "Acme_Shipping_and_Delivery#Shipping options and cost", style: direct}
+  - {q: "Do you ship to Canada?", gold: "Acme_Shipping_and_Delivery#Where we ship", style: direct}
+  - {q: "Can I get express shipping to my P.O. box?", gold: "Acme_Shipping_and_Delivery#P.O. boxes", style: direct}
+  - {q: "My package is late. When should I contact you?", gold: "Acme_Shipping_and_Delivery#Late or lost packages", style: direct}
+  - {q: "What's the warranty on your jackets?", gold: "Acme_Warranty_and_Care#Outerwear warranty", style: direct}
+  - {q: "My jacket zipper broke after 3 years. Can you fix it?", gold: "Acme_Warranty_and_Care#Free zipper repair", style: direct}
+  - {q: "Can I put my merino sweater in the dryer?", gold: "Acme_Warranty_and_Care#Wool care", style: direct}
+  - {q: "How should I wash my waterproof jacket?", gold: "Acme_Warranty_and_Care#Caring for waterproof jackets", style: direct}
+
+  - {q: "I bought a shirt five weeks ago and never wore it. Can I still send it back?", gold: "Acme_Returns_and_Exchanges#Return window", style: paraphrase}
+  - {q: "Will you take out a fee from my money if I mail the item back?", gold: "Acme_Returns_and_Exchanges#Return shipping cost", style: paraphrase}
+  - {q: "The sale tag said all sales final. Am I stuck with it?", gold: "Acme_Returns_and_Exchanges#Items that cannot be returned", style: paraphrase}
+  - {q: "When does the money hit my card after you get my package?", gold: "Acme_Returns_and_Exchanges#How long refunds take", style: paraphrase}
+  - {q: "These boots are too small. Can I get the next size up instead?", gold: "Acme_Returns_and_Exchanges#Exchanges", style: paraphrase}
+  - {q: "The parcel showed up ripped open and the coat inside is torn.", gold: "Acme_Returns_and_Exchanges#Damaged or incorrect items", style: paraphrase}
+  - {q: "What does it cost to get my order the next day or the day after?", gold: "Acme_Shipping_and_Delivery#Shipping options and cost", style: paraphrase}
+  - {q: "I live in London. Will I owe customs when it arrives?", gold: "Acme_Shipping_and_Delivery#Where we ship", style: paraphrase}
+  - {q: "Which company brings the box to my house?", gold: "Acme_Shipping_and_Delivery#Tracking", style: paraphrase}
+  - {q: "Oops, I typed my old address. Can you fix it before it goes out?", gold: "Acme_Shipping_and_Delivery#Changing or cancelling an order", style: paraphrase}
+  - {q: "The seam on my raincoat split after six months. Is that covered?", gold: "Acme_Warranty_and_Care#Outerwear warranty", style: paraphrase}
+  - {q: "The bottoms are peeling off my hiking boots after a few months.", gold: "Acme_Warranty_and_Care#Footwear warranty", style: paraphrase}
