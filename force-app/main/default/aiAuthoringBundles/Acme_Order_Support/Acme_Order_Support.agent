@@ -83,7 +83,7 @@ knowledge:
 
 language:
     default_locale: "en_US"
-    additional_locales: ""
+    additional_locales: "es"
     all_additional_locales: False
 
 start_agent agent_router:
@@ -323,6 +323,8 @@ subagent store_policies:
     reasoning:
         instructions: ->
             | For every policy question, call {!@actions.search_policies} before answering.
+              The policy documents are in English: always write the search query in English,
+              even when the customer writes in another language, then answer in the customer's language.
               Answer only from the returned knowledge summary, in two or three sentences,
               and mention which policy it comes from. Do not add details the summary does not state.
               If the summary is empty or does not answer the question, say you don't have that

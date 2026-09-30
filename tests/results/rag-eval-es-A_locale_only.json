@@ -1,0 +1,216 @@
+[
+ {
+  "id": "E01",
+  "kind": "answerable",
+  "question": "\u00bfCu\u00e1nto tiempo tengo para devolver un art\u00edculo?",
+  "reply": "Seg\u00fan la pol\u00edtica de devoluciones de Acme Outfitters, tienes 30 d\u00edas desde la entrega para devolver un art\u00edculo, siempre que est\u00e9 sin usar, sin lavar y con las etiquetas originales adjuntas. \u00bfTe gustar\u00eda saber c\u00f3mo iniciar una devoluci\u00f3n o tienes otra consulta?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   2355
+  ],
+  "retrieval_hit": true,
+  "source_hit": false,
+  "answer_correct": true
+ },
+ {
+  "id": "E02",
+  "kind": "answerable",
+  "question": "\u00bfTengo que pagar el env\u00edo de una devoluci\u00f3n?",
+  "reply": "Seg\u00fan la pol\u00edtica de devoluciones de Acme Outfitters, el cliente debe pagar el costo del env\u00edo al devolver un producto para reembolso. El costo de la etiqueta de devoluci\u00f3n prepagada es de 6,95 USD y se descuenta del reembolso. Sin embargo, si el art\u00edculo lleg\u00f3 da\u00f1ado o se envi\u00f3 por error, la devoluci\u00f3n es gratuita. \u00bfTe gustar\u00eda ayuda con una devoluci\u00f3n espec\u00edfica?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   3857
+  ],
+  "retrieval_hit": true,
+  "source_hit": false,
+  "answer_correct": true
+ },
+ {
+  "id": "E03",
+  "kind": "answerable",
+  "question": "\u00bfPuedo devolver un art\u00edculo con monograma?",
+  "reply": "No encuentro informaci\u00f3n sobre devoluciones de art\u00edculos con monograma en las pol\u00edticas de Acme Outfitters. \u00bfQuieres que te ponga en contacto con una persona del equipo para que te ayude con esta consulta?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   2281
+  ],
+  "retrieval_hit": true,
+  "source_hit": false,
+  "answer_correct": false
+ },
+ {
+  "id": "E04",
+  "kind": "answerable",
+  "question": "\u00bfCu\u00e1nto tarda en llegar mi reembolso?",
+  "reply": "Seg\u00fan la pol\u00edtica de reembolsos de Acme Outfitters, los reembolsos se procesan dentro de los 3 d\u00edas h\u00e1biles despu\u00e9s de recibir los art\u00edculos devueltos en el almac\u00e9n. Su banco puede tardar entre 5 y 7 d\u00edas h\u00e1biles adicionales en reflejar el reembolso. \u00bfPuedo ayudarle con algo m\u00e1s sobre su pedido?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   3256
+  ],
+  "retrieval_hit": true,
+  "source_hit": false,
+  "answer_correct": true
+ },
+ {
+  "id": "E05",
+  "kind": "answerable",
+  "question": "\u00bfEl env\u00edo es gratis?",
+  "reply": "El env\u00edo est\u00e1ndar es gratis en pedidos superiores a 75 USD; de lo contrario, cuesta 5.95 USD. Esta informaci\u00f3n proviene de la pol\u00edtica de env\u00edos de Acme Outfitters. \u00bfTe gustar\u00eda saber algo m\u00e1s sobre nuestros env\u00edos?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   2434
+  ],
+  "retrieval_hit": true,
+  "source_hit": false,
+  "answer_correct": true
+ },
+ {
+  "id": "E06",
+  "kind": "answerable",
+  "question": "\u00bfHacen env\u00edos a Canad\u00e1?",
+  "reply": "No encuentro informaci\u00f3n sobre env\u00edos a Canad\u00e1 en las pol\u00edticas de Acme Outfitters. \u00bfTe gustar\u00eda que te conecte con una persona para que te ayude con esta consulta?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   1852
+  ],
+  "retrieval_hit": true,
+  "source_hit": false,
+  "answer_correct": false
+ },
+ {
+  "id": "E07",
+  "kind": "answerable",
+  "question": "\u00bfPuedo recibir env\u00edo expr\u00e9s en mi apartado postal?",
+  "reply": "No encuentro informaci\u00f3n sobre env\u00edos expr\u00e9s a apartados postales en las pol\u00edticas de Acme Outfitters. \u00bfTe gustar\u00eda que te conecte con una persona para obtener una respuesta espec\u00edfica?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   2843
+  ],
+  "retrieval_hit": true,
+  "source_hit": false,
+  "answer_correct": false
+ },
+ {
+  "id": "E08",
+  "kind": "answerable",
+  "question": "Mi paquete va retrasado. \u00bfCu\u00e1ndo debo contactarlos?",
+  "reply": "Para ayudarte a revisar el estado de tu paquete y saber si es momento de contactarnos, por favor dime el correo electr\u00f3nico que usaste al hacer la compra y el n\u00famero de pedido (por ejemplo, A-1001).",
+  "route": "identity_verification",
+  "knowledge_calls": 0,
+  "knowledge_latency_ms": [],
+  "retrieval_hit": false,
+  "source_hit": false,
+  "answer_correct": false
+ },
+ {
+  "id": "E09",
+  "kind": "answerable",
+  "question": "\u00bfQu\u00e9 garant\u00eda tienen sus chaquetas?",
+  "reply": "No encuentro informaci\u00f3n sobre la garant\u00eda de las chaquetas en las pol\u00edticas de Acme Outfitters. \u00bfTe gustar\u00eda que te conecte con una persona para obtener m\u00e1s detalles?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   2380
+  ],
+  "retrieval_hit": true,
+  "source_hit": false,
+  "answer_correct": false
+ },
+ {
+  "id": "E10",
+  "kind": "answerable",
+  "question": "Se rompi\u00f3 la cremallera de mi chaqueta despu\u00e9s de 3 a\u00f1os. \u00bfLa pueden arreglar?",
+  "reply": "Seg\u00fan la pol\u00edtica de reparaciones de Acme Outfitters, ofrecemos reparaci\u00f3n gratuita de cremalleras en cualquier prenda de abrigo, incluso despu\u00e9s de que finalice la garant\u00eda. Para iniciar la reparaci\u00f3n, es necesario contactar con el soporte para recibir una etiqueta de env\u00edo prepagada por correo electr\u00f3nico. \u00bfQuieres que te ayude a reportar el problema con tu chaqueta y comenzar el proceso?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   2313
+  ],
+  "retrieval_hit": true,
+  "source_hit": false,
+  "answer_correct": true
+ },
+ {
+  "id": "E11",
+  "kind": "answerable",
+  "question": "\u00bfPuedo meter mi su\u00e9ter de merino en la secadora?",
+  "reply": "No encuentro informaci\u00f3n sobre el uso de secadora para su\u00e9teres de merino en las pol\u00edticas de Acme Outfitters. \u00bfTe gustar\u00eda que te ponga en contacto con una persona de nuestro equipo para que te ayude con esta consulta?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   2580
+  ],
+  "retrieval_hit": true,
+  "source_hit": false,
+  "answer_correct": false
+ },
+ {
+  "id": "E12",
+  "kind": "answerable",
+  "question": "\u00bfC\u00f3mo lavo mi chaqueta impermeable?",
+  "reply": "No encuentro informaci\u00f3n sobre el lavado de chaquetas impermeables en las pol\u00edticas de Acme Outfitters. \u00bfQuieres que te ponga en contacto con una persona para obtener ayuda espec\u00edfica?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   1807
+  ],
+  "retrieval_hit": true,
+  "source_hit": false,
+  "answer_correct": false
+ },
+ {
+  "id": "EU1",
+  "kind": "unanswerable",
+  "question": "\u00bfIgualan precios de la competencia?",
+  "reply": "No encuentro informaci\u00f3n sobre igualaci\u00f3n de precios de la competencia en las pol\u00edticas de Acme Outfitters. Si quieres, puedo conectarte con una persona para que te ayude con esta pregunta. \u00bfTe gustar\u00eda hablar con alguien del equipo?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   1896
+  ],
+  "abstained": true
+ },
+ {
+  "id": "EU2",
+  "kind": "unanswerable",
+  "question": "\u00bfHacen env\u00edos a Australia?",
+  "reply": "No encuentro informaci\u00f3n sobre env\u00edos a Australia en las pol\u00edticas de Acme Outfitters. \u00bfTe gustar\u00eda que te comunique con una persona del equipo para que te ayude con esta consulta?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   1964
+  ],
+  "abstained": true
+ },
+ {
+  "id": "EU3",
+  "kind": "unanswerable",
+  "question": "\u00bfTienen descuento para estudiantes?",
+  "reply": "No encuentro informaci\u00f3n sobre descuentos para estudiantes en las pol\u00edticas de Acme Outfitters. Si quieres, puedo conectarte con una persona de nuestro equipo para que te ayude con esta consulta. \u00bfTe gustar\u00eda hablar con alguien?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   2097
+  ],
+  "abstained": true
+ },
+ {
+  "id": "EU4",
+  "kind": "unanswerable",
+  "question": "\u00bfQu\u00e9 garant\u00eda tienen las mochilas?",
+  "reply": "No encuentro informaci\u00f3n sobre la garant\u00eda de las mochilas en las pol\u00edticas de Acme Outfitters. \u00bfQuieres que te conecte con una persona para que pueda ayudarte mejor?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   1732
+  ],
+  "abstained": true
+ }
+]

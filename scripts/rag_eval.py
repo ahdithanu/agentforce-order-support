@@ -1,6 +1,6 @@
 """Evaluate the Acme policy RAG path end to end through `sf agent preview --use-live-actions`.
 
-Usage: python3 scripts/rag_eval.py <org-alias> > tests/results/rag-eval-run-1.json
+Usage: python3 scripts/rag_eval.py <org-alias> [cases.yaml] > tests/results/rag-eval-run-1.json
 Retrieval is read-only, so live actions are safe here. One fresh session per question.
 
 Metrics:
@@ -21,7 +21,8 @@ import yaml
 
 BUNDLE = "Acme_Order_Support"
 ORG = sys.argv[1]
-DECLINE = re.compile(r"(don'?t have|do not have|not (?:in|covered|listed|mentioned|included|available in)|couldn'?t find|could not find|no information|isn'?t (?:covered|listed|mentioned)|unable to find|connect you)", re.I)
+DECLINE = re.compile(r"(don'?t have|do not have|not (?:in|covered|listed|mentioned|included|available in)|couldn'?t find|could not find|no information|isn'?t (?:covered|listed|mentioned)|unable to find|connect you"
+                     r"|no tengo|no encuentro|no encontr|no aparece|no hay información|no está (?:incluid|cubiert|mencionad)|no se menciona|comunique|conectar|poner en contacto|ponga en contacto)", re.I)
 
 
 def sf(args):
@@ -45,7 +46,8 @@ def trace_facts(trace_dir):
     return route, knowledge
 
 
-cases = yaml.safe_load(open("tests/rag-eval.yaml"))["cases"]
+CASES_FILE = sys.argv[2] if len(sys.argv) > 2 else "tests/rag-eval.yaml"
+cases = yaml.safe_load(open(CASES_FILE))["cases"]
 results = []
 for c in cases:
     start = sf(["agent", "preview", "start", "--authoring-bundle", BUNDLE, "--use-live-actions", "-o", ORG])

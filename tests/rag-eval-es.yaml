@@ -1,0 +1,19 @@
+# Spanish RAG eval: same cases as tests/rag-eval.yaml, asked in Spanish against English policy docs.
+# must_include groups accept Spanish (or numeric) variants.
+cases:
+  - {id: E01, kind: answerable, question: "¿Cuánto tiempo tengo para devolver un artículo?", source: Acme_Returns_and_Exchanges, must_include: [["30 días", "30 dias", "treinta días"]]}
+  - {id: E02, kind: answerable, question: "¿Tengo que pagar el envío de una devolución?", source: Acme_Returns_and_Exchanges, must_include: [["6,95", "6.95"]]}
+  - {id: E03, kind: answerable, question: "¿Puedo devolver un artículo con monograma?", source: Acme_Returns_and_Exchanges, must_include: [["no se puede", "no puede", "no pueden", "no es posible", "no se pueden", "no es elegible", "no son elegibles", "no admiten", "no se aceptan", "no acepta"]]}
+  - {id: E04, kind: answerable, question: "¿Cuánto tarda en llegar mi reembolso?", source: Acme_Returns_and_Exchanges, must_include: [["3 días", "tres días"], ["5 a 7", "5-7", "5 y 7", "cinco a siete", "cinco y siete"]]}
+  - {id: E05, kind: answerable, question: "¿El envío es gratis?", source: Acme_Shipping_and_Delivery, must_include: [["75"]]}
+  - {id: E06, kind: answerable, question: "¿Hacen envíos a Canadá?", source: Acme_Shipping_and_Delivery, must_include: [["7 a 12", "7-12", "7 y 12", "siete a doce", "siete y doce"]]}
+  - {id: E07, kind: answerable, question: "¿Puedo recibir envío exprés en mi apartado postal?", source: Acme_Shipping_and_Delivery, must_include: [["dirección", "estándar", "no está disponible", "no es posible", "no se puede"]]}
+  - {id: E08, kind: answerable, question: "Mi paquete va retrasado. ¿Cuándo debo contactarlos?", source: Acme_Shipping_and_Delivery, must_include: [["7 días", "siete días"]]}
+  - {id: E09, kind: answerable, question: "¿Qué garantía tienen sus chaquetas?", source: Acme_Warranty_and_Care, must_include: [["2 años", "dos años"]]}
+  - {id: E10, kind: answerable, question: "Se rompió la cremallera de mi chaqueta después de 3 años. ¿La pueden arreglar?", source: Acme_Warranty_and_Care, must_include: [["gratis", "sin costo", "gratuita", "gratuito"]]}
+  - {id: E11, kind: answerable, question: "¿Puedo meter mi suéter de merino en la secadora?", source: Acme_Warranty_and_Care, must_include: [["no"], ["encog", "secar en plano", "extendido", "plano"]]}
+  - {id: E12, kind: answerable, question: "¿Cómo lavo mi chaqueta impermeable?", source: Acme_Warranty_and_Care, must_include: [["fría", "frío"], ["suavizante", "lejía", "cloro", "blanqueador"]]}
+  - {id: EU1, kind: unanswerable, question: "¿Igualan precios de la competencia?"}
+  - {id: EU2, kind: unanswerable, question: "¿Hacen envíos a Australia?"}
+  - {id: EU3, kind: unanswerable, question: "¿Tienen descuento para estudiantes?"}
+  - {id: EU4, kind: unanswerable, question: "¿Qué garantía tienen las mochilas?"}
