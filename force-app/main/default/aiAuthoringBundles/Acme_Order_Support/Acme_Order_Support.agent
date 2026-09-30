@@ -62,7 +62,8 @@ variables:
 
 knowledge:
     rag_feature_config_id: "ARFPC_1JDfj00000CY17dGAD"
-    # Off for the public demo: citation links are presigned S3 URLs carrying AWS tokens.
+    # Public demo: citation links for uploaded files are presigned S3 URLs carrying AWS
+    # tokens, so citations are off and the summary is read by the agent, not displayed raw.
     citations_enabled: False
     citations_url: ""
 
@@ -306,7 +307,7 @@ subagent store_policies:
               and mention which policy it comes from. Do not add details the summary does not state.
               If the summary is empty or does not answer the question, say you don't have that
               in Acme's policies and offer to connect the customer with a person.
-              Only include sources returned by the action.
+              Name the policy in words; never include links or URLs in your reply.
             | If the customer then wants to act on a specific order (check it, or report a
               damaged or wrong item), use the order help tool to start identity verification.
         actions:
@@ -355,12 +356,12 @@ subagent store_policies:
                     label: "Knowledge Summary"
                     complex_data_type_name: "lightning__richTextType"
                     filter_from_agent: False
-                    is_displayable: True
+                    is_displayable: False
                 citationSources: object
                     description: "Source links for the chunks in the hydrated prompt that's used by the planner service."
                     label: "Citation Sources"
                     complex_data_type_name: "@apexClassType/AiCopilot__GenAiCitationInput"
-                    filter_from_agent: False
+                    filter_from_agent: True
                     is_displayable: False
             target: "standardInvocableAction://streamKnowledgeSearch"
             label: "Answer Questions with Knowledge"

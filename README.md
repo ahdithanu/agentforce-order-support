@@ -55,4 +55,5 @@ python3 scripts/preview_scenarios.py my-org --live   # real Apex
 ## Operations
 
 - Web chat routing: the `Salesforce_Agent_V2` messaging channel's `SessionHandlerId` points at the `Acme_Order_Support` bot. To give the chat back to the org's previous agent, set it to that agent's `BotDefinition` Id.
+- Citations: for file-based (SFDRIVE) libraries, Enhanced Chat renders a "[1] / Sources" citation itself, even with `citations_enabled: False`, a non-displayable summary, and citation sources filtered from the agent. The link is a presigned S3 URL: read-only, one policy file, 20-minute expiry. Accepted for public policy docs; for private docs, use a Knowledge-article library or a custom retriever instead.
 - Embedding the chat on GitHub Pages took two org changes: `https://ahdithanu.github.io` on the CORS allowlist (`CorsWhitelistEntry`), and `ahdithanu.github.io` in the chat site's **Trusted Domains for Inline Frames** (`CustomSite.siteIframeWhiteListUrls` on `ESW_Salesforce_Agent_Web_*`). Without the second, the widget fails silently because of the site's `frame-ancestors` CSP.
