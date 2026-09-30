@@ -49,7 +49,7 @@ sf project deploy start --json --target-org "$ORG" --wait 30 \
              CustomField:Case.Order__c ApexClass:Acme_VerifyCustomer ApexClass:Acme_GetOrderStatus \
              ApexClass:Acme_CreateSupportCase ApexClass:Acme_RecordHandoff ApexClass:Acme_AgentActionsTest \
              PermissionSet:Acme_Order_Support_Agent PermissionSet:Acme_Order_Data_Admin \
-             ServicePresenceStatus:Acme_Available_for_Chat PermissionSet:Acme_Human_Agent \
+             ServicePresenceStatus:Acme_Available_for_Chat PermissionSet:Acme_Human_Agent Flow:Acme_Start_Return \
   --test-level RunSpecifiedTests --tests Acme_AgentActionsTest | json "d['result']['status']"
 
 step "3/9 Grant access (agent user: actions + Data Cloud; admin: seed data)"

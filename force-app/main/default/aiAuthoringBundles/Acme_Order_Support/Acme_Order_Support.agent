@@ -57,6 +57,10 @@ variables:
         description: "Estimated delivery date returned by the order lookup"
     case_number: mutable string = ""
         description: "Case number returned after a support case is created"
+    return_message: mutable string = ""
+        description: "Result message from the returns flow"
+    return_case_number: mutable string = ""
+        description: "Return case number when a return was started"
     handoff_recorded: mutable boolean = False
         description: "Set by the handoff action; escalation is available only after the context is recorded"
     handoff_case_number: mutable string = ""
@@ -109,13 +113,16 @@ start_agent agent_router:
               If it is unclear what they need, route to ambiguous question.
         actions:
             go_to_verification: @utils.transition to @subagent.identity_verification
-                description: "Anything about an order the customer placed: its status, tracking, a late or missing delivery, or an item that arrived damaged, wrong, or defective. Requires identity verification first. Not for general policy questions."
+                description: "Anything about an order the customer placed: its status, tracking, a late or missing delivery, an item that arrived damaged, wrong, or defective, or starting a return for it. Requires identity verification first. Not for general policy questions."
                 available when @variables.customer_verified == False and @variables.failed_attempts < 3
             go_to_order_status: @utils.transition to @subagent.order_status
                 description: "Check order status, tracking, or estimated delivery"
                 available when @variables.customer_verified == True
             go_to_support_case: @utils.transition to @subagent.support_case
                 description: "Report a problem with an order and open a support case"
+                available when @variables.customer_verified == True
+            go_to_returns: @utils.transition to @subagent.returns
+                description: "Start a return for the customer's delivered order"
                 available when @variables.customer_verified == True
             go_to_store_policies: @utils.transition to @subagent.store_policies
                 description: "General policy questions that are not about a specific order the customer placed: return rules and windows, shipping options, costs, destinations and typical delivery times, warranty terms, repairs, product care. Not for reporting a problem with an order."
@@ -135,7 +142,7 @@ subagent identity_verification:
             if @variables.customer_verified == True:
                 | Thank {!@variables.customer_first_name} for verifying. Continue with what they
                   originally asked: use the order status tool for status or tracking questions,
-                  or the support case tool for a problem with the order. If their original need
+                  the support case tool for a problem with the order, or the returns tool to start a return. If their original need
                   is unclear, ask how you can help with order {!@variables.verified_order_number}.
             else if @variables.failed_attempts >= 3:
                 | For the customer's security, verification is locked after three unsuccessful
@@ -164,6 +171,9 @@ subagent identity_verification:
                 available when @variables.customer_verified == True
             go_to_support_case: @utils.transition to @subagent.support_case
                 description: "Verified customer wants to report a problem with the order"
+                available when @variables.customer_verified == True
+            go_to_returns: @utils.transition to @subagent.returns
+                description: "Verified customer wants to start a return for the order"
                 available when @variables.customer_verified == True
             go_to_escalation: @utils.transition to @subagent.escalation
                 description: "The customer wants a person or cannot complete verification"
@@ -379,6 +389,63 @@ subagent store_policies:
             include_in_progress_indicator: True
             progress_indicator_message: "Checking our policies..."
             source: "EmployeeCopilot__AnswerQuestionsWithKnowledge"
+
+subagent returns:
+    label: "Returns"
+    description: "Start a return for a verified customer's delivered order, applying the returns policy"
+
+    reasoning:
+        instructions: ->
+            if @variables.return_case_number != "":
+                | Tell the customer their return has started under case {!@variables.return_case_number},
+                  that a prepaid return label will be emailed, and that refunds process within three
+                  business days of the item arriving. Ask if there is anything else.
+            else if @variables.return_message != "":
+                | The return could not be started: {!@variables.return_message}
+                  Explain this plainly, and offer to answer policy questions or connect them with a person.
+            else:
+                | Help the customer start a return for order {!@variables.verified_order_number}.
+                  Ask what they want to return and why if they have not said. Then call
+                  {!@actions.start_return} with a short reason in their words. The customer will be
+                  asked to confirm first. Do not promise eligibility before the result comes back.
+        actions:
+            start_return: @actions.start_return_flow
+                description: "Start a return for the verified order"
+                with orderNumber = @variables.verified_order_number
+                with customerEmail = @variables.verified_email
+                with reason = ...
+                set @variables.return_message = @outputs.message
+                set @variables.return_case_number = @outputs.returnCaseNumber
+                available when @variables.customer_verified == True and @variables.return_message == ""
+            go_to_store_policies: @utils.transition to @subagent.store_policies
+                description: "The customer asks a general policy question"
+            go_to_escalation: @utils.transition to @subagent.escalation
+                description: "The customer wants to talk to a human"
+
+    actions:
+        start_return_flow:
+            description: "Checks the returns policy for the order and opens a return case if eligible"
+            target: "flow://Acme_Start_Return"
+            require_user_confirmation: True
+            include_in_progress_indicator: True
+            progress_indicator_message: "Starting your return..."
+            inputs:
+                orderNumber: string
+                    description: "Verified order number"
+                    is_required: True
+                customerEmail: string
+                    description: "Verified customer email"
+                    is_required: True
+                reason: string
+                    description: "Why the customer is returning the item, in their words"
+                    is_required: True
+            outputs:
+                eligible: boolean
+                    description: "Whether the return was started"
+                message: string
+                    description: "Result explanation for the customer"
+                returnCaseNumber: string
+                    description: "Return case number when started"
 
 subagent escalation:
     label: "Escalation"

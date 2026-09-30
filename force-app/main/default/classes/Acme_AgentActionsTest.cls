@@ -38,6 +38,12 @@ private class Acme_AgentActionsTest {
             External_Order_Number__c = 'A-1001', Fulfillment_Status__c = 'Shipped', Carrier__c = 'UPS',
             Tracking_Number__c = '1Z999AA10123456784', Estimated_Delivery__c = Date.today().addDays(3)
         );
+        insert new List<Order>{
+            new Order(AccountId = acct.Id, BillToContactId = jamie.Id, EffectiveDate = Date.today().addDays(-10), Status = 'Draft',
+                External_Order_Number__c = 'A-3001', Fulfillment_Status__c = 'Delivered', Estimated_Delivery__c = Date.today().addDays(-5)),
+            new Order(AccountId = acct.Id, BillToContactId = jamie.Id, EffectiveDate = Date.today().addDays(-70), Status = 'Draft',
+                External_Order_Number__c = 'A-3002', Fulfillment_Status__c = 'Delivered', Estimated_Delivery__c = Date.today().addDays(-60))
+        };
     }
 
     @IsTest
@@ -140,6 +146,41 @@ private class Acme_AgentActionsTest {
             Assert.areEqual('jamie@example.com', c.Contact.Email);
             Assert.areEqual('A-1001', c.Order__r.External_Order_Number__c);
             Assert.isNull([SELECT ContactId FROM Case WHERE CaseNumber = :res[1].caseNumber].ContactId);
+        }
+    }
+
+    static Map<String, Object> runReturn(String orderNumber, String email) {
+        Flow.Interview flowRun = Flow.Interview.createInterview('Acme_Start_Return', new Map<String, Object>{
+            'orderNumber' => orderNumber, 'customerEmail' => email, 'reason' => 'Too small'
+        });
+        flowRun.start();
+        return new Map<String, Object>{
+            'eligible' => flowRun.getVariableValue('eligible'),
+            'message' => flowRun.getVariableValue('message'),
+            'case' => flowRun.getVariableValue('returnCaseNumber')
+        };
+    }
+
+    @IsTest
+    static void returnsFlowAppliesPolicy() {
+        System.runAs(actingUser()) {
+            Map<String, Object> ok = runReturn('A-3001', 'Jamie@Example.com');
+            Assert.areEqual(true, ok.get('eligible'));
+            Case c = [SELECT Subject, Contact.Email, Order__r.External_Order_Number__c FROM Case WHERE CaseNumber = :(String) ok.get('case')];
+            Assert.isTrue(c.Subject.startsWith('Return: A-3001'));
+            Assert.areEqual('A-3001', c.Order__r.External_Order_Number__c);
+
+            Map<String, Object> notDelivered = runReturn('A-1001', 'jamie@example.com');
+            Assert.areEqual(false, notDelivered.get('eligible'));
+            Assert.isTrue(((String) notDelivered.get('message')).contains('been delivered'));
+
+            Map<String, Object> late = runReturn('A-3002', 'jamie@example.com');
+            Assert.areEqual(false, late.get('eligible'));
+            Assert.isTrue(((String) late.get('message')).contains('30 days'));
+
+            Map<String, Object> wrongEmail = runReturn('A-3001', 'sam@example.com');
+            Assert.areEqual(false, wrongEmail.get('eligible'));
+            Assert.isNull(wrongEmail.get('case'));
         }
     }
 
