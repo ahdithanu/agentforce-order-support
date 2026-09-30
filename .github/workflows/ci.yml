@@ -18,7 +18,11 @@ jobs:
         with:
           node-version: 20
       - run: npm install --prefix ci --no-audit --no-fund
-      - run: node scripts/compile_agent.mjs force-app/main/default/aiAuthoringBundles/Acme_Order_Support/Acme_Order_Support.agent
+      - name: Compile every agent bundle
+        run: |
+          for f in force-app/main/default/aiAuthoringBundles/*/*.agent; do
+            node scripts/compile_agent.mjs "$f"
+          done
 
   specs-and-scripts:
     name: Test specs, scripts, retrieval regression
