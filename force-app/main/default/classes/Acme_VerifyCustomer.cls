@@ -5,6 +5,12 @@
  * and the response never says which of the two values was wrong.
  * Returns the authoritative failed-attempt count for the session: the agent binds its current
  * count as input (not model-filled), so the model cannot reset or lower it.
+ *
+ * Cross-session lockout: failed checks are also counted on the Order itself. After
+ * ORDER_LOCK_THRESHOLD failures the order is locked for ORDER_LOCK_MINUTES, across every chat,
+ * and even correct details are refused. A lockout returns MAX_ATTEMPTS so the agent's existing
+ * handoff path runs. The counter is written in SYSTEM_MODE on purpose: it is a security control,
+ * and the agent user should not need edit access to Orders to maintain it.
  */
 public with sharing class Acme_VerifyCustomer {
     public class Request {
@@ -25,6 +31,8 @@ public with sharing class Acme_VerifyCustomer {
     }
 
     public static final Integer MAX_ATTEMPTS = 3;
+    public static final Integer ORDER_LOCK_THRESHOLD = 5;
+    public static final Integer ORDER_LOCK_MINUTES = 30;
 
     @InvocableMethod(label='Acme: Verify Customer' description='Checks that an email and order number belong to the same customer')
     public static List<Response> verify(List<Request> requests) {
@@ -34,7 +42,8 @@ public with sharing class Acme_VerifyCustomer {
         }
         Map<String, Order> ordersByNumber = new Map<String, Order>();
         for (Order o : [
-            SELECT External_Order_Number__c, BillToContact.Email, BillToContact.FirstName
+            SELECT Id, External_Order_Number__c, BillToContact.Email, BillToContact.FirstName,
+                   Failed_Verification_Count__c, Verification_Locked_Until__c
             FROM Order
             WHERE External_Order_Number__c IN :orderNumbers
             WITH USER_MODE
@@ -42,20 +51,49 @@ public with sharing class Acme_VerifyCustomer {
             ordersByNumber.put(o.External_Order_Number__c.toUpperCase(), o);
         }
 
+        Map<Id, Order> counterUpdates = new Map<Id, Order>();
         List<Response> results = new List<Response>();
         for (Request req : requests) {
             String email = req.email == null ? '' : req.email.trim().toLowerCase();
             Order o = ordersByNumber.get(normalizeOrderNumber(req.orderNumber));
-            Boolean ok = o != null && o.BillToContact != null && String.isNotBlank(email)
+            Decimal prior = req.priorFailedAttempts == null ? 0 : req.priorFailedAttempts;
+            Boolean locked = o != null && o.Verification_Locked_Until__c != null
+                && o.Verification_Locked_Until__c > Datetime.now();
+            Boolean matches = o != null && o.BillToContact != null && String.isNotBlank(email)
                 && email.equalsIgnoreCase(o.BillToContact.Email);
+            Boolean ok = matches && !locked;
+
             Response res = new Response();
             res.verified = ok;
             res.verifiedEmail = ok ? email : '';
             res.canonicalOrderNumber = ok ? o.External_Order_Number__c.toUpperCase() : '';
             res.customerFirstName = ok ? o.BillToContact.FirstName : '';
-            Decimal prior = req.priorFailedAttempts == null ? 0 : req.priorFailedAttempts;
-            res.failedAttempts = ok ? prior : prior + 1;
+
+            if (locked) {
+                res.failedAttempts = Math.max(prior + 1, MAX_ATTEMPTS);
+            } else if (ok) {
+                res.failedAttempts = prior;
+                if (o.Failed_Verification_Count__c != null && o.Failed_Verification_Count__c > 0) {
+                    counterUpdates.put(o.Id, new Order(Id = o.Id, Failed_Verification_Count__c = 0));
+                }
+            } else {
+                res.failedAttempts = prior + 1;
+                if (o != null) {
+                    Decimal count = (o.Failed_Verification_Count__c == null ? 0 : o.Failed_Verification_Count__c) + 1;
+                    Order upd = new Order(Id = o.Id, Failed_Verification_Count__c = count);
+                    if (count >= ORDER_LOCK_THRESHOLD) {
+                        upd.Failed_Verification_Count__c = 0;
+                        upd.Verification_Locked_Until__c = Datetime.now().addMinutes(ORDER_LOCK_MINUTES);
+                        res.failedAttempts = Math.max(prior + 1, MAX_ATTEMPTS);
+                    }
+                    o.Failed_Verification_Count__c = upd.Failed_Verification_Count__c;
+                    counterUpdates.put(o.Id, upd);
+                }
+            }
             results.add(res);
+        }
+        if (!counterUpdates.isEmpty()) {
+            Database.update(counterUpdates.values(), false, AccessLevel.SYSTEM_MODE);
         }
         return results;
     }

@@ -86,6 +86,41 @@ private class Acme_AgentActionsTest {
     }
 
     @IsTest
+    static void orderLockPersistsAcrossSessions() {
+        System.runAs(actingUser()) {
+            Acme_VerifyCustomer.Response last;
+            // Five separate chats, each starting from zero failed attempts in the session.
+            for (Integer i = 0; i < Acme_VerifyCustomer.ORDER_LOCK_THRESHOLD; i++) {
+                Acme_VerifyCustomer.Request guess = new Acme_VerifyCustomer.Request();
+                guess.email = 'guess' + i + '@example.com';
+                guess.orderNumber = 'A-1001';
+                guess.priorFailedAttempts = 0;
+                last = Acme_VerifyCustomer.verify(new List<Acme_VerifyCustomer.Request>{ guess })[0];
+            }
+            Assert.areEqual(Acme_VerifyCustomer.MAX_ATTEMPTS, last.failedAttempts, 'lock should trigger the handoff path');
+            Order o = [SELECT Verification_Locked_Until__c, Failed_Verification_Count__c FROM Order WHERE External_Order_Number__c = 'A-1001'];
+            Assert.isTrue(o.Verification_Locked_Until__c > Datetime.now());
+
+            // A new chat with the correct details is still refused while the order is locked.
+            Acme_VerifyCustomer.Request owner = new Acme_VerifyCustomer.Request();
+            owner.email = 'jamie@example.com';
+            owner.orderNumber = 'A-1001';
+            owner.priorFailedAttempts = 0;
+            Acme_VerifyCustomer.Response duringLock = Acme_VerifyCustomer.verify(new List<Acme_VerifyCustomer.Request>{ owner })[0];
+            Assert.isFalse(duringLock.verified);
+            Assert.areEqual('', duringLock.customerFirstName);
+
+            // After the lock expires, the owner verifies and the counter resets.
+            o.Verification_Locked_Until__c = Datetime.now().addMinutes(-1);
+            o.Failed_Verification_Count__c = 2;
+            update o;
+            Acme_VerifyCustomer.Response afterLock = Acme_VerifyCustomer.verify(new List<Acme_VerifyCustomer.Request>{ owner })[0];
+            Assert.isTrue(afterLock.verified);
+            Assert.areEqual(0, [SELECT Failed_Verification_Count__c FROM Order WHERE External_Order_Number__c = 'A-1001'].Failed_Verification_Count__c);
+        }
+    }
+
+    @IsTest
     static void orderStatusOnlyForMatchingEmail() {
         System.runAs(actingUser()) {
             orderStatusOnlyForMatchingEmailBody();

@@ -3,6 +3,16 @@
     <description>Maintain Acme order fulfillment fields (integration user, seed scripts, tests).</description>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Order.Failed_Verification_Count__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Order.Verification_Locked_Until__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Order.External_Order_Number__c</field>
         <readable>true</readable>
     </fieldPermissions>

@@ -4,6 +4,16 @@
     <description>Lets the Einstein Agent User run the Acme Order Support agent actions.</description>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Order.Failed_Verification_Count__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Order.Verification_Locked_Until__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Order.External_Order_Number__c</field>
         <readable>true</readable>
     </fieldPermissions>
