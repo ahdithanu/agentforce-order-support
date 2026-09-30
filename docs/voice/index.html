@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acme Voice Agent</title>
+<meta name="description" content="Talk to the voice variant of the Acme Order Support Agentforce agent.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a single centered card with numbered "try saying" prompts; the chat widget sits bottom-right. */
+:root {
+  --bg: #f6f7f4; --surface: #ffffff; --ink: #17201d; --muted: #5d6863; --line: #dde2dc;
+  --accent: #0f6b5c; --accent-soft: #e2f0ec; --code-bg: #eef1ed;
+  --display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", sans-serif;
+  --body: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --bg: #111614; --surface: #19201d; --ink: #e7ece9; --muted: #9aa6a0; --line: #2a3430; --accent: #4fc2a9; --accent-soft: #173a33; --code-bg: #1f2724; color-scheme: dark; }
+}
+:root[data-theme="dark"] { --bg: #111614; --surface: #19201d; --ink: #e7ece9; --muted: #9aa6a0; --line: #2a3430; --accent: #4fc2a9; --accent-soft: #173a33; --code-bg: #1f2724; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 16px/1.6 var(--body); margin: 0; }
+.page { max-width: 760px; margin: 0 auto; padding-inline: 20px; padding-block: 40px 120px; display: grid; gap: 28px; }
+h1, h2 { font-family: var(--display); line-height: 1.15; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(30px, 6vw, 44px); }
+h2 { font-size: 20px; }
+p { margin: 0; max-width: 64ch; }
+a { color: var(--accent); }
+code { font-family: var(--mono); font-size: .88em; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+.eyebrow { font: 600 12px/1 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.muted { color: var(--muted); }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 20px; display: grid; gap: 12px; }
+.say { margin: 0; padding-left: 22px; display: grid; gap: 10px; }
+.say li { padding-left: 4px; }
+.say q { font-weight: 600; }
+.say span { display: block; font-size: 14px; color: var(--muted); }
+.diff { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.diff > div { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px; font-size: 14.5px; display: grid; gap: 4px; min-width: 0; }
+.diff b { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+@media (max-width: 600px) { .diff { grid-template-columns: 1fr; } }
+.offline { background: var(--accent-soft); border: 1px solid var(--accent); border-radius: 10px; padding: 12px 14px; font-size: 14.5px; }
+footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 14px; }
+</style>
+</head>
+<body>
+<main class="page">
+  <header style="display:grid;gap:12px">
+    <span class="eyebrow">Acme Order Support · voice</span>
+    <h1>Talk to the agent</h1>
+    <p class="muted">The voice variant of the Acme agent, running on Agentforce. Open the chat in the bottom-right corner, tap the microphone, and allow microphone access. You can also type.</p>
+  </header>
+
+  <div class="offline" id="offline" hidden>The voice demo isn't reachable right now (it runs in a time-limited Salesforce trial org). See the <a href="../#recorded">recorded conversations</a> on the main page.</div>
+
+  <section class="card">
+    <h2>Try saying</h2>
+    <ol class="say">
+      <li><q>Where's my order?</q><span>It asks for the order number, then the email, one at a time. Use order A ten oh one and jamie at example dot com. The answer comes back as "A, ten oh one has shipped with UPS and should arrive on October first."</span></li>
+      <li><q>How much is express shipping?</q><span>Answered from the shipping policy: "Express shipping costs fifteen dollars."</span></li>
+      <li><q>Can I put merino wool in the dryer?</q><span>Answered from the care policy.</span></li>
+      <li><q>I'd like to talk to a person.</q><span>Hands off to the service queue (nobody is staffed in this demo).</span></li>
+    </ol>
+  </section>
+
+  <section style="display:grid;gap:12px">
+    <h2>What's different from the text agent</h2>
+    <div class="diff">
+      <div><b>Replies</b>One or two short sentences, one question at a time, no lists or links.</div>
+      <div><b>Numbers and IDs</b>Spoken form: "A, ten oh one", "September thirtieth", "six ninety-five".</div>
+      <div><b>One question at a time</b>Order number first, then email. Read-back before checking is instructed but not guaranteed (it happened in 1 of 3 test conversations), so the next step is a coded confirmation step.</div>
+      <div><b>Routing</b>Einstein HyperClassifier router: 29/30 on the routing set at about 240 ms, versus about 700 ms for the default.</div>
+    </div>
+    <p class="muted" style="font-size:14px">Measured in the project's voice-readiness audit: replies over three sentences 2 → 0, hard-to-speak digit strings 7 → 0. Phone-number (telephony) wiring would be the next step and is done in Agent Builder.</p>
+  </section>
+
+  <footer><a href="../">← Back to the walkthrough and text demo</a> · Source: <a href="https://github.com/ahdithanu/agentforce-order-support">github.com/ahdithanu/agentforce-order-support</a> · All customers and orders are fictional.</footer>
+</main>
+
+<script type="text/javascript">
+  function showOffline() { var o = document.getElementById('offline'); if (o) o.hidden = false; }
+  function initEmbeddedMessaging() {
+    try {
+      embeddedservice_bootstrap.settings.language = 'en_US';
+      embeddedservice_bootstrap.init(
+        '00Dfj00000d3fTC',
+        'Agentforce_Voice',
+        'https://orgfarm-90a1f2a859-dev-ed.develop.my.site.com/ESWAgentforceVoice1780461182387',
+        { scrt2URL: 'https://orgfarm-90a1f2a859-dev-ed.develop.my.salesforce-scrt.com' }
+      );
+    } catch (err) {
+      console.error('Error loading Embedded Messaging: ', err);
+      showOffline();
+    }
+  }
+  setTimeout(function () { if (!document.querySelector('iframe[src*="my.site.com"]')) showOffline(); }, 20000);
+</script>
+<script type="text/javascript" src="https://orgfarm-90a1f2a859-dev-ed.develop.my.site.com/ESWAgentforceVoice1780461182387/assets/js/bootstrap.min.js" onload="initEmbeddedMessaging()" onerror="showOffline()"></script>
+</body>
+</html>

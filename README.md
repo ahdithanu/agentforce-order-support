@@ -6,6 +6,7 @@ A customer-facing Agentforce agent for a fictional apparel brand, built end to e
 
 **Try it live:** https://ahdithanu.github.io/agentforce-order-support/ (open the chat in the corner and use `jamie@example.com` with order `A-1001`).
 **Knowledge (RAG):** policy questions ("Do you ship to Canada?") are answered from the documents in `knowledge/` via an Agentforce Data Library.
+**Voice demo:** https://ahdithanu.github.io/agentforce-order-support/voice/ (talk to the voice variant; mic-enabled Enhanced Chat)
 **Retrieval lab:** https://ahdithanu.github.io/agentforce-order-support/retrieval-lab/ (recall@k for keyword, vector, hybrid, and embeddings; chunking strategies; paraphrase robustness)
 **Observability:** https://ahdithanu.github.io/agentforce-order-support/observability/ (session tracing: containment, latency breakdown, topics, production vs preview traffic)
 **Visual walkthrough:** the same page, covering architecture, the layers of protection, debugging stories, KPIs and the red-team grade.
@@ -78,6 +79,7 @@ The live chat runs in a time-limited Agentforce LabBox (expires about Nov 13, 20
   ```
 
   The script finds the org's Einstein Agent User, deploys the data model, Apex (with tests) and permission sets, grants Data Cloud access, seeds the demo orders, creates or reuses the policy data library, points the `.agent` file at both, then validates and deploys. It has been run end to end against the current org. To re-embed the chat: route a Messaging channel to the new bot, then add the site origin to CORS and to the chat site's Trusted Domains for Inline Frames.
+- **Voice demo routing:** the `Agentforce_Voice` messaging channel points at the `Acme_Order_Support_Voice` bot; its previous `SessionHandlerId` was the org's preinstalled VoicePlant agent. `ahdithanu.github.io` is on the `ESW_Agentforce_Voice_*` site's iframe allowlist.
 - **Undo the public demo in the current org** (point the web chat back at the org's original agent): set `MessagingChannel.Salesforce_Agent_V2.SessionHandlerId` back to that agent's `BotDefinition` Id, and remove the `https://ahdithanu.github.io` CORS entry and the matching iframe-allowlist URL on the `ESW_Salesforce_Agent_Web_*` site.
 
 ## Operations
