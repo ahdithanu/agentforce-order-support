@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Lets a support rep go online in Omni-Channel to receive chats handed off by the Acme agent.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Acme Human Agent</label>
+    <servicePresenceStatusAccesses>
+        <servicePresenceStatus>Acme_Available_for_Chat</servicePresenceStatus>
+    </servicePresenceStatusAccesses>
+</PermissionSet>

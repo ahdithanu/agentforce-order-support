@@ -74,6 +74,10 @@
     </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <classAccesses>
+        <apexClass>Acme_RecordHandoff</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>Acme_VerifyCustomer</apexClass>
         <enabled>true</enabled>
     </classAccesses>

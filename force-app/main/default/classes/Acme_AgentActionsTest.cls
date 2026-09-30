@@ -121,6 +121,29 @@ private class Acme_AgentActionsTest {
     }
 
     @IsTest
+    static void handoffCreatesCaseLinkedToVerifiedCustomer() {
+        System.runAs(actingUser()) {
+            Acme_RecordHandoff.Request verified = new Acme_RecordHandoff.Request();
+            verified.reason = 'Damaged jacket, wants a replacement';
+            verified.summary = 'Verified customer reports the left sleeve seam of the jacket on order A-1001 is torn.';
+            verified.verifiedOrderNumber = 'A-1001';
+            verified.verifiedEmail = 'jamie@example.com';
+            Acme_RecordHandoff.Request anonymous = new Acme_RecordHandoff.Request();
+            anonymous.reason = 'Asked for a person';
+            anonymous.summary = 'Customer asked for a person before verifying.';
+            List<Acme_RecordHandoff.Response> res = Acme_RecordHandoff.record(
+                new List<Acme_RecordHandoff.Request>{ verified, anonymous });
+            Assert.isTrue(res[0].recorded);
+            Assert.isTrue(res[1].recorded);
+            Case c = [SELECT Subject, Contact.Email, Order__r.External_Order_Number__c FROM Case WHERE CaseNumber = :res[0].caseNumber];
+            Assert.isTrue(c.Subject.startsWith('Agent handoff: '));
+            Assert.areEqual('jamie@example.com', c.Contact.Email);
+            Assert.areEqual('A-1001', c.Order__r.External_Order_Number__c);
+            Assert.isNull([SELECT ContactId FROM Case WHERE CaseNumber = :res[1].caseNumber].ContactId);
+        }
+    }
+
+    @IsTest
     static void orderStatusOnlyForMatchingEmail() {
         System.runAs(actingUser()) {
             orderStatusOnlyForMatchingEmailBody();

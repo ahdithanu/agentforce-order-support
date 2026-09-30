@@ -47,8 +47,9 @@ sf project deploy start --json --target-org "$ORG" --wait 30 \
              CustomField:Order.Carrier__c CustomField:Order.Tracking_Number__c CustomField:Order.Estimated_Delivery__c \
              CustomField:Order.Failed_Verification_Count__c CustomField:Order.Verification_Locked_Until__c \
              CustomField:Case.Order__c ApexClass:Acme_VerifyCustomer ApexClass:Acme_GetOrderStatus \
-             ApexClass:Acme_CreateSupportCase ApexClass:Acme_AgentActionsTest \
+             ApexClass:Acme_CreateSupportCase ApexClass:Acme_RecordHandoff ApexClass:Acme_AgentActionsTest \
              PermissionSet:Acme_Order_Support_Agent PermissionSet:Acme_Order_Data_Admin \
+             ServicePresenceStatus:Acme_Available_for_Chat PermissionSet:Acme_Human_Agent \
   --test-level RunSpecifiedTests --tests Acme_AgentActionsTest | json "d['result']['status']"
 
 step "3/9 Grant access (agent user: actions + Data Cloud; admin: seed data)"
@@ -56,6 +57,7 @@ sf org assign permset --json --target-org "$ORG" --name Acme_Order_Support_Agent
 sf org assign permset --json --target-org "$ORG" --name GenieUserEnhancedSecurity --on-behalf-of "$AGENT_USER" >/dev/null || true
 sf org assign permsetlicense --json --target-org "$ORG" --name GenieDataPlatformStarterPsl --on-behalf-of "$AGENT_USER" >/dev/null || true
 sf org assign permset --json --target-org "$ORG" --name Acme_Order_Data_Admin >/dev/null || true
+sf org assign permset --json --target-org "$ORG" --name Acme_Human_Agent >/dev/null || true
 q "SELECT PermissionSet.Name FROM PermissionSetAssignment WHERE Assignee.Username = '$AGENT_USER'" \
   | json "sorted(r['PermissionSet']['Name'] for r in d['result']['records'])"
 
@@ -71,6 +73,22 @@ if [ -z "$LIB_ID" ]; then
     --file knowledge/Acme_Warranty_and_Care.html | json "d['result'].get('status')"
 fi
 echo "Library: $LIB_ID"
+
+step "5b/9 Omni-Channel routing flow for human handoff (org-specific ids filled in)"
+CHANNEL_ID=$(q "SELECT Id FROM ServiceChannel WHERE DeveloperName = 'sfdc_livemessage'" | json "(d['result']['records'] or [{}])[0].get('Id') or sys.exit('no Messaging service channel (enable Messaging first)')")
+QUEUE_ID=$(q "SELECT Id FROM Group WHERE Type = 'Queue' AND DeveloperName = 'Agentforce_Service_Queue'" | json "(d['result']['records'] or [{}])[0].get('Id') or sys.exit('no Agentforce_Service_Queue queue')")
+ROUTING_ID=$(q "SELECT Id FROM QueueRoutingConfig ORDER BY CreatedDate LIMIT 1" | json "(d['result']['records'] or [{}])[0].get('Id') or sys.exit('no routing configuration')")
+python3 - force-app/main/default/flows/Acme_Route_To_Service_Queue.flow-meta.xml "$CHANNEL_ID" "$QUEUE_ID" "$ROUTING_ID" <<'PY'
+import re, sys
+path, channel, queue, routing = sys.argv[1:]
+s = open(path).read()
+s = re.sub(r"(<name>serviceChannelId</name>\s*<value>\s*<stringValue>)[^<]*", rf"\g<1>{channel}", s)
+s = re.sub(r"(<name>queueId</name>\s*<value>\s*<stringValue>)[^<]*", rf"\g<1>{queue}", s)
+s = re.sub(r"(<name>routingConfigId</name>\s*<value>\s*<stringValue>)[^<]*", rf"\g<1>{routing}", s)
+open(path, "w").write(s)
+print("routing flow ->", channel, queue, routing)
+PY
+sf project deploy start --json --target-org "$ORG" --metadata Flow:Acme_Route_To_Service_Queue --wait 10 | json "d['result']['status']"
 
 step "6/9 Point both agents at this org (agent user + library)"
 for B in "${BUNDLES[@]}"; do

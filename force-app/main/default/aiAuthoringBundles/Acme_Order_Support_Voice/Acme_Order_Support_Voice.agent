@@ -78,6 +78,10 @@ variables:
         description: "Set by code after a turn in which both pending details existed, so the caller has heard them read back"
     details_confirmed: mutable boolean = False
         description: "The caller confirmed the read-back; verification is only available after this"
+    handoff_recorded: mutable boolean = False
+        description: "Set by the handoff action; escalation is available only after the context is recorded"
+    handoff_case_number: mutable string = ""
+        description: "Case created for the human handoff"
     failed_attempts: mutable number = 0
         description: "Authoritative failed verification count returned by the verification action"
 
@@ -104,6 +108,8 @@ connection customer_web_client:
     adaptive_response_allowed: True
 
 connection messaging:
+    outbound_route_type: "OmniChannelFlow"
+    outbound_route_name: "flow://Acme_Route_To_Service_Queue"
     escalation_message: "Let me connect you with someone on our team."
 
 start_agent agent_router:
@@ -442,14 +448,56 @@ subagent escalation:
 
     reasoning:
         instructions: ->
-            if @variables.failed_attempts >= 3:
-                | The customer could not be verified after three attempts. Tell them briefly
-                  that you are connecting them with a team member, then escalate.
-            | If a user explicitly asks to transfer to a live agent, escalate the conversation.
-              If escalation to a live agent fails for any reason, acknowledge the issue and ask the user whether they would like to log a support case instead.
+            if @variables.handoff_recorded == False:
+                | Before transferring, record the handoff with {!@actions.record_handoff}: a reason in a
+                  few words, and a factual two-to-four sentence summary of what the customer needs and
+                  what has already been done. Do not put email addresses or other personal details in
+                  the summary.
+            else if @variables.failed_attempts >= 3:
+                | The customer could not be verified. Call {!@actions.escalate_to_human} now, in this
+                  same turn, without asking anything else. If escalation fails, acknowledge it.
+            else:
+                | The handoff is recorded. Call {!@actions.escalate_to_human} now, in this same turn.
+                  Do not ask the customer anything else first. If escalation fails, acknowledge it and
+                  offer to log a support case instead.
         actions:
+            record_handoff: @actions.record_handoff_context
+                description: "Record the reason and a summary for the human who takes over"
+                with messagingSessionId = @variables.RoutableId
+                with verifiedOrderNumber = @variables.verified_order_number
+                with verifiedEmail = @variables.verified_email
+                with reason = ...
+                with summary = ...
+                set @variables.handoff_recorded = @outputs.recorded
+                set @variables.handoff_case_number = @outputs.caseNumber
+                available when @variables.handoff_recorded == False
             escalate_to_human: @utils.escalate
                 description: "Call this tool to escalate to a human agent."
+                available when @variables.handoff_recorded == True
+
+    actions:
+        record_handoff_context:
+            description: "Creates a handoff Case with the agent's reason and summary and links it to the chat"
+            target: "apex://Acme_RecordHandoff"
+            inputs:
+                messagingSessionId: string
+                    description: "Platform messaging session id (bound, not model-filled)"
+                reason: string
+                    description: "Why the customer needs a person, in a few words"
+                    is_required: True
+                summary: string
+                    description: "Factual summary of the need and what was already done, without personal details"
+                    is_required: True
+                verifiedOrderNumber: string
+                    description: "Verified order number, empty if not verified"
+                verifiedEmail: string
+                    description: "Verified email, empty if not verified"
+            outputs:
+                recorded: boolean
+                    description: "Always true; the handoff proceeds even if recording failed"
+                caseNumber: string
+                    description: "Handoff case number"
+                    filter_from_agent: True
 
 subagent off_topic:
     label: "Off Topic"
