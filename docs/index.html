@@ -178,6 +178,20 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
 .repo { font-size: 14px; }
 .repo a { color: var(--accent); }
 </style>
+
+<style>
+.rtabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.rtab { font: 500 13px/1 var(--body); padding: 8px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; }
+.rtab[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.rtab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.rsub { font-size: 14px; color: var(--muted); margin-bottom: 8px; }
+.offline { background: var(--accent-soft); border: 1px solid var(--accent); border-radius: 10px; padding: 12px 14px; font-size: 14.5px; }
+.shots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.shots figure { margin: 0; display: grid; gap: 6px; min-width: 0; }
+.shots img { width: 100%; border-radius: 8px; border: 1px solid var(--line); }
+.shots figcaption { font-size: 13px; color: var(--muted); }
+@media (max-width: 700px) { .shots { grid-template-columns: 1fr; } }
+</style>
 </head>
 <body>
 
@@ -206,9 +220,26 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
       <li>Ask a policy question, like <em>"Do you ship to Canada?"</em> or <em>"Can I put merino in the dryer?"</em>. It's answered from Acme's policy documents through retrieval (RAG), with no verification needed. Ask something the policies don't cover and it says so instead of guessing.</li>
     </ol>
     <p class="note">Runs on Salesforce Messaging and Agentforce in a demo org. All customers and orders are fictional; please don't enter real personal details.</p>
-    <p class="repo">Source: <a href="https://github.com/ahdithanu/agentforce-order-support">github.com/ahdithanu/agentforce-order-support</a></p>
+    <p class="repo">No chat button? The demo org may have expired. <a href="#recorded">See the recorded conversations</a>. Source: <a href="https://github.com/ahdithanu/agentforce-order-support">github.com/ahdithanu/agentforce-order-support</a></p>
   </section>
 
+
+
+  <section id="recorded">
+    <div class="section-head">
+      <span class="eyebrow">Recorded conversations</span>
+      <h2>Real transcripts from live runs</h2>
+      <p class="muted">Captured from the agent running on real Apex, data, and retrieval (Sept 29, 2026). They stay here after the demo org is gone.</p>
+    </div>
+    <div class="offline" id="offline" hidden>The live chat isn't reachable right now (the demo runs in a time-limited Salesforce trial org). The recordings and screenshots below show exactly how it behaved.</div>
+    <div class="rtabs" role="tablist" aria-label="Recorded conversations"><button type="button" role="tab" id="rt0" aria-selected="true" aria-controls="rp0" class="rtab">Order status</button><button type="button" role="tab" id="rt1" aria-selected="false" aria-controls="rp1" class="rtab">Damaged item → Case</button><button type="button" role="tab" id="rt2" aria-selected="false" aria-controls="rp2" class="rtab">Lockout after 3 failures</button><button type="button" role="tab" id="rt3" aria-selected="false" aria-controls="rp3" class="rtab">Policy RAG</button><button type="button" role="tab" id="rt4" aria-selected="false" aria-controls="rp4" class="rtab">Warranty RAG</button><button type="button" role="tab" id="rt5" aria-selected="false" aria-controls="rp5" class="rtab">Declines when not covered</button></div>
+    <div role="tabpanel" id="rp0" aria-labelledby="rt0" class="rpanel"><p class="rsub">Verification, then real UPS tracking from the Order record.</p><div class="chat"><div class="msg user">Hi, where is my order?</div><div class="msg agent">To check your order status, I need the email address you used at checkout and your order number (for example, A-1001). Could you please provide those?</div><div class="msg user">My email is jamie@example.com and the order number is A-1001</div><div class="msg agent">Your order A-1001 has shipped with UPS. The tracking number is 1Z999AA10123456784, and the estimated delivery date is September 30, 2026. You can track your package using the UPS website with your tracking number.<br><br>Is there anything else I can help you with regarding this order?</div></div></div><div role="tabpanel" id="rp1" aria-labelledby="rt1" class="rpanel" hidden><p class="rsub">Confirmation gate, then a real Case (00001026) linked to the order.</p><div class="chat"><div class="msg user">The jacket from my order arrived torn</div><div class="msg agent">I&#x27;m sorry to hear your jacket arrived torn. To help you with this, could you please provide the email address you used at checkout and your order number (for example, A-1001)? Once I have both, I can look into this for you right away.</div><div class="msg user">jamie@example.com, order A-1001</div><div class="msg agent">You mentioned the jacket from your order arrived torn. I can open a support case to help resolve this. Here’s what I’ll send:<br><br>Subject: Jacket arrived torn<br>Description: Customer reports the jacket from order A-1001 arrived torn.<br><br>Does this accurately describe the issue, or would you like to add more details before I submit the case?</div><div class="msg user">The left sleeve seam is ripped open. Please open a case.</div><div class="msg agent">I&#x27;m about to open a case for you regarding the jacket from order A-1001, which arrived with the left sleeve seam ripped open. Could you please reply &quot;yes&quot; to go ahead or &quot;no&quot; if you&#x27;d like to cancel?</div><div class="msg user">Yes, go ahead</div><div class="msg agent">Your case (00001026) is now open for order A-1001 regarding the jacket with the left sleeve seam ripped open. Our team will follow up with you by email soon.<br><br>Is there anything else I can help you with today?</div></div></div><div role="tabpanel" id="rp2" aria-labelledby="rt2" class="rpanel" hidden><p class="rsub">Apex counts failed checks; the third one hands off to a person.</p><div class="chat"><div class="msg user">Where is my order?</div><div class="msg agent">To look up your order, I need the email address you used at checkout and your order number (for example, A-1001). Could you please provide those details?</div><div class="msg user">sam@example.com and A-1001</div><div class="msg agent">The information you provided did not match our records. Would you like to try again, or should I connect you with a person for further help?</div><div class="msg user">Try jamie@example.org and A-1001</div><div class="msg agent">The details you provided did not match our records. You have one more attempt. Would you like to try again, or should I connect you with a person for help?</div><div class="msg user">Okay, jamie@example.com and A-1009</div><div class="event">handoff to a person (lockout)</div><div class="msg user">Fine, try sam@example.com and A-1002</div><div class="msg agent">I was unable to verify your information, so I&#x27;m connecting you with a team member who can help further. Thank you for your patience!</div></div></div><div role="tabpanel" id="rp3" aria-labelledby="rt3" class="rpanel" hidden><p class="rsub">Answered from the shipping policy via the Data Library.</p><div class="chat"><div class="msg user">Do you ship to Canada?</div><div class="msg agent">Yes, Acme Outfitters ships to Canada. International orders to Canada take 7 to 12 business days, and import duties may be charged by the destination country, which you would pay on delivery. This information is from the Acme Shipping and Delivery Policy. Would you like to know more about shipping options or have another question?</div></div></div><div role="tabpanel" id="rp4" aria-labelledby="rt4" class="rpanel" hidden><p class="rsub">Lifetime free zipper repair, from the warranty policy.</p><div class="chat"><div class="msg user">My jacket zipper broke after 3 years. Can you fix it?</div><div class="msg agent">According to Acme Outfitters&#x27; Warranty and Product Care policy, Acme offers free zipper repair on any Acme outerwear for the life of the product, even after the warranty period ends. To start a repair, you need to contact support, and they will email you a prepaid shipping label. Would you like help starting your repair? (Source: Acme Warranty and Product Care)</div></div></div><div role="tabpanel" id="rp5" aria-labelledby="rt5" class="rpanel" hidden><p class="rsub">Australia isn&#x27;t in the policies, so it says so instead of guessing.</p><div class="chat"><div class="msg user">Do you ship to Australia?</div><div class="msg agent">I do not see information about shipping to Australia in Acme&#x27;s policies. Would you like me to connect you with a person who can help further?</div></div></div>
+    <div class="shots">
+      <figure><img src="img/live-order-status.jpg" alt="Public chat: order A-1001 verified and shown as shipped with UPS" loading="lazy"><figcaption>Public chat: verified order status</figcaption></figure>
+      <figure><img src="img/github-pages-chat.jpg" alt="This page with the live chat open, answering an order question" loading="lazy"><figcaption>Embedded on GitHub Pages</figcaption></figure>
+      <figure><img src="img/live-policy-rag.jpg" alt="Policy answer about merino wool care with a source citation" loading="lazy"><figcaption>Policy answer via RAG</figcaption></figure>
+    </div>
+  </section>
 
   <section>
     <div class="section-head">
@@ -535,6 +566,21 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
     }
   }
 </script>
-<script type="text/javascript" src="https://orgfarm-90a1f2a859-dev-ed.develop.my.site.com/ESWSalesforceAgentWeb1778610315830/assets/js/bootstrap.min.js" onload="initEmbeddedMessaging()"></script>
+<script type="text/javascript" src="https://orgfarm-90a1f2a859-dev-ed.develop.my.site.com/ESWSalesforceAgentWeb1778610315830/assets/js/bootstrap.min.js" onload="initEmbeddedMessaging()" onerror="showOffline()"></script>
+
+<script>
+  document.querySelectorAll('.rtab').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      document.querySelectorAll('.rtab').forEach(function (t) { t.setAttribute('aria-selected', t === tab ? 'true' : 'false'); });
+      document.querySelectorAll('.rpanel').forEach(function (p) { p.hidden = p.id !== tab.getAttribute('aria-controls'); });
+    });
+  });
+  function showOffline() {
+    var o = document.getElementById('offline'); if (o) o.hidden = false;
+    var t = document.querySelector('#try h2'); if (t) t.textContent = 'The live demo is offline: see the recorded conversations below';
+  }
+  // If the chat widget hasn't rendered within 20 seconds, assume the demo org is unavailable.
+  setTimeout(function () { if (!document.querySelector('iframe[src*="my.site.com"]')) showOffline(); }, 20000);
+</script>
 </body>
 </html>
