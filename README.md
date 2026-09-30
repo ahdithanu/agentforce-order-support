@@ -45,6 +45,8 @@ All data is fictional. The agent runs in an Agentforce LabBox, a Salesforce Deve
 - **OWASP red team:** grade A (10 judged, 0 failures). One soft finding was fixed and re-verified.
 - **RAG eval (live retrieval):** retrieval 12/12, correct source 12/12, answer facts 12/12, declined 4/4 unanswerable, routing 2/2, retrieval p50 about 2 s. Run 1 retrieved 0/12 because the agent user had the Data Cloud license but not the Data Cloud User permission set; the agent declined rather than inventing a policy.
 - **Routing experiment (30 utterances):** default router 30/30 at p50 688 ms; HyperClassifier 26/30 at 243 ms with the original route descriptions, 29/30 at 241 ms after moving the order-vs-policy boundary into the descriptions. Default kept for text; HyperClassifier is the voice option.
+- **Cross-session lockout:** five failed checks against one order lock it for 30 minutes across every chat, even for correct details (Apex test plus a live six-chat check).
+- **Coded read-back (voice):** the verify tool exists only after the caller confirms the read-back; 3/3 live runs, up from 1/3 as an instruction.
 - **Voice readiness (text-proxy audit, 7 replies):** voice variant cut replies over 3 sentences from 2 to 0 and raw digit runs from 7 to 0 ("A, ten oh one", "June seventeenth"); read-back 1/2. Filler phrases belong in the voice config (`outbound_filler_sentences`), played while an action runs, not in reply text. Phone-number wiring is a UI-only step (Agent Builder, Connections, Voice).
 - **Public web chat:** Enhanced Chat on an Experience Cloud site and on GitHub Pages, routed to the active agent (v6).
 
@@ -74,11 +76,13 @@ The live chat runs in a time-limited Agentforce LabBox (expires about Nov 13, 20
 
   ```bash
   sf org login web --alias new-org
-  scripts/bootstrap_org.sh new-org            # deploy + permissions + seed data + knowledge library + draft agent
-  scripts/bootstrap_org.sh new-org --publish  # same, then publish and activate
+  scripts/bootstrap_org.sh new-org            # deploy + permissions + seed data + knowledge library + both agents as drafts
+  scripts/bootstrap_org.sh new-org --publish \
+      --text-channel <text MessagingChannel> --voice-channel <voice MessagingChannel> \
+      --embed-origin https://you.github.io --embed-sites <chat CustomSite>,<voice chat CustomSite>
   ```
 
-  The script finds the org's Einstein Agent User, deploys the data model, Apex (with tests) and permission sets, grants Data Cloud access, seeds the demo orders, creates or reuses the policy data library, points the `.agent` file at both, then validates and deploys. It has been run end to end against the current org. To re-embed the chat: route a Messaging channel to the new bot, then add the site origin to CORS and to the chat site's Trusted Domains for Inline Frames.
+  The script finds the org's Einstein Agent User, deploys the data model, Apex (with tests) and permission sets, grants Data Cloud access, seeds the demo orders, creates or reuses the policy data library, points the `.agent` file at both, then validates and deploys. It covers both the text and voice agents, routes the channels you name to them, and adds the embed origin to CORS and to each chat site's iframe allowlist (skipping entries that exist). It has been run end to end against the current org.
 - **Voice demo routing:** the `Agentforce_Voice` messaging channel points at the `Acme_Order_Support_Voice` bot; its previous `SessionHandlerId` was the org's preinstalled VoicePlant agent. `ahdithanu.github.io` is on the `ESW_Agentforce_Voice_*` site's iframe allowlist.
 - **Undo the public demo in the current org** (point the web chat back at the org's original agent): set `MessagingChannel.Salesforce_Agent_V2.SessionHandlerId` back to that agent's `BotDefinition` Id, and remove the `https://ahdithanu.github.io` CORS entry and the matching iframe-allowlist URL on the `ESW_Salesforce_Agent_Web_*` site.
 
