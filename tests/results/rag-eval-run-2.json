@@ -1,0 +1,242 @@
+[
+ {
+  "id": "R01",
+  "kind": "answerable",
+  "question": "How long do I have to return something?",
+  "reply": "You can return most items within 30 days of delivery for a refund to the original payment method. This information is from the Acme Outfitters Returns and Exchanges Policy. Would you like help starting a return?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   1925
+  ],
+  "retrieval_hit": true,
+  "source_hit": true,
+  "answer_correct": true
+ },
+ {
+  "id": "R02",
+  "kind": "answerable",
+  "question": "Do I have to pay for return shipping?",
+  "reply": "According to Acme Outfitters' Returns and Exchanges Policy, a prepaid return label for refunds costs $6.95, which is deducted from your refund. Exchanges ship free both ways, and returns for items that arrived damaged or were sent in error are always free. If you have more questions or need help with a return, just let me know!",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   2103
+  ],
+  "retrieval_hit": true,
+  "source_hit": true,
+  "answer_correct": true
+ },
+ {
+  "id": "R03",
+  "kind": "answerable",
+  "question": "Can I return a monogrammed item?",
+  "reply": "According to Acme Outfitters' Returns and Exchanges Policy, monogrammed items cannot be returned or exchanged. This information comes directly from the Acme Returns and Exchanges Policy. Is there anything else I can help you with?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   2668
+  ],
+  "retrieval_hit": true,
+  "source_hit": true,
+  "answer_correct": true
+ },
+ {
+  "id": "R04",
+  "kind": "answerable",
+  "question": "How long until I see my refund?",
+  "reply": "Refunds are processed within 3 business days of receiving your return at the warehouse. Your bank may then take an additional 5 to 7 business days to show the refund. This information is from the Acme Outfitters Returns and Exchanges Policy. Is there anything else I can help you with?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   1964
+  ],
+  "retrieval_hit": true,
+  "source_hit": true,
+  "answer_correct": true
+ },
+ {
+  "id": "R05",
+  "kind": "answerable",
+  "question": "Is shipping free?",
+  "reply": "Shipping is free for standard shipping on orders over 75 USD. Otherwise, it costs 5.95 USD. This information comes from Acme's Shipping and Delivery Policy.\n\nIs there anything else you want to know about shipping or your order?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   2163
+  ],
+  "retrieval_hit": true,
+  "source_hit": true,
+  "answer_correct": true
+ },
+ {
+  "id": "R06",
+  "kind": "answerable",
+  "question": "Do you ship to Canada?",
+  "reply": "Yes, Acme Outfitters ships to Canada. International orders to Canada take 7 to 12 business days, and import duties may be charged by the destination country, which you would pay on delivery. This information is from the Acme Shipping and Delivery Policy. Would you like to know more about shipping options or have another question?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   1855
+  ],
+  "retrieval_hit": true,
+  "source_hit": true,
+  "answer_correct": true
+ },
+ {
+  "id": "R07",
+  "kind": "answerable",
+  "question": "Can I get express shipping to my P.O. box?",
+  "reply": "Express shipping is not available for P.O. boxes. Standard shipping is the only option for deliveries to P.O. boxes, according to the Acme Outfitters Shipping and Delivery Policy. Would you like help choosing the best shipping option for your order?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   1922
+  ],
+  "retrieval_hit": true,
+  "source_hit": true,
+  "answer_correct": true
+ },
+ {
+  "id": "R08",
+  "kind": "answerable",
+  "question": "My package is late. When should I contact you?",
+  "reply": "According to the Acme Outfitters Shipping and Delivery Policy, you should contact support if your package has not arrived 7 days after the estimated delivery date. At that point, support will open a case with the carrier, and if the package is confirmed lost, you will receive a free replacement or a full refund. Would you like help checking your order status or reporting your late package?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   2590
+  ],
+  "retrieval_hit": true,
+  "source_hit": true,
+  "answer_correct": true
+ },
+ {
+  "id": "R09",
+  "kind": "answerable",
+  "question": "What's the warranty on your jackets?",
+  "reply": "Acme jackets and coats have a 2-year warranty against manufacturing defects, including failed seams, faulty zippers, and delaminating waterproof coatings. This warranty does not cover normal wear and tear, accidents, or damage from improper care. This information is from the Acme Warranty and Product Care policy.\n\nIs there anything else you'd like to know about jackets or another product?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   2128
+  ],
+  "retrieval_hit": true,
+  "source_hit": true,
+  "answer_correct": true
+ },
+ {
+  "id": "R10",
+  "kind": "answerable",
+  "question": "My jacket zipper broke after 3 years. Can you fix it?",
+  "reply": "According to Acme Outfitters' Warranty and Product Care policy, Acme offers free zipper repair on any Acme outerwear for the life of the product, even after the warranty period ends. To start a repair, you need to contact support, and they will email you a prepaid shipping label. Would you like help starting your repair? (Source: Acme Warranty and Product Care)",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   1873
+  ],
+  "retrieval_hit": true,
+  "source_hit": true,
+  "answer_correct": true
+ },
+ {
+  "id": "R11",
+  "kind": "answerable",
+  "question": "Can I put my merino sweater in the dryer?",
+  "reply": "No, you should not put a merino sweater in the dryer. According to Acme's Warranty and Product Care policy, merino wool should be hand washed in cold water and laid flat to dry, as tumble drying can cause it to shrink. Would you like more care tips or help with a specific order?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   1898
+  ],
+  "retrieval_hit": true,
+  "source_hit": true,
+  "answer_correct": true
+ },
+ {
+  "id": "R12",
+  "kind": "answerable",
+  "question": "How should I wash my waterproof jacket?",
+  "reply": "According to Acme's Warranty and Product Care policy, machine wash your waterproof jacket on a cold, gentle cycle with a technical fabric wash. Do not use fabric softener or bleach, and tumble dry on low heat for 20 minutes to restore the water-repellent finish. This information comes from the Acme Warranty and Product Care policy.\n\nIs there anything else I can help you with regarding your jacket or another order?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   2270
+  ],
+  "retrieval_hit": true,
+  "source_hit": true,
+  "answer_correct": true
+ },
+ {
+  "id": "U01",
+  "kind": "unanswerable",
+  "question": "Do you offer price matching?",
+  "reply": "I do not see any information about price matching in Acme's policies. Would you like me to connect you with a team member who can help further?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   1552
+  ],
+  "abstained": true
+ },
+ {
+  "id": "U02",
+  "kind": "unanswerable",
+  "question": "Do you ship to Australia?",
+  "reply": "I do not see information about shipping to Australia in Acme's policies. Would you like me to connect you with a person who can help further?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   2052
+  ],
+  "abstained": true
+ },
+ {
+  "id": "U03",
+  "kind": "unanswerable",
+  "question": "Is there a student discount?",
+  "reply": "I did not find any information about a student discount in Acme's policy articles. If you would like to confirm this or ask about other options, I can connect you with a person from our team. Would you like me to do that?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   1790
+  ],
+  "abstained": true
+ },
+ {
+  "id": "U04",
+  "kind": "unanswerable",
+  "question": "What's the warranty on backpacks?",
+  "reply": "I could not find information about backpack warranties in Acme's policy articles. Would you like me to connect you with a person for more details?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   2507
+  ],
+  "abstained": true
+ },
+ {
+  "id": "N01",
+  "kind": "route",
+  "question": "What's the status of my order?",
+  "reply": "To check your order status, I need the email address you used at checkout and your order number (for example, A-1001). Could you please provide both?",
+  "route": "identity_verification",
+  "knowledge_calls": 0,
+  "knowledge_latency_ms": [],
+  "route_correct": true,
+  "expect_route": "identity_verification"
+ },
+ {
+  "id": "N02",
+  "kind": "route",
+  "question": "Is bad weather going to delay shipping in general?",
+  "reply": "I do not have information in Acme's policies about weather-related shipping delays. Would you like to connect with a person for more details?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   1748
+  ],
+  "route_correct": true,
+  "expect_route": "store_policies"
+ }
+]
