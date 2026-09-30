@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BotVersion xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>v6</fullName>
+    <articleAnswersGPTEnabled>false</articleAnswersGPTEnabled>
+    <botDialogs>
+        <botSteps>
+            <botMessages>
+                <message>Hi, thanks for calling Acme Outfitters. I can check an order, answer a policy question, or get you to our team. What can I do for you?</message>
+                <messageIdentifier>562786a3-1898-4af0-b726-a7fa17a2da8f</messageIdentifier>
+            </botMessages>
+            <stepIdentifier>56932e8f-0b75-4315-b5c4-17ec89728b51</stepIdentifier>
+            <type>Message</type>
+        </botSteps>
+        <botSteps>
+            <stepIdentifier>7c524996-e290-4b2d-8979-3dfde4007ce4</stepIdentifier>
+            <type>Wait</type>
+        </botSteps>
+        <developerName>Welcome</developerName>
+        <isPlaceholderDialog>false</isPlaceholderDialog>
+        <label>Welcome</label>
+        <showInFooterMenu>false</showInFooterMenu>
+    </botDialogs>
+    <botDialogs>
+        <botSteps>
+            <botMessages>
+                <message>Sorry, I didn&apos;t catch that. Could you say it again?</message>
+                <messageIdentifier>999de365-9adb-492d-9737-cefe96d9caf0</messageIdentifier>
+            </botMessages>
+            <stepIdentifier>ff47ae14-979c-4c77-b84c-6d62631af7e4</stepIdentifier>
+            <type>Message</type>
+        </botSteps>
+        <botSteps>
+            <stepIdentifier>146153d1-8cf8-4f15-b312-51c05040d4ba</stepIdentifier>
+            <type>Wait</type>
+        </botSteps>
+        <developerName>Rich_Content_Error_Handling</developerName>
+        <isPlaceholderDialog>false</isPlaceholderDialog>
+        <label>Error Handler</label>
+        <showInFooterMenu>false</showInFooterMenu>
+    </botDialogs>
+    <botDialogs>
+        <botSteps>
+            <conversationSystemMessage>
+                <type>Transfer</type>
+            </conversationSystemMessage>
+            <stepIdentifier>aeaca510-e4e5-49f6-a7f6-c0a2ae55579c</stepIdentifier>
+            <type>SystemMessage</type>
+        </botSteps>
+        <developerName>Transfer_To_Agent</developerName>
+        <isPlaceholderDialog>false</isPlaceholderDialog>
+        <label>Transfer To Agent</label>
+        <showInFooterMenu>false</showInFooterMenu>
+    </botDialogs>
+    <citationsEnabled>false</citationsEnabled>
+    <conversationDefinitionPlanners>
+        <genAiPlannerName>Acme_Order_Support_Voice_v6</genAiPlannerName>
+    </conversationDefinitionPlanners>
+    <conversationSystemDialogs>
+        <dialog>Rich_Content_Error_Handling</dialog>
+        <type>ErrorHandling</type>
+    </conversationSystemDialogs>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Order status returned by the order lookup</description>
+        <developerName>order_status</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Order Status</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>Runtime condition evaluation for else-if chain link 2</description>
+        <developerName>AgentScriptInternal_condition_2</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Runtime Condition 2</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>Runtime condition evaluation for if statements</description>
+        <developerName>AgentScriptInternal_condition_1</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Runtime Condition 1</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>Set by the handoff action; escalation is available only after the context is recorded</description>
+        <developerName>handoff_recorded</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Handoff Recorded</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Case created for the human handoff</description>
+        <developerName>handoff_case_number</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Handoff Case Number</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Case number returned after a support case is created</description>
+        <developerName>case_number</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Case Number</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Return case number when a return was started</description>
+        <developerName>return_case_number</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Return Case Number</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Customer first name returned by verification</description>
+        <developerName>customer_first_name</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Customer First Name</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>Set by code after a turn in which both pending details existed, so the caller has heard them read back</description>
+        <developerName>readback_given</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Readback Given</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>Runtime condition evaluation for else-if chain link 4</description>
+        <developerName>AgentScriptInternal_condition_4</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Runtime Condition 4</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Estimated delivery date returned by the order lookup</description>
+        <developerName>estimated_delivery</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Estimated Delivery</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Result message from the returns flow</description>
+        <developerName>return_message</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Return Message</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Canonical order number confirmed by the verification action</description>
+        <developerName>verified_order_number</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Verified Order Number</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Order number the caller gave, not yet confirmed or verified</description>
+        <developerName>pending_order_number</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Pending Order Number</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>The next topic to be visited</description>
+        <developerName>AgentScriptInternal_next_topic</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Next Topic</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Shipping carrier returned by the order lookup</description>
+        <developerName>carrier</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Carrier</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>The caller confirmed the read-back; verification is only available after this</description>
+        <developerName>details_confirmed</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Details Confirmed</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Number</dataType>
+        <description>Authoritative failed verification count returned by the verification action</description>
+        <developerName>failed_attempts</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Failed Attempts</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>Trusted result of identity verification</description>
+        <developerName>customer_verified</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Customer Verified</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Fixed failure sentence returned by the verification action</description>
+        <developerName>verify_failure_message</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Verify Failure Message</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>Runtime condition evaluation for else-if chain link 3</description>
+        <developerName>AgentScriptInternal_condition_3</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Runtime Condition 3</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Email the caller gave, not yet confirmed or verified</description>
+        <developerName>pending_email</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Pending Email</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>The agent instructions</description>
+        <developerName>AgentScriptInternal_agent_instructions</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Agent Instructions</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Customer email confirmed by the verification action</description>
+        <developerName>verified_email</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Verified Email</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Tracking number returned by the order lookup</description>
+        <developerName>tracking_number</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Tracking Number</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <copilotPrimaryLanguage>en_US</copilotPrimaryLanguage>
+    <defaultStdObjForContactIdFltrEnabled>false</defaultStdObjForContactIdFltrEnabled>
+    <entryDialog>Welcome</entryDialog>
+    <intentDisambiguationEnabled>false</intentDisambiguationEnabled>
+    <intentV3Enabled>false</intentV3Enabled>
+    <isScriptCompatibleAgent>true</isScriptCompatibleAgent>
+    <knowledgeActionEnabled>false</knowledgeActionEnabled>
+    <knowledgeFallbackEnabled>false</knowledgeFallbackEnabled>
+    <smallTalkEnabled>false</smallTalkEnabled>
+    <staticPromptsEnabled>false</staticPromptsEnabled>
+    <stopRecPrompts>false</stopRecPrompts>
+    <stopWelcomePrompts>false</stopWelcomePrompts>
+    <surfacesEnabled>false</surfacesEnabled>
+    <toneType>Casual</toneType>
+</BotVersion>

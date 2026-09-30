@@ -65,6 +65,8 @@ variables:
         description: "Set by the handoff action; escalation is available only after the context is recorded"
     handoff_case_number: mutable string = ""
         description: "Case created for the human handoff"
+    verify_failure_message: mutable string = ""
+        description: "Fixed failure sentence returned by the verification action"
     failed_attempts: mutable number = 0
         description: "Authoritative failed verification count returned by the verification action"
 
@@ -151,8 +153,9 @@ subagent identity_verification:
                 | Before sharing any order details, you must verify the customer. Ask for the
                   email address used at checkout and the order number (for example A-1001).
                   When you have both, call {!@actions.verify}. Do not call it with guessed values.
-                  If verification fails, say the details did not match our records without saying
-                  which one was wrong, and offer to try again or connect them with a person.
+                  If verification fails, say exactly "{!@variables.verify_failure_message}" and nothing
+                  about which detail it was. Then ask them to re-enter both the email and the order
+                  number, or offer to connect them with a person.
                   Unsuccessful attempts so far: {!@variables.failed_attempts} of 3.
         actions:
             verify: @actions.verify_customer
@@ -162,6 +165,7 @@ subagent identity_verification:
                 with priorFailedAttempts = @variables.failed_attempts
                 set @variables.customer_verified = @outputs.verified
                 set @variables.failed_attempts = @outputs.failedAttempts
+                set @variables.verify_failure_message = @outputs.failureMessage
                 set @variables.verified_email = @outputs.verifiedEmail
                 set @variables.verified_order_number = @outputs.canonicalOrderNumber
                 set @variables.customer_first_name = @outputs.customerFirstName
@@ -210,6 +214,8 @@ subagent identity_verification:
                 failedAttempts: number
                     description: "Authoritative failed attempt count after this call"
                     filter_from_agent: True
+                failureMessage: string
+                    description: "Fixed sentence to use when verification fails"
 
 subagent order_status:
     label: "Order Status"

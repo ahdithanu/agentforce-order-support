@@ -1,0 +1,42 @@
+{
+  "required" : [ "reason", "summary" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "messagingSessionId" : {
+      "title" : "Messaging Session Id",
+      "description" : "Platform messaging session id (bound, not model-filled)",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "reason" : {
+      "title" : "Reason",
+      "description" : "Why the customer needs a person, in a few words",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "summary" : {
+      "title" : "Summary",
+      "description" : "Factual summary of the need and what was already done, without personal details",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "verifiedEmail" : {
+      "title" : "Verified Email",
+      "description" : "Verified email, empty if not verified",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "verifiedOrderNumber" : {
+      "title" : "Verified Order Number",
+      "description" : "Verified order number, empty if not verified",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

@@ -28,7 +28,11 @@ public with sharing class Acme_VerifyCustomer {
         @InvocableVariable(label='Canonical Order Number') public String canonicalOrderNumber;
         @InvocableVariable(label='Customer First Name') public String customerFirstName;
         @InvocableVariable(label='Failed Attempts') public Decimal failedAttempts;
+        @InvocableVariable(label='Failure Message') public String failureMessage;
     }
+
+    // One fixed sentence for every failure, so the reply never hints at which detail was wrong.
+    public static final String FAILURE_MESSAGE = 'Those details don\'t match our records.';
 
     public static final Integer MAX_ATTEMPTS = 3;
     public static final Integer ORDER_LOCK_THRESHOLD = 5;
@@ -68,6 +72,7 @@ public with sharing class Acme_VerifyCustomer {
             res.verifiedEmail = ok ? email : '';
             res.canonicalOrderNumber = ok ? o.External_Order_Number__c.toUpperCase() : '';
             res.customerFirstName = ok ? o.BillToContact.FirstName : '';
+            res.failureMessage = ok ? '' : FAILURE_MESSAGE;
 
             if (locked) {
                 res.failedAttempts = Math.max(prior + 1, MAX_ATTEMPTS);

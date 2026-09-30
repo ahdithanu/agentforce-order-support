@@ -75,6 +75,9 @@ private class Acme_AgentActionsTest {
         Assert.isFalse(res[2].verified);
         Assert.areEqual(0, res[0].failedAttempts);
         Assert.areEqual(1, res[1].failedAttempts);
+        Assert.areEqual('', res[0].failureMessage);
+        Assert.areEqual(Acme_VerifyCustomer.FAILURE_MESSAGE, res[1].failureMessage);
+        Assert.areEqual(res[1].failureMessage, res[2].failureMessage, 'wrong email and unknown order must read the same');
     }
 
     @IsTest
