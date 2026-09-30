@@ -1,87 +1,101 @@
 {
- "generated": "2026-09-29T22:29:46",
- "org_sessions_total": 243,
- "acme_sessions": 187,
+ "generated": "2026-09-30T13:06:36",
+ "org_sessions_total": 433,
+ "acme_sessions": 362,
  "published": {
-  "sessions": 22,
-  "turns": 46,
+  "sessions": 33,
+  "turns": 69,
   "turns_per_session": 2.09,
-  "escalation_rate": 0.136,
-  "containment_rate": 0.864,
+  "escalation_rate": 0.212,
+  "containment_rate": 0.788,
   "injection_blocked_sessions": 0,
   "turn_latency_ms": {
-   "p50": 2537,
-   "p90": 5397,
+   "p50": 2625,
+   "p90": 5754,
    "max": 8940
   },
   "topics": {
-   "identity_verification": 18,
-   "store_policies": 3,
-   "escalation": 3
+   "identity_verification": 25,
+   "escalation": 8,
+   "store_policies": 3
   },
   "actions": {
-   "get_order_status": {
-    "calls": 6,
-    "errors": 0,
-    "p50_ms": 190,
-    "p90_ms": 294
-   },
    "verify_customer": {
-    "calls": 10,
+    "calls": 14,
     "errors": 0,
-    "p50_ms": 256,
-    "p90_ms": 397
+    "p50_ms": 269,
+    "p90_ms": 399
+   },
+   "get_order_status": {
+    "calls": 8,
+    "errors": 0,
+    "p50_ms": 229,
+    "p90_ms": 362
+   },
+   "record_handoff_context": {
+    "calls": 2,
+    "errors": 0,
+    "p50_ms": 752,
+    "p90_ms": 1022
    }
   },
   "trust_layer_steps": {
-   "InstructionAdherence": 24,
-   "pre_orchestration.guardrail": 24,
-   "Atlas__GroundednessValidationPrompt": 24
+   "InstructionAdherence": 34,
+   "pre_orchestration.guardrail": 36,
+   "Atlas__GroundednessValidationPrompt": 34
   },
   "sessions_by_hour": {
    "2026-09-29 16:00": 8,
    "2026-09-29 17:00": 9,
    "2026-09-29 22:00": 2,
-   "2026-09-30 03:00": 3
+   "2026-09-30 03:00": 3,
+   "2026-09-30 07:00": 2,
+   "2026-09-30 19:00": 9
   }
  },
  "preview": {
-  "sessions": 165,
-  "turns": 353,
-  "turns_per_session": 2.14,
-  "escalation_rate": 0.145,
-  "containment_rate": 0.855,
+  "sessions": 329,
+  "turns": 735,
+  "turns_per_session": 2.23,
+  "escalation_rate": 0.094,
+  "containment_rate": 0.906,
   "injection_blocked_sessions": 0,
   "turn_latency_ms": {
-   "p50": 1640,
-   "p90": 5116,
-   "max": 8633
+   "p50": 2142,
+   "p90": 5833,
+   "max": 11450
   },
   "topics": {
-   "store_policies": 96,
-   "identity_verification": 63,
-   "escalation": 24,
-   "order_status": 1,
-   "ambiguous_question": 1,
-   "support_case": 1
+   "store_policies": 195,
+   "identity_verification": 168,
+   "escalation": 31,
+   "order_status": 3,
+   "support_case": 3,
+   "ambiguous_question": 2
   },
   "actions": {
-   "AnswerQuestionsWithKnowledge": {
-    "calls": 96,
-    "errors": 0,
-    "p50_ms": 1657,
-    "p90_ms": 2568
-   },
    "verify_customer": {
-    "calls": 12,
+    "calls": 52,
     "errors": 0,
-    "p50_ms": 510,
-    "p90_ms": 912
+    "p50_ms": 374,
+    "p90_ms": 1103
+   },
+   "AnswerQuestionsWithKnowledge": {
+    "calls": 194,
+    "errors": 0,
+    "p50_ms": 2009,
+    "p90_ms": 2828
+   },
+   "record_handoff_context": {
+    "calls": 9,
+    "errors": 0,
+    "p50_ms": 822,
+    "p90_ms": 1080
    },
    "get_order_status": {
-    "calls": 4,
+    "calls": 11,
     "errors": 0,
-    "p50_ms": 618,
+    "p50_ms": 591,
     "p90_ms": 1018
    },
    "create_support_case": {
@@ -89,12 +103,18 @@
     "errors": 0,
     "p50_ms": 651,
     "p90_ms": 2438
+   },
+   "start_return_flow": {
+    "calls": 2,
+    "errors": 0,
+    "p50_ms": 201,
+    "p90_ms": 2561
    }
   },
   "trust_layer_steps": {
-   "Atlas__GroundednessValidationPrompt": 177,
-   "InstructionAdherence": 175,
-   "pre_orchestration.guardrail": 188
+   "Atlas__GroundednessValidationPrompt": 386,
+   "pre_orchestration.guardrail": 406,
+   "InstructionAdherence": 381
   },
   "sessions_by_hour": {
    "2026-09-29 05:00": 8,
@@ -103,7 +123,11 @@
    "2026-09-30 01:00": 16,
    "2026-09-30 02:00": 21,
    "2026-09-30 03:00": 22,
-   "2026-09-30 05:00": 83
+   "2026-09-30 05:00": 83,
+   "2026-09-30 06:00": 17,
+   "2026-09-30 07:00": 64,
+   "2026-09-30 19:00": 66,
+   "2026-09-30 20:00": 17
   }
  }
 }

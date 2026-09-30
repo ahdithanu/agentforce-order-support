@@ -78,15 +78,15 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
   <header>
     <span class="eyebrow">Acme Order Support · production observability</span>
     <h1>What the agent actually did, from session tracing</h1>
-    <p class="muted">Aggregated from Agentforce session-tracing objects in Data Cloud (<code>ssot__AiAgentSession</code>, <code>Interaction</code>, <code>InteractionStep</code>). Traffic is split by the topic suffix the runtime records: published-planner ids are real channels and Testing Center; <code>PlannerPreview</code> ids are development and eval runs. Generated 2026-09-29 22:29:46.</p>
+    <p class="muted">Aggregated from Agentforce session-tracing objects in Data Cloud (<code>ssot__AiAgentSession</code>, <code>Interaction</code>, <code>InteractionStep</code>). Traffic is split by the topic suffix the runtime records: published-planner ids are real channels and Testing Center; <code>PlannerPreview</code> ids are development and eval runs. Generated 2026-09-30 13:06:36.</p>
   </header>
 
   <section>
     <h2>Published traffic <span class="pill">real chat + Testing Center</span></h2>
     <div class="tiles">
-      <div class="tile"><b>22</b><span>sessions (46 turns)</span></div>
-      <div class="tile"><b>86%</b><span>containment: no human handoff</span></div>
-      <div class="tile"><b>2.5 s</b><span>turn latency p50 (p90 5.4 s)</span></div>
+      <div class="tile"><b>33</b><span>sessions (69 turns)</span></div>
+      <div class="tile"><b>79%</b><span>containment: no human handoff</span></div>
+      <div class="tile"><b>2.6 s</b><span>turn latency p50 (p90 5.8 s)</span></div>
       <div class="tile"><b>0</b><span>action errors across all traced calls</span></div>
     </div>
   </section>
@@ -107,89 +107,103 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
     <details>
       <summary>Raw aggregates (JSON)</summary>
       <pre style="white-space:pre-wrap;font:12px/1.5 var(--mono);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px;overflow-x:auto">{
- "generated": "2026-09-29T22:29:46",
- "org_sessions_total": 243,
- "acme_sessions": 187,
+ "generated": "2026-09-30T13:06:36",
+ "org_sessions_total": 433,
+ "acme_sessions": 362,
  "published": {
-  "sessions": 22,
-  "turns": 46,
+  "sessions": 33,
+  "turns": 69,
   "turns_per_session": 2.09,
-  "escalation_rate": 0.136,
-  "containment_rate": 0.864,
+  "escalation_rate": 0.212,
+  "containment_rate": 0.788,
   "injection_blocked_sessions": 0,
   "turn_latency_ms": {
-   "p50": 2537,
-   "p90": 5397,
+   "p50": 2625,
+   "p90": 5754,
    "max": 8940
   },
   "topics": {
-   "identity_verification": 18,
-   "store_policies": 3,
-   "escalation": 3
+   "identity_verification": 25,
+   "escalation": 8,
+   "store_policies": 3
   },
   "actions": {
-   "get_order_status": {
-    "calls": 6,
-    "errors": 0,
-    "p50_ms": 190,
-    "p90_ms": 294
-   },
    "verify_customer": {
-    "calls": 10,
+    "calls": 14,
     "errors": 0,
-    "p50_ms": 256,
-    "p90_ms": 397
+    "p50_ms": 269,
+    "p90_ms": 399
+   },
+   "get_order_status": {
+    "calls": 8,
+    "errors": 0,
+    "p50_ms": 229,
+    "p90_ms": 362
+   },
+   "record_handoff_context": {
+    "calls": 2,
+    "errors": 0,
+    "p50_ms": 752,
+    "p90_ms": 1022
    }
   },
   "trust_layer_steps": {
-   "InstructionAdherence": 24,
-   "pre_orchestration.guardrail": 24,
-   "Atlas__GroundednessValidationPrompt": 24
+   "InstructionAdherence": 34,
+   "pre_orchestration.guardrail": 36,
+   "Atlas__GroundednessValidationPrompt": 34
   },
   "sessions_by_hour": {
    "2026-09-29 16:00": 8,
    "2026-09-29 17:00": 9,
    "2026-09-29 22:00": 2,
-   "2026-09-30 03:00": 3
+   "2026-09-30 03:00": 3,
+   "2026-09-30 07:00": 2,
+   "2026-09-30 19:00": 9
   }
  },
  "preview": {
-  "sessions": 165,
-  "turns": 353,
-  "turns_per_session": 2.14,
-  "escalation_rate": 0.145,
-  "containment_rate": 0.855,
+  "sessions": 329,
+  "turns": 735,
+  "turns_per_session": 2.23,
+  "escalation_rate": 0.094,
+  "containment_rate": 0.906,
   "injection_blocked_sessions": 0,
   "turn_latency_ms": {
-   "p50": 1640,
-   "p90": 5116,
-   "max": 8633
+   "p50": 2142,
+   "p90": 5833,
+   "max": 11450
   },
   "topics": {
-   "store_policies": 96,
-   "identity_verification": 63,
-   "escalation": 24,
-   "order_status": 1,
-   "ambiguous_question": 1,
-   "support_case": 1
+   "store_policies": 195,
+   "identity_verification": 168,
+   "escalation": 31,
+   "order_status": 3,
+   "support_case": 3,
+   "ambiguous_question": 2
   },
   "actions": {
-   "AnswerQuestionsWithKnowledge": {
-    "calls": 96,
-    "errors": 0,
-    "p50_ms": 1657,
-    "p90_ms": 2568
-   },
    "verify_customer": {
-    "calls": 12,
+    "calls": 52,
     "errors": 0,
-    "p50_ms": 510,
-    "p90_ms": 912
+    "p50_ms": 374,
+    "p90_ms": 1103
+   },
+   "AnswerQuestionsWithKnowledge": {
+    "calls": 194,
+    "errors": 0,
+    "p50_ms": 2009,
+    "p90_ms": 2828
+   },
+   "record_handoff_context": {
+    "calls": 9,
+    "errors": 0,
+    "p50_ms": 822,
+    "p90_ms": 1080
    },
    "get_order_status": {
-    "calls": 4,
+    "calls": 11,
     "errors": 0,
-    "p50_ms": 618,
+    "p50_ms": 591,
     "p90_ms": 1018
    },
    "create_support_case": {
@@ -197,12 +211,18 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
     "errors": 0,
     "p50_ms": 651,
     "p90_ms": 2438
+   },
+   "start_return_flow": {
+    "calls": 2,
+    "errors": 0,
+    "p50_ms": 201,
+    "p90_ms": 2561
    }
   },
   "trust_layer_steps": {
-   "Atlas__GroundednessValidationPrompt": 177,
-   "InstructionAdherence": 175,
-   "pre_orchestration.guardrail": 188
+   "Atlas__GroundednessValidationPrompt": 386,
+   "pre_orchestration.guardrail": 406,
+   "InstructionAdherence": 381
   },
   "sessions_by_hour": {
    "2026-09-29 05:00": 8,
@@ -211,7 +231,11 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
    "2026-09-30 01:00": 16,
    "2026-09-30 02:00": 21,
    "2026-09-30 03:00": 22,
-   "2026-09-30 05:00": 83
+   "2026-09-30 05:00": 83,
+   "2026-09-30 06:00": 17,
+   "2026-09-30 07:00": 64,
+   "2026-09-30 19:00": 66,
+   "2026-09-30 20:00": 17
   }
  }
 }</pre>
@@ -220,7 +244,7 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
   <footer><a href="../">← Back to the walkthrough and live demo</a> · Regenerate: <code>python3 scripts/observability_report.py &lt;org-alias&gt;</code>. Limitation: sessions that only hit generic topics (off-topic, prompt injection) carry no agent-specific suffix and can't be attributed to this agent, so they're excluded.</footer>
 </main>
 <script>
-const D = {"actions": [{"name": "knowledge search", "prev_p50": 1657, "prev_p90": 2568, "pub_p50": null}, {"name": "create_support_case", "prev_p50": 651, "prev_p90": 2438, "pub_p50": null}, {"name": "get_order_status", "prev_p50": 618, "prev_p90": 1018, "pub_p50": 190}, {"name": "verify_customer", "prev_p50": 510, "prev_p90": 912, "pub_p50": 256}], "turn": {"pub": {"p50": 2537, "p90": 5397, "max": 8940}, "prev": {"p50": 1640, "p90": 5116, "max": 8633}}, "topics": {"identity_verification": 18, "store_policies": 3, "escalation": 3}, "topics_prev": {"store_policies": 96, "identity_verification": 63, "escalation": 24, "order_status": 1, "ambiguous_question": 1, "support_case": 1}};
+const D = {"actions": [{"name": "knowledge search", "prev_p50": 2009, "prev_p90": 2828, "pub_p50": null}, {"name": "record_handoff_context", "prev_p50": 822, "prev_p90": 1080, "pub_p50": 752}, {"name": "create_support_case", "prev_p50": 651, "prev_p90": 2438, "pub_p50": null}, {"name": "verify_customer", "prev_p50": 374, "prev_p90": 1103, "pub_p50": 269}, {"name": "get_order_status", "prev_p50": 591, "prev_p90": 1018, "pub_p50": 229}, {"name": "start_return_flow", "prev_p50": 201, "prev_p90": 2561, "pub_p50": null}], "turn": {"pub": {"p50": 2625, "p90": 5754, "max": 8940}, "prev": {"p50": 2142, "p90": 5833, "max": 11450}}, "topics": {"identity_verification": 25, "escalation": 8, "store_policies": 3}, "topics_prev": {"store_policies": 195, "identity_verification": 168, "escalation": 31, "order_status": 3, "support_case": 3, "ambiguous_question": 2}};
 const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 function bars(id, rows, max, unit, color) {
   document.getElementById(id).innerHTML = rows.map(r =>
