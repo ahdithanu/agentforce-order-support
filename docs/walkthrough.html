@@ -161,6 +161,7 @@ details p { margin-top: 10px; }
 .cat .res { font-weight: 600; color: var(--good); }
 .cat .res.inc { color: var(--muted); }
 @media (max-width: 640px) { .cats { grid-template-columns: 1fr 1fr; } .grade { grid-template-columns: 1fr; } }
+@media (max-width: 640px) { #since .cats { grid-template-columns: 1fr; } }
 footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; }
 </style>
 
@@ -173,10 +174,36 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
     <div class="stats">
       <div class="stat"><b>8 <span class="arrow">→</span> <span class="to">0</span></b><span>actions blocked at runtime (no access)</span></div>
       <div class="stat"><b>3 <span class="arrow">→</span> <span class="to">0</span></b><span>replies claiming to check without calling a tool</span></div>
-      <div class="stat"><b>7/7</b><span>scenarios pass live against real Apex and data</span></div>
+      <div class="stat"><b>11/11</b><span>Testing Center cases pass on live v11</span></div>
       <div class="stat"><b>92%</b><span>groundedness on the live run (platform evaluator)</span></div>
     </div>
   </header>
+
+  <section id="since">
+    <div class="section-head">
+      <span class="eyebrow">Since the interview</span>
+      <h2>What shipped next, and how each piece was checked</h2>
+    </div>
+    <div class="cats">
+      <div class="cat"><b>Human handoff with context</b><span class="res">verified live</span><span>Before escalating, Apex opens a handoff Case (reason, summary, verified contact and order) and links it to the chat. Omni-Channel routes the chat to the service queue, so the person who picks it up sees the context.</span></div>
+      <div class="cat"><b>Returns via Flow</b><span class="res">verified live</span><span>An autolaunched Flow applies the policy: order matches the customer, delivered, within 30 days. It opens a Return case. Admins change the window without touching code. A-2001 → case opened; A-1001 (not delivered) refused.</span></div>
+      <div class="cat"><b>Spanish</b><span class="res">11 / 12 answers</span><span>Replies in the customer's language. Search queries go to the English policy index in English, which took Spanish RAG from 5/12 to 11/12. It declines 4/4 questions the policies don't cover.</span></div>
+      <div class="cat"><b>Lockout across chats</b><span class="res">verified live</span><span>Failed checks are counted on the Order itself. Five failures lock that order for 30 minutes in every chat, even for correct details, so opening a new chat doesn't reset the count.</span></div>
+      <div class="cat"><b>Fixed failure message</b><span class="res">0 / 10 leaks</span><span>Apex returns the same sentence for every mismatch, and the agent must repeat it. Probed with "which one was wrong?": 10/10 replies used the exact sentence and none hinted at the field.</span></div>
+      <div class="cat"><b>Voice with coded read-back</b><span class="res">3 / 3 read-backs</span><span>The <a href="https://ahdithanu.github.io/agentforce-order-support/voice/">voice variant</a> reads the order number and email back, and verification stays hidden until the caller confirms. It's enforced in Agent Script, not the prompt.</span></div>
+    </div>
+    <table>
+      <thead><tr><th>Regression on live v11</th><th>Result</th></tr></thead>
+      <tbody>
+        <tr><td>Testing Center (functional)</td><td>11/11 outcome · topic 9/9 · actions 4/4, no hung cases</td></tr>
+        <tr><td>Red team (OWASP, 12 attacks)</td><td>12/12 resisted · grade A</td></tr>
+        <tr><td>Policy RAG, English</td><td>12/12 answers · 4/4 declines (one grader phrase fixed)</td></tr>
+        <tr><td>Policy RAG, Spanish</td><td>11/12 answers · 4/4 declines. The miss: a "late package" question routed to verification</td></tr>
+        <tr><td>Routing (30 utterances)</td><td>30/30</td></tr>
+        <tr><td>Production traces (<a href="https://ahdithanu.github.io/agentforce-order-support/observability/">dashboard</a>)</td><td>33 published sessions · 79% contained · 0 action errors · turn p50 2.6 s</td></tr>
+      </tbody>
+    </table>
+  </section>
 
   <section>
     <div class="section-head">
@@ -279,8 +306,8 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
       <div class="layer"><span class="where">Bound inputs</span><p>After verifying as Jamie, lookups use Jamie's stored email and order number, not what the customer types. <span class="stops">Stops: "now check my friend's order."</span></p></div>
       <div class="layer"><span class="where">Apex ownership check</span><p>Status and Case actions re-check that the email matches the order. <span class="stops">Stops: a bug or future change that calls the action early.</span></p></div>
       <div class="layer"><span class="where">USER_MODE + permission set</span><p>Queries and inserts run with the Einstein Agent User's exact object and field access. <span class="stops">Stops: the agent reading or writing anything it wasn't granted.</span></p></div>
-      <div class="layer"><span class="where">Fail closed</span><p>A mismatch returns empty outputs and never says which field was wrong. <span class="stops">Stops: guessing emails against order numbers.</span></p></div>
-      <div class="layer"><span class="where">Attempt lockout</span><p>Apex returns the failed-attempt count; the agent passes it back in from state, hides verification at 3, and hands off to a person. <span class="stops">Stops: brute-forcing within a session. Live: 1 → 2 → 3, then escalation.</span></p></div>
+      <div class="layer"><span class="where">Fail closed</span><p>A mismatch returns empty outputs and one fixed sentence from Apex, the same for every failure. <span class="stops">Stops: guessing emails against order numbers. Live probe: 0/10 leaks.</span></p></div>
+      <div class="layer"><span class="where">Attempt lockout</span><p>Apex returns the failed-attempt count; the agent passes it back in from state, hides verification at 3, and hands off to a person. The Order also counts failures: 5 lock it for 30 minutes across every chat. <span class="stops">Stops: brute-forcing within a session, or by opening new chats. Live: 1 → 2 → 3, then escalation.</span></p></div>
     </div>
   </section>
 
@@ -449,7 +476,7 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
           <tr><td>Explain why a prompt failed and what you'd change</td><td>Story 1: diagnosed from the trace, fixed in two layers, turned into a metric</td></tr>
           <tr><td>Own components end-to-end, observable in production</td><td>Local compile → org validation → draft deploy → preview traces → KPI report</td></tr>
           <tr><td>Data modeling, APIs, integration patterns</td><td>Order extension with an external-ID upsert key, Case→Order lookup, idempotent seed, USER_MODE Apex</td></tr>
-          <tr><td>Evaluate AI outputs with engineering rigor</td><td>Testing Center regression against the live agent: topic 9/9, actions 4/4, outcome 10/10 after correcting 4 spec errors. OWASP red team: grade A, one soft finding fixed and re-verified.</td></tr>
+          <tr><td>Evaluate AI outputs with engineering rigor</td><td>Testing Center regression against the live agent: now 11/11 on v11, after correcting 4 spec errors early on. OWASP red team: grade A, re-run on v11 with 12/12 resisted. Bilingual RAG eval and a 30-utterance routing set, with nightly live runs in CI.</td></tr>
           <tr><td>Agent performance dashboards and KPI reporting</td><td>Containment, escalation, tool errors, unbacked claims, groundedness, safety, latency</td></tr>
           <tr><td>Surface platform gaps to product</td><td>Testing Center reports action definition names (docs say invocation names); random per-case hangs; the LabBox doc queries a field that doesn't exist in API v67; <code>--sfdx-url-stdin</code> needs <code>-</code>; <code>sf agent test run</code> has no simulate mode; the consumer secret can't be retrieved when the admin email is a provisioning mailbox</td></tr>
         </tbody>
@@ -463,9 +490,9 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
       <h2>Path to production</h2>
     </div>
     <div class="road">
-      <div><h3>Channel</h3><span>Connect to Enhanced Chat and the service queue; logged-in customers skip verification using the chat's customer context.</span></div>
+      <div><h3>Channel</h3><span>Done: Enhanced Chat, and handoff to the service queue with a linked context Case. Next: logged-in customers skip verification using the chat's customer context.</span></div>
       <div><h3>Integration</h3><span>Upsert orders from the commerce system on the external ID via a Named Credential; carrier API through External Services.</span></div>
-      <div><h3>Hardening</h3><span>Session lockout is done. Next: a lockout per order that persists across chats, plus rate limits and a review queue for Cases the agent created.</span></div>
+      <div><h3>Hardening</h3><span>Done: session lockout, per-order lockout across chats, and one fixed failure message. Next: rate limits and a review queue for Cases the agent created.</span></div>
       <div><h3>Evals in CI</h3><span>Run both suites in a sandbox on every change to the agent; block release on any critical security failure.</span></div>
       <div><h3>Observe</h3><span>Session Tracing and Agent Analytics feed the same KPIs weekly, tied to cost per contact and CSAT.</span></div>
     </div>

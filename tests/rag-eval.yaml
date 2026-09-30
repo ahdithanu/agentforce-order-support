@@ -34,7 +34,7 @@ cases:
     kind: answerable
     question: "Do you ship to Canada?"
     source: Acme_Shipping_and_Delivery
-    must_include: [["yes", "we ship", "ships"], ["7 to 12", "7-12", "7–12"]]
+    must_include: [["yes", "we ship", "do ship", "ships"], ["7 to 12", "7-12", "7–12"]]
   - id: R07
     kind: answerable
     question: "Can I get express shipping to my P.O. box?"
