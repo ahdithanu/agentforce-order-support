@@ -60,6 +60,11 @@ variables:
     failed_attempts: mutable number = 0
         description: "Authoritative failed verification count returned by the verification action"
 
+knowledge:
+    rag_feature_config_id: "ARFPC_1JDfj00000CY17dGAD"
+    citations_enabled: True
+    citations_url: ""
+
 language:
     default_locale: "en_US"
     additional_locales: ""
@@ -83,6 +88,10 @@ start_agent agent_router:
             else:
                 | The customer is not verified yet. Route any order-specific request to
                   identity verification.
+            | General questions about Acme policies (returns, exchanges, refunds, shipping
+              options and costs, delivery times, warranty, repairs, product care) do not need
+              verification: route them to store policies. A request to act on a specific
+              order (check it, report a problem with it) is order-specific, not a policy question.
             | If the customer asks for a person, route to escalation.
               If the request is unrelated to Acme orders, route to off topic.
               If it is unclear what they need, route to ambiguous question.
@@ -96,6 +105,8 @@ start_agent agent_router:
             go_to_support_case: @utils.transition to @subagent.support_case
                 description: "Report a problem with an order and open a support case"
                 available when @variables.customer_verified == True
+            go_to_store_policies: @utils.transition to @subagent.store_policies
+                description: "General question about returns, shipping, warranty, repairs, or product care"
             go_to_escalation: @utils.transition to @subagent.escalation
                 description: "The customer wants to talk to a human"
             go_to_off_topic: @utils.transition to @subagent.off_topic
@@ -282,6 +293,80 @@ subagent support_case:
                     description: "Whether the case was created"
                 caseNumber: string
                     description: "Case number to share with the customer"
+
+subagent store_policies:
+    label: "Store Policies"
+    description: "Answer general questions about Acme returns, exchanges, refunds, shipping, delivery, warranty, repairs, and product care from the policy knowledge base"
+
+    reasoning:
+        instructions: ->
+            | For every policy question, call {!@actions.search_policies} before answering.
+              Answer only from the returned knowledge summary, in two or three sentences,
+              and mention which policy it comes from. Do not add details the summary does not state.
+              If the summary is empty or does not answer the question, say you don't have that
+              in Acme's policies and offer to connect the customer with a person.
+              Only include sources returned by the action.
+            | If the customer then wants to act on a specific order (check it, or report a
+              damaged or wrong item), use the order help tool to start identity verification.
+        actions:
+            search_policies: @actions.AnswerQuestionsWithKnowledge
+                description: "Search Acme's policy documents to answer the question"
+                with query = ...
+                with citationsUrl = ...
+                with ragFeatureConfigId = ...
+                with citationsEnabled = ...
+            go_to_order_help: @utils.transition to @subagent.identity_verification
+                description: "The customer wants help with a specific order"
+                available when @variables.customer_verified == False and @variables.failed_attempts < 3
+            go_to_support_case: @utils.transition to @subagent.support_case
+                description: "A verified customer wants to report a problem with their order"
+                available when @variables.customer_verified == True
+            go_to_escalation: @utils.transition to @subagent.escalation
+                description: "The customer wants to talk to a human"
+
+    actions:
+        AnswerQuestionsWithKnowledge:
+            description: "Answers questions about Acme's returns, exchanges, refunds, shipping, delivery, warranty, repairs, and product care by searching the policy documents. For example: 'What is your return policy?' or 'Do you ship to Canada?'"
+            inputs:
+                query: string
+                    description: "Required. A string created by generative AI to be used in the knowledge article search."
+                    label: "Query"
+                    is_required: True
+                    is_user_input: True
+                citationsUrl: string = @knowledge.citations_url
+                    description: "The URL to use for citations for custom Agents."
+                    label: "Citations Url"
+                    is_required: False
+                    is_user_input: True
+                ragFeatureConfigId: string = @knowledge.rag_feature_config_id
+                    description: "The RAG Feature ID to use for grounding this copilot action invocation."
+                    label: "RAG Feature Configuration Id"
+                    is_required: False
+                    is_user_input: True
+                citationsEnabled: boolean = @knowledge.citations_enabled
+                    description: "Whether or not citations are enabled."
+                    label: "Citations Enabled"
+                    is_required: False
+                    is_user_input: True
+            outputs:
+                knowledgeSummary: object
+                    description: "A string formatted as rich text that includes a summary of the information retrieved from the knowledge articles and citations to those articles."
+                    label: "Knowledge Summary"
+                    complex_data_type_name: "lightning__richTextType"
+                    filter_from_agent: False
+                    is_displayable: True
+                citationSources: object
+                    description: "Source links for the chunks in the hydrated prompt that's used by the planner service."
+                    label: "Citation Sources"
+                    complex_data_type_name: "@apexClassType/AiCopilot__GenAiCitationInput"
+                    filter_from_agent: False
+                    is_displayable: False
+            target: "standardInvocableAction://streamKnowledgeSearch"
+            label: "Answer Questions with Knowledge"
+            require_user_confirmation: False
+            include_in_progress_indicator: True
+            progress_indicator_message: "Checking our policies..."
+            source: "EmployeeCopilot__AnswerQuestionsWithKnowledge"
 
 subagent escalation:
     label: "Escalation"

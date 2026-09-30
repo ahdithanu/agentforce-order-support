@@ -1,0 +1,242 @@
+[
+ {
+  "id": "R01",
+  "kind": "answerable",
+  "question": "How long do I have to return something?",
+  "reply": "I could not find information about return timeframes in Acme's policies. Would you like me to connect you with a person who can help further?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   220
+  ],
+  "retrieval_hit": false,
+  "source_hit": false,
+  "answer_correct": false
+ },
+ {
+  "id": "R02",
+  "kind": "answerable",
+  "question": "Do I have to pay for return shipping?",
+  "reply": "I could not find information about return shipping costs in Acme's policies. Would you like me to connect you with a team member who can help further?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   194
+  ],
+  "retrieval_hit": false,
+  "source_hit": false,
+  "answer_correct": false
+ },
+ {
+  "id": "R03",
+  "kind": "answerable",
+  "question": "Can I return a monogrammed item?",
+  "reply": "I could not find information about returns for monogrammed items in Acme's policies. Would you like me to connect you with a team member who can help further?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   178
+  ],
+  "retrieval_hit": false,
+  "source_hit": false,
+  "answer_correct": false
+ },
+ {
+  "id": "R04",
+  "kind": "answerable",
+  "question": "How long until I see my refund?",
+  "reply": "I could not find refund processing time information in Acme's policies. Would you like me to connect you with a team member who can help further?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   223
+  ],
+  "retrieval_hit": false,
+  "source_hit": false,
+  "answer_correct": false
+ },
+ {
+  "id": "R05",
+  "kind": "answerable",
+  "question": "Is shipping free?",
+  "reply": "I could not find information about free shipping in Acme's policies. Would you like me to connect you with a person who can help with this question?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   217
+  ],
+  "retrieval_hit": false,
+  "source_hit": false,
+  "answer_correct": false
+ },
+ {
+  "id": "R06",
+  "kind": "answerable",
+  "question": "Do you ship to Canada?",
+  "reply": "I could not find information about shipping to Canada in Acme's policies. Would you like me to connect you with a team member who can help?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   197
+  ],
+  "retrieval_hit": false,
+  "source_hit": false,
+  "answer_correct": false
+ },
+ {
+  "id": "R07",
+  "kind": "answerable",
+  "question": "Can I get express shipping to my P.O. box?",
+  "reply": "I could not find information about express shipping to P.O. boxes in Acme's policies. Would you like me to connect you with a team member who can help further?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   178
+  ],
+  "retrieval_hit": false,
+  "source_hit": false,
+  "answer_correct": false
+ },
+ {
+  "id": "R08",
+  "kind": "answerable",
+  "question": "My package is late. When should I contact you?",
+  "reply": "I could not find information about when to contact support for a late package in Acme's policies. Would you like me to connect you with a person for more help?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   212
+  ],
+  "retrieval_hit": false,
+  "source_hit": false,
+  "answer_correct": false
+ },
+ {
+  "id": "R09",
+  "kind": "answerable",
+  "question": "What's the warranty on your jackets?",
+  "reply": "I could not find warranty information for jackets in Acme's policies. Would you like me to connect you with a team member who can help further?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   180
+  ],
+  "retrieval_hit": false,
+  "source_hit": false,
+  "answer_correct": false
+ },
+ {
+  "id": "R10",
+  "kind": "answerable",
+  "question": "My jacket zipper broke after 3 years. Can you fix it?",
+  "reply": "I could not find any information in Acme's policies about repairs for jacket zippers after 3 years. Would you like me to connect you with a person who can help further?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   244
+  ],
+  "retrieval_hit": false,
+  "source_hit": false,
+  "answer_correct": false
+ },
+ {
+  "id": "R11",
+  "kind": "answerable",
+  "question": "Can I put my merino sweater in the dryer?",
+  "reply": "I do not have information about putting a merino sweater in the dryer in Acme's policies. Would you like to connect with a person for more help on this?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   302
+  ],
+  "retrieval_hit": false,
+  "source_hit": false,
+  "answer_correct": false
+ },
+ {
+  "id": "R12",
+  "kind": "answerable",
+  "question": "How should I wash my waterproof jacket?",
+  "reply": "I could not find washing instructions for waterproof jackets in Acme's policies. Would you like me to connect you with a team member who can help further?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   133
+  ],
+  "retrieval_hit": false,
+  "source_hit": false,
+  "answer_correct": false
+ },
+ {
+  "id": "U01",
+  "kind": "unanswerable",
+  "question": "Do you offer price matching?",
+  "reply": "I could not find information about price matching in Acme's policies. Would you like me to connect you with a person who can help further?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   226
+  ],
+  "abstained": true
+ },
+ {
+  "id": "U02",
+  "kind": "unanswerable",
+  "question": "Do you ship to Australia?",
+  "reply": "I could not find information about shipping to Australia in Acme's policies. Would you like me to connect you with a person who can help further?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   183
+  ],
+  "abstained": true
+ },
+ {
+  "id": "U03",
+  "kind": "unanswerable",
+  "question": "Is there a student discount?",
+  "reply": "I could not find information about a student discount in Acme's policies. Would you like me to connect you with a team member for more details?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   204
+  ],
+  "abstained": true
+ },
+ {
+  "id": "U04",
+  "kind": "unanswerable",
+  "question": "What's the warranty on backpacks?",
+  "reply": "I do not have information about backpack warranties in Acme's policies right now. Would you like me to connect you with a team member who can help further?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   229
+  ],
+  "abstained": true
+ },
+ {
+  "id": "N01",
+  "kind": "route",
+  "question": "What's the status of my order?",
+  "reply": "To check your order status, I need the email address you used at checkout and your order number (for example, A-1001). Could you please provide both?",
+  "route": "identity_verification",
+  "knowledge_calls": 0,
+  "knowledge_latency_ms": [],
+  "route_correct": true,
+  "expect_route": "identity_verification"
+ },
+ {
+  "id": "N02",
+  "kind": "route",
+  "question": "Is bad weather going to delay shipping in general?",
+  "reply": "I do not have information about weather-related shipping delays in Acme's policies. Would you like to connect with a team member for more details?",
+  "route": "store_policies",
+  "knowledge_calls": 1,
+  "knowledge_latency_ms": [
+   196
+  ],
+  "route_correct": true,
+  "expect_route": "store_policies"
+ }
+]

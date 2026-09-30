@@ -1,0 +1,90 @@
+# RAG evaluation set for the Acme policy knowledge base (Agentforce Data Library "Acme_Store_Policies").
+# kind:
+#   answerable   - the answer is in the docs; the reply must contain every item in must_include
+#                  (each item is a list of acceptable variants) and cite the expected source doc.
+#   unanswerable - the docs don't cover it; the agent must decline (no invented policy).
+#   route        - near-miss: checks routing, not retrieval.
+cases:
+  - id: R01
+    kind: answerable
+    question: "How long do I have to return something?"
+    source: Acme_Returns_and_Exchanges
+    must_include: [["30 days", "30-day", "thirty days"]]
+  - id: R02
+    kind: answerable
+    question: "Do I have to pay for return shipping?"
+    source: Acme_Returns_and_Exchanges
+    must_include: [["6.95", "$6.95"], ["exchange", "exchanges"]]
+  - id: R03
+    kind: answerable
+    question: "Can I return a monogrammed item?"
+    source: Acme_Returns_and_Exchanges
+    must_include: [["cannot", "can't", "not eligible", "can not", "unable"]]
+  - id: R04
+    kind: answerable
+    question: "How long until I see my refund?"
+    source: Acme_Returns_and_Exchanges
+    must_include: [["3 business days", "three business days"], ["5 to 7", "5-7", "5–7"]]
+  - id: R05
+    kind: answerable
+    question: "Is shipping free?"
+    source: Acme_Shipping_and_Delivery
+    must_include: [["75"]]
+  - id: R06
+    kind: answerable
+    question: "Do you ship to Canada?"
+    source: Acme_Shipping_and_Delivery
+    must_include: [["yes", "we ship", "ships"], ["7 to 12", "7-12", "7–12"]]
+  - id: R07
+    kind: answerable
+    question: "Can I get express shipping to my P.O. box?"
+    source: Acme_Shipping_and_Delivery
+    must_include: [["street address", "standard shipping only", "not available", "cannot", "can't", "only standard"]]
+  - id: R08
+    kind: answerable
+    question: "My package is late. When should I contact you?"
+    source: Acme_Shipping_and_Delivery
+    must_include: [["7 days", "seven days"]]
+  - id: R09
+    kind: answerable
+    question: "What's the warranty on your jackets?"
+    source: Acme_Warranty_and_Care
+    must_include: [["2-year", "2 year", "two-year", "two year"]]
+  - id: R10
+    kind: answerable
+    question: "My jacket zipper broke after 3 years. Can you fix it?"
+    source: Acme_Warranty_and_Care
+    must_include: [["free"], ["zipper"]]
+  - id: R11
+    kind: answerable
+    question: "Can I put my merino sweater in the dryer?"
+    source: Acme_Warranty_and_Care
+    must_include: [["no", "do not", "don't", "shouldn't", "should not"], ["shrink", "lay flat", "flat to dry"]]
+  - id: R12
+    kind: answerable
+    question: "How should I wash my waterproof jacket?"
+    source: Acme_Warranty_and_Care
+    must_include: [["cold"], ["fabric softener", "softener", "bleach"]]
+
+  - id: U01
+    kind: unanswerable
+    question: "Do you offer price matching?"
+  - id: U02
+    kind: unanswerable
+    question: "Do you ship to Australia?"
+    note: "Docs list US, Canada and UK only; a correct reply says Australia isn't listed rather than inventing a policy."
+  - id: U03
+    kind: unanswerable
+    question: "Is there a student discount?"
+  - id: U04
+    kind: unanswerable
+    question: "What's the warranty on backpacks?"
+
+  - id: N01
+    kind: route
+    question: "What's the status of my order?"
+    expect_route: identity_verification
+  - id: N02
+    kind: route
+    question: "Is bad weather going to delay shipping in general?"
+    expect_route: store_policies

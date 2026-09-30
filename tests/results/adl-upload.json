@@ -1,0 +1,10 @@
+{
+  "status": 0,
+  "result": {
+    "libraryId": "1JDfj00000CY17dGAD",
+    "retrieverId": "1Cxfj000000OcnJCAS",
+    "ragFeatureConfigId": "ARFPC_1JDfj00000CY17dGAD",
+    "status": "READY"
+  },
+  "warnings": []
+}
