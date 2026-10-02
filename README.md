@@ -92,6 +92,18 @@ The live chat runs in a time-limited Agentforce LabBox (expires about Nov 13, 20
 - **Voice demo routing:** the `Agentforce_Voice` messaging channel points at the `Acme_Order_Support_Voice` bot; its previous `SessionHandlerId` was the org's preinstalled VoicePlant agent. `ahdithanu.github.io` is on the `ESW_Agentforce_Voice_*` site's iframe allowlist.
 - **Undo the public demo in the current org** (point the web chat back at the org's original agent): set `MessagingChannel.Salesforce_Agent_V2.SessionHandlerId` back to that agent's `BotDefinition` Id, and remove the `https://ahdithanu.github.io` CORS entry and the matching iframe-allowlist URL on the `ESW_Salesforce_Agent_Web_*` site.
 
+## Improvement loop (traces → evals → fixes)
+
+`scripts/self_improve.sh <org-alias> [hours] [published|preview|all]` runs one turn of the loop:
+
+1. **Reset the environment.** `scripts/reset-env.apex` clears the per-order verification lockouts and closes test Cases on the demo account, so one run can't leak into the next. The nightly workflow runs it before the live evals.
+2. **Mine production traces.** `scripts/trace_miner.py` reads Agentforce session tracing from Data Cloud (paging through every row), rebuilds each turn (message, reply, subagent, actions, Trust Layer verdicts), and flags: claims to check without calling an action, action errors, ungrounded replies, knowledge-base declines, unrequested escalations, re-asked questions, slow turns and abandoned sessions. It masks emails and long numbers, then drafts new eval cases that aren't already in `tests/`.
+3. **Second-agent review.** A read-only Claude Code run (`scripts/trace_review_prompt.md`) groups the flags into patterns, says which are real defects, expected behavior or eval noise, and proposes fixes at the right layer, with the eval that would prove each one.
+
+Output goes to `traces/` (gitignored, because published traffic can contain anything a visitor typed). A person approves candidate cases into `tests/` and applies fixes in a draft; the regression suites decide whether a fix ships.
+
+First run (5 days, 362 sessions): the reviewer traced every flag to an eval run or an already-fixed bug. It pointed at two leads. Re-running them live found one real defect: on a wrong email, the agent sometimes says "those details don't match" without calling `verify_customer`, so the lockout counter skips a turn. The mined express-shipping question became regression cases R13 and R14.
+
 ## Operations
 
 - Web chat routing: the `Salesforce_Agent_V2` messaging channel's `SessionHandlerId` points at the `Acme_Order_Support` bot. To give the chat back to the org's previous agent, set it to that agent's `BotDefinition` Id.

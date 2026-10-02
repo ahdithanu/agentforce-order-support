@@ -35,6 +35,17 @@ cases:
     question: "Do you ship to Canada?"
     source: Acme_Shipping_and_Delivery
     must_include: [["yes", "we ship", "do ship", "ships"], ["7 to 12", "7-12", "7–12"]]
+  - id: R13
+    kind: answerable
+    question: "How much is express shipping?"
+    source: Acme_Shipping_and_Delivery
+    must_include: [["15"]]
+    # mined from production traces 2026-09-30: declined once although the policy states the price
+  - id: R14
+    kind: answerable
+    question: "What does express delivery cost?"
+    source: Acme_Shipping_and_Delivery
+    must_include: [["15"]]
   - id: R07
     kind: answerable
     question: "Can I get express shipping to my P.O. box?"

@@ -22,15 +22,28 @@ ACME_TOPICS = {"identity_verification", "order_status", "support_case", "store_p
 GENERIC = {"off_topic", "ambiguous_question", "Prompt_Injection", "NOT_SET"}
 
 
+def _rest(*rest_args):
+    out = subprocess.run(["sf", "api", "request", "rest", *rest_args, "--target-org", ORG],
+                         capture_output=True, text=True).stdout
+    return json.JSONDecoder().raw_decode(out[out.find("{"):])[0]
+
+
 def sql(query):
+    """Run a Data Cloud SQL query and page through every row (responses are capped by size)."""
     with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as fh:
         json.dump({"sql": query}, fh)
         body = fh.name
-    out = subprocess.run(["sf", "api", "request", "rest", "/services/data/v67.0/ssot/query-sql", "--method", "POST",
-                          "--body", f"@{body}", "--target-org", ORG], capture_output=True, text=True).stdout
-    d = json.loads(out[out.find("{"):])
+    d = _rest("/services/data/v67.0/ssot/query-sql", "--method", "POST", "--body", f"@{body}")
+    if "metadata" not in d:
+        raise SystemExit(f"Data Cloud query failed: {str(d)[:300]}")
     cols = [m["name"] for m in d["metadata"]]
-    return [dict(zip(cols, row)) for row in d["data"]]
+    rows, total, qid = list(d["data"]), d["status"]["rowCount"], d["status"]["queryId"]
+    while len(rows) < total:
+        page = _rest(f"/services/data/v67.0/ssot/query-sql/{qid}/rows?offset={len(rows)}&rowLimit=5000")
+        if not page.get("data"):
+            raise SystemExit(f"Data Cloud paging stopped at {len(rows)}/{total} rows")
+        rows += page["data"]
+    return [dict(zip(cols, row)) for row in rows]
 
 
 def ts(value):

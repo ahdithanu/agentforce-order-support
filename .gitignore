@@ -48,3 +48,6 @@ $RECYCLE.BIN/
 **/venv/
 docs/interview-playbook.html
 ci/node_modules/
+
+# Mined production traces (may contain visitor text)
+traces/

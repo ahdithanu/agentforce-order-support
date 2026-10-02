@@ -50,7 +50,10 @@ def sf(args):
 
 
 results = {}
+ONLY = [a for a in sys.argv[2:] if not a.startswith("--")]  # optional scenario names, e.g. U7_lockout_after_three_failures
 for name, turns in SCENARIOS.items():
+    if ONLY and name not in ONLY:
+        continue
     start = sf(["agent", "preview", "start", "--authoring-bundle", BUNDLE, MODE, "-o", ORG])
     sid = (start.get("result") or {}).get("sessionId")
     if not sid:

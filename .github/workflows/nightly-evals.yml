@@ -49,6 +49,9 @@ jobs:
             echo "::warning::Could not log in (the org may have expired); skipping live evals."
             echo "ok=false" >> "$GITHUB_OUTPUT"
           fi
+      - name: Reset the demo environment (unlock demo orders, close test Cases)
+        if: steps.login.outputs.ok == 'true'
+        run: sf apex run --file scripts/reset-env.apex --target-org ci-org --json > /dev/null
       - name: Run live evals
         if: steps.login.outputs.ok == 'true'
         run: |
