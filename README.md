@@ -32,6 +32,7 @@ All data is fictional. The agent runs in an Agentforce LabBox, a Salesforce Deve
 | `scripts/routing_eval.py`, `tests/routing-set.yaml` | Router experiment: 30 labeled utterances, default LLM router vs Einstein HyperClassifier, accuracy and routing latency |
 | `scripts/compile_agent.mjs`, `scripts/validate_specs.py`, `.github/workflows/ci.yml` | CI: compile the agent with the public AgentScript SDK, validate every test spec, retrieval recall floor |
 | `scripts/observability_report.py` | Production observability from Agentforce session tracing (Data Cloud STDM): sessions, containment, turn vs action latency, topics, Trust Layer steps; separates published from preview traffic |
+| `scripts/trace_miner.py`, `scripts/trace_sources.py`, `tests/fixtures/stdm_synthetic.json` | Shared trace reconstruction and eval drafting from live Data Cloud or a synthetic offline fixture, covered by CI |
 | `force-app/.../Acme_Order_Support_Voice/`, `scripts/voice_audit.py` | Voice variant (default voice, ECv2 surface, HyperClassifier router, spoken-form and read-back rules) and a text-proxy voice-readiness audit |
 | `force-app/main/default/flows/` | `Acme_Start_Return` (returns policy) and `Acme_Route_To_Service_Queue` (Omni-Channel routing for handoffs) |
 | `tests/rag-eval-es.yaml`, `scripts/check_eval_thresholds.py`, `.github/workflows/nightly-evals.yml` | Spanish RAG eval; thresholds and the scheduled live-eval workflow |
@@ -77,7 +78,7 @@ python3 scripts/preview_scenarios.py my-org --live   # real Apex
 
 The live chat runs in a time-limited Agentforce LabBox (expires about Nov 13, 2026). Everything else is independent of it:
 
-- **Still works without the org:** this repo, the walkthrough, the recorded conversations and screenshots on the Pages site (the page detects when the chat can't load and says so), the retrieval lab, the observability snapshot, the CI checks, and every eval result under `tests/results/`.
+- **Still works without the org:** this repo, the walkthrough, the recorded conversations and screenshots on the Pages site (the page detects when the chat can't load and says so), the retrieval lab, the observability snapshot, the offline trace to eval loop below, the CI checks, and every eval result under `tests/results/`.
 - **Rebuild in any Agentforce org in one command** (a new LabBox, a Developer Edition with Agentforce and Data Cloud, or a sandbox):
 
   ```bash
@@ -101,6 +102,42 @@ The live chat runs in a time-limited Agentforce LabBox (expires about Nov 13, 20
 3. **Second-agent review.** A read-only Claude Code run (`scripts/trace_review_prompt.md`) groups the flags into patterns, says which are real defects, expected behavior or eval noise, and proposes fixes at the right layer, with the eval that would prove each one.
 
 Output goes to `traces/` (gitignored, because published traffic can contain anything a visitor typed). A person approves candidate cases into `tests/` and applies fixes in a draft; the regression suites decide whether a fix ships.
+
+### Reproduce trace mining without Salesforce
+
+From the repository root, with Python 3.12:
+
+```bash
+python3 -m pip install PyYAML==6.0.3
+python3 scripts/trace_miner.py --fixture tests/fixtures/stdm_synthetic.json --out traces/offline
+python3 -m unittest discover -s tests -p 'test_trace_miner.py' -v
+```
+
+No Salesforce CLI, login, Data Cloud, model API, or Claude Code is needed. The fixture is entirely synthetic: invented IDs, reserved `example.com` addresses and fictional 555 phone numbers. It contains the four STDM tables and their actual field names, including JSON encoded action and Trust Layer outputs. It is committed under `tests/fixtures/`; real traffic remains excluded by the `traces/` ignore rule.
+
+The default fixture run produces **5 published sessions, 11 turns, 10 flagged turns and 5 new candidate cases**. Open these files:
+
+1. `traces/offline/digest-2026-10-01.md` for flag counts, examples and masked action error evidence.
+2. `traces/offline/candidates-2026-10-01.yaml` for drafts targeting the routing, RAG and Testing Center suites.
+3. `traces/offline/mined-2026-10-01.json` for the summary and each flagged turn's reconstructed evidence.
+
+The fixture's `as_of` value fixes the reference time at `2026-10-01T12:00:00Z`. Both `--hours` and output dates use that time, so the fixture never ages out. Repeating the same command produces identical file contents. `--env preview` selects the Spanish preview session; `--env all` includes both environments. `--hours 1` demonstrates session window filtering. Old sessions, unrelated agents and orphan records are excluded. Details of the fixture contract are in [tests/fixtures/README.md](tests/fixtures/README.md).
+
+Review the digest with the rubric in `scripts/trace_review_prompt.md`, substituting the explicit offline paths above for its default `traces/` paths. Set every candidate's TODO based on the agent contract and policy documents before copying an approved case into a suite. Candidate fields are review metadata, not a directly runnable eval spec: map `expected_route` to the routing suite's `route`, and supply the RAG or Testing Center fields required by that suite. This reproduces trace reconstruction, flagging and eval drafting; running an approved case against Agentforce still requires an org. The existing `self_improve.sh` remains the live reset and optional Claude review wrapper.
+
+CI runs the regression tests and this exact fixture command on every pull request and push to `main`, without org credentials. Its `offline-trace-review` artifact contains only the three synthetic review files. The tests cover all flag types, masking in messages and error evidence, both topic suffixes, all five existing eval suites, candidate selection, pagination through a mocked live transport, and repeated CLI runs from outside the repository.
+
+### Mine a live org
+
+The positional org alias and existing options remain supported:
+
+```bash
+python3 scripts/trace_miner.py my-org --hours 24 --env published --out traces
+```
+
+Live mode still requires an authenticated Salesforce CLI org with access to Data Cloud STDM. `scripts/trace_sources.py` owns the same four SQL projections and REST pagination; live rows and fixture rows then enter the same reconstruction and flagging functions. The default is 24 hours of published sessions, with `preview` and `all` also available. Live runs use the current time and retain local output dates for compatibility with `self_improve.sh`; summaries include the timezone and identify `data_cloud` versus `fixture` provenance. Supply exactly one of an org alias or `--fixture`; invalid fixtures fail locally without falling back to Salesforce.
+
+Both modes mask emails, common phone formats and long digit runs in user text, replies and action error evidence before writing. This is pattern masking, not complete anonymization of arbitrary visitor text. Deduplication uses the same masking and text normalization for existing eval utterances. Short order identifiers such as `A-1001` and policy values are preserved for review. Generated drafts remain subject to human approval.
 
 First run (5 days, 362 sessions): the reviewer traced every flag to an eval run or an already-fixed bug. It pointed at two leads. Re-running them live found one real defect: on a wrong email, the agent sometimes says "those details don't match" without calling `verify_customer`, so the lockout counter skips a turn. The mined express-shipping question became regression cases R13 and R14.
 
