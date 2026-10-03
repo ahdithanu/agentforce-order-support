@@ -1,0 +1,587 @@
+{
+  "description": "Entirely synthetic STDM records, not an export. Reserved example.com addresses, fictional 555 phone numbers and invented IDs only. Raw PII-shaped strings intentionally exercise masking.",
+  "as_of": "2026-10-01T12:00:00Z",
+  "ssot__AiAgentSession__dlm": [
+    {
+      "ssot__Id__c": "pubclean",
+      "ssot__AiAgentSessionEndType__c": "COMPLETED",
+      "ssot__StartTimestamp__c": "2026-10-01T11:10:00Z"
+    },
+    {
+      "ssot__Id__c": "oldpub01",
+      "ssot__AiAgentSessionEndType__c": "COMPLETED",
+      "ssot__StartTimestamp__c": "2026-09-01T08:00:00Z"
+    },
+    {
+      "ssot__Id__c": "foreign1",
+      "ssot__AiAgentSessionEndType__c": "COMPLETED",
+      "ssot__StartTimestamp__c": "2026-10-01T11:45:00Z"
+    },
+    {
+      "ssot__Id__c": "pubhuman",
+      "ssot__AiAgentSessionEndType__c": "COMPLETED",
+      "ssot__StartTimestamp__c": "2026-10-01T11:20:00Z"
+    },
+    {
+      "ssot__Id__c": "undated1",
+      "ssot__AiAgentSessionEndType__c": "COMPLETED",
+      "ssot__StartTimestamp__c": "NOT_SET"
+    },
+    {
+      "ssot__Id__c": "pubroute",
+      "ssot__AiAgentSessionEndType__c": "COMPLETED",
+      "ssot__StartTimestamp__c": "2026-10-01T11:00:00Z"
+    },
+    {
+      "ssot__Id__c": "preview1",
+      "ssot__AiAgentSessionEndType__c": "COMPLETED",
+      "ssot__StartTimestamp__c": "2026-10-01T11:30:00Z"
+    },
+    {
+      "ssot__Id__c": "pubfail1",
+      "ssot__AiAgentSessionEndType__c": "EXPIRED",
+      "ssot__StartTimestamp__c": "2026-10-01T09:00:00Z"
+    },
+    {
+      "ssot__Id__c": "pubknow1",
+      "ssot__AiAgentSessionEndType__c": "COMPLETED",
+      "ssot__StartTimestamp__c": "2026-10-01T10:00:00Z"
+    }
+  ],
+  "ssot__AiAgentInteraction__dlm": [
+    {
+      "ssot__Id__c": "undated-1",
+      "ssot__AiAgentSessionId__c": "undated1",
+      "ssot__TopicApiName__c": "order_status_16SYNTHETIC0001",
+      "ssot__AiAgentInteractionType__c": "TURN",
+      "ssot__StartTimestamp__c": "2026-10-01T11:50:00Z",
+      "ssot__EndTimestamp__c": "2026-10-01T11:50:01Z"
+    },
+    {
+      "ssot__Id__c": "policy-3",
+      "ssot__AiAgentSessionId__c": "pubknow1",
+      "ssot__TopicApiName__c": "store_policies_16SYNTHETIC0001",
+      "ssot__AiAgentInteractionType__c": "TURN",
+      "ssot__StartTimestamp__c": "2026-10-01T10:02:00Z",
+      "ssot__EndTimestamp__c": "2026-10-01T10:02:01Z"
+    },
+    {
+      "ssot__Id__c": "route-1",
+      "ssot__AiAgentSessionId__c": "pubroute",
+      "ssot__TopicApiName__c": "off_topic_16SYNTHETIC0001",
+      "ssot__AiAgentInteractionType__c": "TURN",
+      "ssot__StartTimestamp__c": "2026-10-01T11:00:00Z",
+      "ssot__EndTimestamp__c": "2026-10-01T11:00:01Z"
+    },
+    {
+      "ssot__Id__c": "route-2",
+      "ssot__AiAgentSessionId__c": "pubroute",
+      "ssot__TopicApiName__c": "ambiguous_question_16SYNTHETIC0001",
+      "ssot__AiAgentInteractionType__c": "TURN",
+      "ssot__StartTimestamp__c": "2026-10-01T11:01:00Z",
+      "ssot__EndTimestamp__c": "NOT_SET"
+    },
+    {
+      "ssot__Id__c": "old-1",
+      "ssot__AiAgentSessionId__c": "oldpub01",
+      "ssot__TopicApiName__c": "store_policies_16SYNTHETIC0001",
+      "ssot__AiAgentInteractionType__c": "TURN",
+      "ssot__StartTimestamp__c": "2026-10-01T08:00:00Z",
+      "ssot__EndTimestamp__c": "2026-10-01T08:00:01Z"
+    },
+    {
+      "ssot__Id__c": "clean-2",
+      "ssot__AiAgentSessionId__c": "pubclean",
+      "ssot__TopicApiName__c": "order_status_16SYNTHETIC0001",
+      "ssot__AiAgentInteractionType__c": "TURN",
+      "ssot__StartTimestamp__c": "2026-10-01T11:11:00Z",
+      "ssot__EndTimestamp__c": "2026-10-01T11:11:08Z"
+    },
+    {
+      "ssot__Id__c": "policy-2",
+      "ssot__AiAgentSessionId__c": "pubknow1",
+      "ssot__TopicApiName__c": "store_policies_16SYNTHETIC0001",
+      "ssot__AiAgentInteractionType__c": "TURN",
+      "ssot__StartTimestamp__c": "2026-10-01T10:01:00Z",
+      "ssot__EndTimestamp__c": "2026-10-01T10:01:01Z"
+    },
+    {
+      "ssot__Id__c": "human-1",
+      "ssot__AiAgentSessionId__c": "pubhuman",
+      "ssot__TopicApiName__c": "escalation_16SYNTHETIC0001",
+      "ssot__AiAgentInteractionType__c": "TURN",
+      "ssot__StartTimestamp__c": "2026-10-01T11:20:00Z",
+      "ssot__EndTimestamp__c": "2026-10-01T11:20:01Z"
+    },
+    {
+      "ssot__Id__c": "foreign-1",
+      "ssot__AiAgentSessionId__c": "foreign1",
+      "ssot__TopicApiName__c": "another_agent_16SYNTHETIC0001",
+      "ssot__AiAgentInteractionType__c": "TURN",
+      "ssot__StartTimestamp__c": "2026-10-01T11:45:00Z",
+      "ssot__EndTimestamp__c": "2026-10-01T11:45:01Z"
+    },
+    {
+      "ssot__Id__c": "policy-1",
+      "ssot__AiAgentSessionId__c": "pubknow1",
+      "ssot__TopicApiName__c": "store_policies_16SYNTHETIC0001",
+      "ssot__AiAgentInteractionType__c": "TURN",
+      "ssot__StartTimestamp__c": "2026-10-01T10:00:00Z",
+      "ssot__EndTimestamp__c": "2026-10-01T10:00:01Z"
+    },
+    {
+      "ssot__Id__c": "failure-2",
+      "ssot__AiAgentSessionId__c": "pubfail1",
+      "ssot__TopicApiName__c": "identity_verification_16SYNTHETIC0001",
+      "ssot__AiAgentInteractionType__c": "TURN",
+      "ssot__StartTimestamp__c": "2026-10-01T09:01:00Z",
+      "ssot__EndTimestamp__c": "2026-10-01T09:01:01Z"
+    },
+    {
+      "ssot__Id__c": "preview-1",
+      "ssot__AiAgentSessionId__c": "preview1",
+      "ssot__TopicApiName__c": "store_policies_PlannerPreview-00000000-0000-0000-0000-000000000001",
+      "ssot__AiAgentInteractionType__c": "TURN",
+      "ssot__StartTimestamp__c": "2026-10-01T11:30:00Z",
+      "ssot__EndTimestamp__c": "2026-10-01T11:30:01Z"
+    },
+    {
+      "ssot__Id__c": "failure-1",
+      "ssot__AiAgentSessionId__c": "pubfail1",
+      "ssot__TopicApiName__c": "identity_verification_16SYNTHETIC0001",
+      "ssot__AiAgentInteractionType__c": "TURN",
+      "ssot__StartTimestamp__c": "2026-10-01T09:00:00Z",
+      "ssot__EndTimestamp__c": "2026-10-01T09:00:10Z"
+    },
+    {
+      "ssot__Id__c": "route-context",
+      "ssot__AiAgentSessionId__c": "pubroute",
+      "ssot__TopicApiName__c": "identity_verification_16SYNTHETIC0001",
+      "ssot__AiAgentInteractionType__c": "ROUTING",
+      "ssot__StartTimestamp__c": "2026-10-01T11:00:00Z",
+      "ssot__EndTimestamp__c": "2026-10-01T11:00:00Z"
+    },
+    {
+      "ssot__Id__c": "clean-1",
+      "ssot__AiAgentSessionId__c": "pubclean",
+      "ssot__TopicApiName__c": "identity_verification_16SYNTHETIC0001",
+      "ssot__AiAgentInteractionType__c": "TURN",
+      "ssot__StartTimestamp__c": "2026-10-01T11:10:00Z",
+      "ssot__EndTimestamp__c": "2026-10-01T11:10:01Z"
+    },
+    {
+      "ssot__Id__c": "failure-3",
+      "ssot__AiAgentSessionId__c": "pubfail1",
+      "ssot__TopicApiName__c": "escalation_16SYNTHETIC0001",
+      "ssot__AiAgentInteractionType__c": "TURN",
+      "ssot__StartTimestamp__c": "2026-10-01T09:02:00Z",
+      "ssot__EndTimestamp__c": "2026-10-01T09:02:01Z"
+    }
+  ],
+  "ssot__AiAgentInteractionStep__dlm": [
+    {
+      "ssot__AiAgentInteractionId__c": "policy-2",
+      "ssot__AiAgentInteractionStepType__c": "PROMPT_STEP",
+      "ssot__Name__c": "Atlas__GroundednessValidationPrompt",
+      "ssot__InputValueText__c": "NOT_SET",
+      "ssot__OutputValueText__c": "{\"mgr.sensitive.step.result\": \"category=GROUNDED\"}",
+      "ssot__ErrorMessageText__c": "NOT_SET"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "orphan-interaction",
+      "ssot__AiAgentInteractionStepType__c": "ACTION_STEP",
+      "ssot__Name__c": "verify_customer",
+      "ssot__InputValueText__c": "NOT_SET",
+      "ssot__OutputValueText__c": "{\"actionResponse\": {\"verified\": false}}",
+      "ssot__ErrorMessageText__c": "NOT_SET"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "policy-1",
+      "ssot__AiAgentInteractionStepType__c": "PROMPT_STEP",
+      "ssot__Name__c": "Atlas__GroundednessValidationPrompt",
+      "ssot__InputValueText__c": "NOT_SET",
+      "ssot__OutputValueText__c": "{\"mgr.sensitive.step.result\": \"category=GROUNDED\"}",
+      "ssot__ErrorMessageText__c": "NOT_SET"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "failure-2",
+      "ssot__AiAgentInteractionStepType__c": "PROMPT_STEP",
+      "ssot__Name__c": "Atlas__GroundednessValidationPrompt",
+      "ssot__InputValueText__c": "NOT_SET",
+      "ssot__OutputValueText__c": "{\"mgr.sensitive.step.result\": \"category=GROUNDED\"}",
+      "ssot__ErrorMessageText__c": "NOT_SET"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "preview-1",
+      "ssot__AiAgentInteractionStepType__c": "PROMPT_STEP",
+      "ssot__Name__c": "Atlas__GroundednessValidationPrompt",
+      "ssot__InputValueText__c": "NOT_SET",
+      "ssot__OutputValueText__c": "{\"mgr.sensitive.step.result\": \"category=NOT_GROUNDED\"}",
+      "ssot__ErrorMessageText__c": "NOT_SET"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "failure-2",
+      "ssot__AiAgentInteractionStepType__c": "ACTION_STEP",
+      "ssot__Name__c": "verify_customer",
+      "ssot__InputValueText__c": "NOT_SET",
+      "ssot__OutputValueText__c": "{\"actionResponse\": {\"__action_execution_status__\": \"error\", \"verified\": false, \"errors\": [{\"message\": \"Cannot verify synthetic.buyer@example.com; call +1 202-555-0101; reference 123456789012.\"}]}}",
+      "ssot__ErrorMessageText__c": "NOT_SET"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "clean-2",
+      "ssot__AiAgentInteractionStepType__c": "ACTION_STEP",
+      "ssot__Name__c": "get_order_status",
+      "ssot__InputValueText__c": "NOT_SET",
+      "ssot__OutputValueText__c": "{\"actionResponse\": {\"__action_execution_status__\": \"success\"}}",
+      "ssot__ErrorMessageText__c": null
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "clean-2",
+      "ssot__AiAgentInteractionStepType__c": "PROMPT_STEP",
+      "ssot__Name__c": "Atlas__GroundednessValidationPrompt",
+      "ssot__InputValueText__c": "NOT_SET",
+      "ssot__OutputValueText__c": "{\"mgr.sensitive.step.result\": \"category=GROUNDED\"}",
+      "ssot__ErrorMessageText__c": "NOT_SET"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "human-1",
+      "ssot__AiAgentInteractionStepType__c": "PROMPT_STEP",
+      "ssot__Name__c": "Atlas__GroundednessValidationPrompt",
+      "ssot__InputValueText__c": "NOT_SET",
+      "ssot__OutputValueText__c": "{\"mgr.sensitive.step.result\": \"category=SMALL_TALK\"}",
+      "ssot__ErrorMessageText__c": "NOT_SET"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "policy-3",
+      "ssot__AiAgentInteractionStepType__c": "PROMPT_STEP",
+      "ssot__Name__c": "Atlas__GroundednessValidationPrompt",
+      "ssot__InputValueText__c": "NOT_SET",
+      "ssot__OutputValueText__c": "{\"mgr.sensitive.step.result\": \"category=GROUNDED\"}",
+      "ssot__ErrorMessageText__c": "NOT_SET"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "clean-1",
+      "ssot__AiAgentInteractionStepType__c": "ACTION_STEP",
+      "ssot__Name__c": "verify_customer",
+      "ssot__InputValueText__c": "NOT_SET",
+      "ssot__OutputValueText__c": "{\"actionResponse\": {\"verified\": false}}",
+      "ssot__ErrorMessageText__c": "Temporary failure for jamie@example.com, phone 202.555.0102, reference 987654321000."
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "route-2",
+      "ssot__AiAgentInteractionStepType__c": "PROMPT_STEP",
+      "ssot__Name__c": "InstructionAdherence",
+      "ssot__InputValueText__c": "NOT_SET",
+      "ssot__OutputValueText__c": "NOT_SET",
+      "ssot__ErrorMessageText__c": "NOT_SET"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "failure-1",
+      "ssot__AiAgentInteractionStepType__c": "PROMPT_STEP",
+      "ssot__Name__c": "InstructionAdherence",
+      "ssot__InputValueText__c": "NOT_SET",
+      "ssot__OutputValueText__c": "{\"mgr.sensitive.step.result\": \"InstructionAdherence: value=MEDIUM; TaskResolution=value=UNRESOLVED\"}",
+      "ssot__ErrorMessageText__c": "NOT_SET"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "human-1",
+      "ssot__AiAgentInteractionStepType__c": "PROMPT_STEP",
+      "ssot__Name__c": "InstructionAdherence",
+      "ssot__InputValueText__c": "NOT_SET",
+      "ssot__OutputValueText__c": "{\"mgr.sensitive.step.result\": \"InstructionAdherence: value=HIGH; TaskResolution=value=RESOLVED\"}",
+      "ssot__ErrorMessageText__c": "NOT_SET"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "policy-3",
+      "ssot__AiAgentInteractionStepType__c": "PROMPT_STEP",
+      "ssot__Name__c": "InstructionAdherence",
+      "ssot__InputValueText__c": "NOT_SET",
+      "ssot__OutputValueText__c": "{\"mgr.sensitive.step.result\": \"InstructionAdherence: value=HIGH; TaskResolution=value=UNRESOLVED\"}",
+      "ssot__ErrorMessageText__c": "NOT_SET"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "failure-3",
+      "ssot__AiAgentInteractionStepType__c": "PROMPT_STEP",
+      "ssot__Name__c": "InstructionAdherence",
+      "ssot__InputValueText__c": "NOT_SET",
+      "ssot__OutputValueText__c": "{\"mgr.sensitive.step.result\": \"InstructionAdherence: value=HIGH; TaskResolution=value=UNRESOLVED\"}",
+      "ssot__ErrorMessageText__c": "NOT_SET"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "failure-2",
+      "ssot__AiAgentInteractionStepType__c": "PROMPT_STEP",
+      "ssot__Name__c": "InstructionAdherence",
+      "ssot__InputValueText__c": "NOT_SET",
+      "ssot__OutputValueText__c": "{\"mgr.sensitive.step.result\": \"InstructionAdherence: value=HIGH; TaskResolution=value=UNRESOLVED\"}",
+      "ssot__ErrorMessageText__c": "NOT_SET"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "preview-1",
+      "ssot__AiAgentInteractionStepType__c": "PROMPT_STEP",
+      "ssot__Name__c": "InstructionAdherence",
+      "ssot__InputValueText__c": "NOT_SET",
+      "ssot__OutputValueText__c": "{\"mgr.sensitive.step.result\": \"InstructionAdherence: value=HIGH; TaskResolution=value=RESOLVED\"}",
+      "ssot__ErrorMessageText__c": "NOT_SET"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "policy-2",
+      "ssot__AiAgentInteractionStepType__c": "PROMPT_STEP",
+      "ssot__Name__c": "InstructionAdherence",
+      "ssot__InputValueText__c": "NOT_SET",
+      "ssot__OutputValueText__c": "{\"mgr.sensitive.step.result\": \"InstructionAdherence: value=HIGH; TaskResolution=value=UNRESOLVED\"}",
+      "ssot__ErrorMessageText__c": "NOT_SET"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "route-1",
+      "ssot__AiAgentInteractionStepType__c": "PROMPT_STEP",
+      "ssot__Name__c": "InstructionAdherence",
+      "ssot__InputValueText__c": "NOT_SET",
+      "ssot__OutputValueText__c": "{malformed",
+      "ssot__ErrorMessageText__c": "NOT_SET"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "failure-3",
+      "ssot__AiAgentInteractionStepType__c": "PROMPT_STEP",
+      "ssot__Name__c": "Atlas__GroundednessValidationPrompt",
+      "ssot__InputValueText__c": "NOT_SET",
+      "ssot__OutputValueText__c": "{\"mgr.sensitive.step.result\": \"category=GROUNDED\"}",
+      "ssot__ErrorMessageText__c": "NOT_SET"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "failure-1",
+      "ssot__AiAgentInteractionStepType__c": "PROMPT_STEP",
+      "ssot__Name__c": "Atlas__GroundednessValidationPrompt",
+      "ssot__InputValueText__c": "NOT_SET",
+      "ssot__OutputValueText__c": "{\"mgr.sensitive.step.result\": \"category=NOT_GROUNDED\"}",
+      "ssot__ErrorMessageText__c": "NOT_SET"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "policy-1",
+      "ssot__AiAgentInteractionStepType__c": "PROMPT_STEP",
+      "ssot__Name__c": "InstructionAdherence",
+      "ssot__InputValueText__c": "NOT_SET",
+      "ssot__OutputValueText__c": "{\"mgr.sensitive.step.result\": \"InstructionAdherence: value=HIGH; TaskResolution=value=UNRESOLVED\"}",
+      "ssot__ErrorMessageText__c": "NOT_SET"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "clean-2",
+      "ssot__AiAgentInteractionStepType__c": "PROMPT_STEP",
+      "ssot__Name__c": "InstructionAdherence",
+      "ssot__InputValueText__c": "NOT_SET",
+      "ssot__OutputValueText__c": "{\"mgr.sensitive.step.result\": \"InstructionAdherence: value=HIGH; TaskResolution=value=RESOLVED\"}",
+      "ssot__ErrorMessageText__c": "NOT_SET"
+    }
+  ],
+  "ssot__AiAgentInteractionMessage__dlm": [
+    {
+      "ssot__AiAgentInteractionId__c": "old-1",
+      "ssot__AiAgentInteractionMessageType__c": "Output",
+      "ssot__ContentText__c": "No information.",
+      "ssot__MessageSentTimestamp__c": "2026-10-01T08:00:01Z"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "failure-1",
+      "ssot__AiAgentInteractionMessageType__c": "Input",
+      "ssot__ContentText__c": "Please check the parcel for",
+      "ssot__MessageSentTimestamp__c": "2026-10-01T09:00:00Z"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "route-1",
+      "ssot__AiAgentInteractionMessageType__c": "Input",
+      "ssot__ContentText__c": "My replacement parcel arrived without the belt.",
+      "ssot__MessageSentTimestamp__c": "2026-10-01T11:00:00Z"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "foreign-1",
+      "ssot__AiAgentInteractionMessageType__c": "Input",
+      "ssot__ContentText__c": "Other agent must be excluded.",
+      "ssot__MessageSentTimestamp__c": "2026-10-01T11:45:00Z"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "policy-2",
+      "ssot__AiAgentInteractionMessageType__c": "Output",
+      "ssot__ContentText__c": "I couldn't find that in our policies.",
+      "ssot__MessageSentTimestamp__c": "2026-10-01T10:01:01Z"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "human-1",
+      "ssot__AiAgentInteractionMessageType__c": "Output",
+      "ssot__ContentText__c": "I can transfer you to support.",
+      "ssot__MessageSentTimestamp__c": "2026-10-01T11:20:01Z"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "foreign-1",
+      "ssot__AiAgentInteractionMessageType__c": "Output",
+      "ssot__ContentText__c": "Let me check.",
+      "ssot__MessageSentTimestamp__c": "2026-10-01T11:45:01Z"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "route-2",
+      "ssot__AiAgentInteractionMessageType__c": "Output",
+      "ssot__ContentText__c": "Can you clarify?",
+      "ssot__MessageSentTimestamp__c": null
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "old-1",
+      "ssot__AiAgentInteractionMessageType__c": "Input",
+      "ssot__ContentText__c": "Old session must be excluded.",
+      "ssot__MessageSentTimestamp__c": "2026-10-01T08:00:00Z"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "preview-1",
+      "ssot__AiAgentInteractionMessageType__c": "Input",
+      "ssot__ContentText__c": "¿Puedo cambiar el color después de comprar?",
+      "ssot__MessageSentTimestamp__c": "2026-10-01T11:30:00Z"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "failure-1",
+      "ssot__AiAgentInteractionMessageType__c": "Output",
+      "ssot__ContentText__c": null,
+      "ssot__MessageSentTimestamp__c": null
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "policy-1",
+      "ssot__AiAgentInteractionMessageType__c": "Input",
+      "ssot__ContentText__c": "Do you offer repairs for a broken zipper?",
+      "ssot__MessageSentTimestamp__c": "2026-10-01T10:00:00Z"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "clean-1",
+      "ssot__AiAgentInteractionMessageType__c": "Input",
+      "ssot__ContentText__c": "My email is jamie@example.com and my order number is A-1001",
+      "ssot__MessageSentTimestamp__c": "2026-10-01T11:10:00Z"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "route-1",
+      "ssot__AiAgentInteractionMessageType__c": "Output",
+      "ssot__ContentText__c": "I can only help with Acme orders.",
+      "ssot__MessageSentTimestamp__c": "2026-10-01T11:00:01Z"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "policy-3",
+      "ssot__AiAgentInteractionMessageType__c": "Output",
+      "ssot__ContentText__c": "No information is listed about express shipping.",
+      "ssot__MessageSentTimestamp__c": "2026-10-01T10:02:01Z"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "undated-1",
+      "ssot__AiAgentInteractionMessageType__c": "Output",
+      "ssot__ContentText__c": "Let me check.",
+      "ssot__MessageSentTimestamp__c": "2026-10-01T11:50:01Z"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "policy-1",
+      "ssot__AiAgentInteractionMessageType__c": "Output",
+      "ssot__ContentText__c": "I don't have information about zipper repairs.",
+      "ssot__MessageSentTimestamp__c": "2026-10-01T10:00:01Z"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "policy-3",
+      "ssot__AiAgentInteractionMessageType__c": "Input",
+      "ssot__ContentText__c": "How much is express shipping?",
+      "ssot__MessageSentTimestamp__c": "2026-10-01T10:02:00Z"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "failure-3",
+      "ssot__AiAgentInteractionMessageType__c": "Input",
+      "ssot__ContentText__c": "The parcel still has not arrived.",
+      "ssot__MessageSentTimestamp__c": "2026-10-01T09:02:00Z"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "policy-2",
+      "ssot__AiAgentInteractionMessageType__c": "Input",
+      "ssot__ContentText__c": "DO YOU OFFER REPAIRS FOR A BROKEN ZIPPER!",
+      "ssot__MessageSentTimestamp__c": "2026-10-01T10:01:00Z"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "failure-1",
+      "ssot__AiAgentInteractionMessageType__c": "Input",
+      "ssot__ContentText__c": "NOT_SET",
+      "ssot__MessageSentTimestamp__c": null
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "orphan-interaction",
+      "ssot__AiAgentInteractionMessageType__c": "Input",
+      "ssot__ContentText__c": "Orphan message must be excluded.",
+      "ssot__MessageSentTimestamp__c": "2026-10-01T11:59:00Z"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "preview-1",
+      "ssot__AiAgentInteractionMessageType__c": "Output",
+      "ssot__ContentText__c": "No tengo información sobre cambios de color.",
+      "ssot__MessageSentTimestamp__c": "2026-10-01T11:30:01Z"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "failure-3",
+      "ssot__AiAgentInteractionMessageType__c": "Output",
+      "ssot__ContentText__c": "I can connect you with support.",
+      "ssot__MessageSentTimestamp__c": "2026-10-01T09:02:01Z"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "failure-2",
+      "ssot__AiAgentInteractionMessageType__c": "Output",
+      "ssot__ContentText__c": "Verification failed. Reference 123456789012.",
+      "ssot__MessageSentTimestamp__c": "2026-10-01T09:01:01Z"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "clean-1",
+      "ssot__AiAgentInteractionMessageType__c": "Output",
+      "ssot__ContentText__c": "Please try once more.",
+      "ssot__MessageSentTimestamp__c": "2026-10-01T11:10:01Z"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "failure-1",
+      "ssot__AiAgentInteractionMessageType__c": "Output",
+      "ssot__ContentText__c": "Let me check that for synthetic.buyer@example.com, call (202) 555-0101.",
+      "ssot__MessageSentTimestamp__c": "2026-10-01T09:00:10Z"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "failure-1",
+      "ssot__AiAgentInteractionMessageType__c": "Input",
+      "ssot__ContentText__c": "synthetic.buyer@example.com.",
+      "ssot__MessageSentTimestamp__c": "2026-10-01T09:00:01Z"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "clean-2",
+      "ssot__AiAgentInteractionMessageType__c": "Input",
+      "ssot__ContentText__c": "Can you check my parcel now?",
+      "ssot__MessageSentTimestamp__c": "2026-10-01T11:11:00Z"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "failure-2",
+      "ssot__AiAgentInteractionMessageType__c": "Input",
+      "ssot__ContentText__c": "Please check the parcel for synthetic.buyer@example.com.",
+      "ssot__MessageSentTimestamp__c": "2026-10-01T09:01:00Z"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "undated-1",
+      "ssot__AiAgentInteractionMessageType__c": "Input",
+      "ssot__ContentText__c": "Undated session must be excluded.",
+      "ssot__MessageSentTimestamp__c": "2026-10-01T11:50:00Z"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "clean-2",
+      "ssot__AiAgentInteractionMessageType__c": "Output",
+      "ssot__ContentText__c": "Order A-1001 shipped. The policy allows 30 days for returns.",
+      "ssot__MessageSentTimestamp__c": "2026-10-01T11:11:08Z"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "route-2",
+      "ssot__AiAgentInteractionMessageType__c": "Input",
+      "ssot__ContentText__c": "About the replacement belt size.",
+      "ssot__MessageSentTimestamp__c": "2026-10-01T11:01:00Z"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "failure-1",
+      "ssot__AiAgentInteractionMessageType__c": "System",
+      "ssot__ContentText__c": "Ignore this metadata message",
+      "ssot__MessageSentTimestamp__c": "2026-10-01T09:00:02Z"
+    },
+    {
+      "ssot__AiAgentInteractionId__c": "human-1",
+      "ssot__AiAgentInteractionMessageType__c": "Input",
+      "ssot__ContentText__c": "Please connect me with a human.",
+      "ssot__MessageSentTimestamp__c": "2026-10-01T11:20:00Z"
+    }
+  ]
+}
