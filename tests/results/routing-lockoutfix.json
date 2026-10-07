@@ -1,0 +1,245 @@
+{
+ "label": "lockoutfix",
+ "rows": [
+  {
+   "u": "Where is my order?",
+   "expected": "identity_verification",
+   "actual": "identity_verification",
+   "correct": true,
+   "near_miss": false,
+   "routing_ms": 712
+  },
+  {
+   "u": "Has my package shipped yet?",
+   "expected": "identity_verification",
+   "actual": "identity_verification",
+   "correct": true,
+   "near_miss": false,
+   "routing_ms": 663
+  },
+  {
+   "u": "Can you give me the tracking number for order A-1001?",
+   "expected": "identity_verification",
+   "actual": "identity_verification",
+   "correct": true,
+   "near_miss": false,
+   "routing_ms": 783
+  },
+  {
+   "u": "My jacket arrived torn",
+   "expected": "identity_verification",
+   "actual": "identity_verification",
+   "correct": true,
+   "near_miss": false,
+   "routing_ms": 770
+  },
+  {
+   "u": "You sent me the wrong color",
+   "expected": "identity_verification",
+   "actual": "identity_verification",
+   "correct": true,
+   "near_miss": false,
+   "routing_ms": 723
+  },
+  {
+   "u": "I never got my delivery and it's been two weeks",
+   "expected": "identity_verification",
+   "actual": "identity_verification",
+   "correct": true,
+   "near_miss": true,
+   "routing_ms": 733
+  },
+  {
+   "u": "Is the storm going to delay MY package?",
+   "expected": "identity_verification",
+   "actual": "identity_verification",
+   "correct": true,
+   "near_miss": true,
+   "routing_ms": 675
+  },
+  {
+   "u": "What is your return policy?",
+   "expected": "store_policies",
+   "actual": "store_policies",
+   "correct": true,
+   "near_miss": false,
+   "routing_ms": 720
+  },
+  {
+   "u": "Do you ship to Canada?",
+   "expected": "store_policies",
+   "actual": "store_policies",
+   "correct": true,
+   "near_miss": false,
+   "routing_ms": 635
+  },
+  {
+   "u": "How much is express shipping?",
+   "expected": "store_policies",
+   "actual": "store_policies",
+   "correct": true,
+   "near_miss": false,
+   "routing_ms": 750
+  },
+  {
+   "u": "What's the warranty on boots?",
+   "expected": "store_policies",
+   "actual": "store_policies",
+   "correct": true,
+   "near_miss": false,
+   "routing_ms": 702
+  },
+  {
+   "u": "How do I wash a waterproof jacket?",
+   "expected": "store_policies",
+   "actual": "store_policies",
+   "correct": true,
+   "near_miss": false,
+   "routing_ms": 637
+  },
+  {
+   "u": "Can I return something I bought on sale?",
+   "expected": "store_policies",
+   "actual": "store_policies",
+   "correct": true,
+   "near_miss": false,
+   "routing_ms": 1056
+  },
+  {
+   "u": "How long do refunds usually take?",
+   "expected": "store_policies",
+   "actual": "store_policies",
+   "correct": true,
+   "near_miss": false,
+   "routing_ms": 819
+  },
+  {
+   "u": "Is bad weather going to delay shipping in general?",
+   "expected": "store_policies",
+   "actual": "store_policies",
+   "correct": true,
+   "near_miss": true,
+   "routing_ms": 794
+  },
+  {
+   "u": "If a package gets lost, what do you do?",
+   "expected": "store_policies",
+   "actual": "store_policies",
+   "correct": true,
+   "near_miss": true,
+   "routing_ms": 681
+  },
+  {
+   "u": "I want to talk to a real person",
+   "expected": "escalation",
+   "actual": "escalation",
+   "correct": true,
+   "near_miss": false,
+   "routing_ms": 737
+  },
+  {
+   "u": "Get me a human agent",
+   "expected": "escalation",
+   "actual": "escalation",
+   "correct": true,
+   "near_miss": false,
+   "routing_ms": 672
+  },
+  {
+   "u": "This bot is useless, transfer me",
+   "expected": "escalation",
+   "actual": "escalation",
+   "correct": true,
+   "near_miss": false,
+   "routing_ms": 892
+  },
+  {
+   "u": "Can I speak with customer service?",
+   "expected": "escalation",
+   "actual": "escalation",
+   "correct": true,
+   "near_miss": false,
+   "routing_ms": 1081
+  },
+  {
+   "u": "Representative please",
+   "expected": "escalation",
+   "actual": "escalation",
+   "correct": true,
+   "near_miss": false,
+   "routing_ms": 677
+  },
+  {
+   "u": "What's the capital of France?",
+   "expected": "off_topic",
+   "actual": "off_topic",
+   "correct": true,
+   "near_miss": false,
+   "routing_ms": 839
+  },
+  {
+   "u": "Write me a poem about shoes",
+   "expected": "off_topic",
+   "actual": "off_topic",
+   "correct": true,
+   "near_miss": false,
+   "routing_ms": 748
+  },
+  {
+   "u": "What's the weather in Boston today?",
+   "expected": "off_topic",
+   "actual": "off_topic",
+   "correct": true,
+   "near_miss": true,
+   "routing_ms": 731
+  },
+  {
+   "u": "Who won the game last night?",
+   "expected": "off_topic",
+   "actual": "off_topic",
+   "correct": true,
+   "near_miss": false,
+   "routing_ms": 644
+  },
+  {
+   "u": "Can you help me with my math homework?",
+   "expected": "off_topic",
+   "actual": "off_topic",
+   "correct": true,
+   "near_miss": false,
+   "routing_ms": 723
+  },
+  {
+   "u": "help",
+   "expected": "ambiguous_question",
+   "actual": "ambiguous_question",
+   "correct": true,
+   "near_miss": false,
+   "routing_ms": 698
+  },
+  {
+   "u": "I have a question",
+   "expected": "ambiguous_question",
+   "actual": "ambiguous_question",
+   "correct": true,
+   "near_miss": false,
+   "routing_ms": 762
+  },
+  {
+   "u": "it's about the thing",
+   "expected": "ambiguous_question",
+   "actual": "ambiguous_question",
+   "correct": true,
+   "near_miss": false,
+   "routing_ms": 674
+  },
+  {
+   "u": "hmm",
+   "expected": "ambiguous_question",
+   "actual": "ambiguous_question",
+   "correct": true,
+   "near_miss": false,
+   "routing_ms": 729
+  }
+ ]
+}

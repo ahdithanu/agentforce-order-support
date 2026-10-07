@@ -1,0 +1,177 @@
+{
+ "bundle": "Acme_Order_Support",
+ "runs": 5,
+ "passed": 5,
+ "results": [
+  {
+   "run": 1,
+   "pass": true,
+   "problems": [],
+   "attempts": [
+    {
+     "attempt": 1,
+     "verify_called": true,
+     "right_values": true,
+     "counter_moved": true,
+     "fixed_sentence": true,
+     "handed_off": null,
+     "reply": "Those details don't match our records. Please re-enter both your email address and order number, or let me know if you'd like to connect with a person for help."
+    },
+    {
+     "attempt": 2,
+     "verify_called": true,
+     "right_values": true,
+     "counter_moved": true,
+     "fixed_sentence": true,
+     "handed_off": null,
+     "reply": "Those details don't match our records. Please re-enter both the email address and order number, or let me know if you'd like to connect with a person for help."
+    },
+    {
+     "attempt": 3,
+     "verify_called": true,
+     "right_values": true,
+     "counter_moved": true,
+     "fixed_sentence": null,
+     "handed_off": true,
+     "reply": "User requested escalation to human. "
+    }
+   ]
+  },
+  {
+   "run": 2,
+   "pass": true,
+   "problems": [],
+   "attempts": [
+    {
+     "attempt": 1,
+     "verify_called": true,
+     "right_values": true,
+     "counter_moved": true,
+     "fixed_sentence": true,
+     "handed_off": null,
+     "reply": "Those details don't match our records. Please re-enter both the email address you used at checkout and your order number, or let me know if you\u2019d like to connec"
+    },
+    {
+     "attempt": 2,
+     "verify_called": true,
+     "right_values": true,
+     "counter_moved": true,
+     "fixed_sentence": true,
+     "handed_off": null,
+     "reply": "Those details don't match our records. Please re-enter both the email address you used at checkout and your order number, or let me know if you\u2019d like to connec"
+    },
+    {
+     "attempt": 3,
+     "verify_called": true,
+     "right_values": true,
+     "counter_moved": true,
+     "fixed_sentence": null,
+     "handed_off": true,
+     "reply": "User requested escalation to human. "
+    }
+   ]
+  },
+  {
+   "run": 3,
+   "pass": true,
+   "problems": [],
+   "attempts": [
+    {
+     "attempt": 1,
+     "verify_called": true,
+     "right_values": true,
+     "counter_moved": true,
+     "fixed_sentence": true,
+     "handed_off": null,
+     "reply": "Those details don't match our records. Please re-enter both the email address you used at checkout and your order number, or let me know if you\u2019d like to connec"
+    },
+    {
+     "attempt": 2,
+     "verify_called": true,
+     "right_values": true,
+     "counter_moved": true,
+     "fixed_sentence": true,
+     "handed_off": null,
+     "reply": "Those details don't match our records. Please re-enter both the email and the order number, or let me know if you\u2019d like to connect with a person for help."
+    },
+    {
+     "attempt": 3,
+     "verify_called": true,
+     "right_values": true,
+     "counter_moved": true,
+     "fixed_sentence": null,
+     "handed_off": true,
+     "reply": "User requested escalation to human. "
+    }
+   ]
+  },
+  {
+   "run": 4,
+   "pass": true,
+   "problems": [],
+   "attempts": [
+    {
+     "attempt": 1,
+     "verify_called": true,
+     "right_values": true,
+     "counter_moved": true,
+     "fixed_sentence": true,
+     "handed_off": null,
+     "reply": "Those details don't match our records. Please re-enter both your email and order number, or let me know if you'd like to connect with a person for help."
+    },
+    {
+     "attempt": 2,
+     "verify_called": true,
+     "right_values": true,
+     "counter_moved": true,
+     "fixed_sentence": true,
+     "handed_off": null,
+     "reply": "Those details don't match our records. Please re-enter both the email and the order number, or let me know if you'd like to connect with a person for help."
+    },
+    {
+     "attempt": 3,
+     "verify_called": true,
+     "right_values": true,
+     "counter_moved": true,
+     "fixed_sentence": null,
+     "handed_off": true,
+     "reply": "User requested escalation to human. "
+    }
+   ]
+  },
+  {
+   "run": 5,
+   "pass": true,
+   "problems": [],
+   "attempts": [
+    {
+     "attempt": 1,
+     "verify_called": true,
+     "right_values": true,
+     "counter_moved": true,
+     "fixed_sentence": true,
+     "handed_off": null,
+     "reply": "Those details don't match our records. Please re-enter both the email address you used at checkout and your order number, or let me know if you\u2019d like to connec"
+    },
+    {
+     "attempt": 2,
+     "verify_called": true,
+     "right_values": true,
+     "counter_moved": true,
+     "fixed_sentence": true,
+     "handed_off": null,
+     "reply": "Those details don't match our records. Please re-enter both the email address you used at checkout and your order number, or let me know if you\u2019d like to connec"
+    },
+    {
+     "attempt": 3,
+     "verify_called": true,
+     "right_values": true,
+     "counter_moved": true,
+     "fixed_sentence": null,
+     "handed_off": true,
+     "reply": "User requested escalation to human. "
+    }
+   ]
+  }
+ ]
+}

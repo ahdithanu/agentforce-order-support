@@ -139,6 +139,11 @@ subagent identity_verification:
     label: "Identity Verification"
     description: "Verify the customer with the email address and order number on their order"
 
+    # The failure sentence exists only in the turn where verify actually ran and failed, so the
+    # model can't repeat it from an earlier turn without calling verify again.
+    before_reasoning:
+        set @variables.verify_failure_message = ""
+
     reasoning:
         instructions: ->
             if @variables.customer_verified == True:
@@ -149,14 +154,19 @@ subagent identity_verification:
             else if @variables.failed_attempts >= 3:
                 | For the customer's security, verification is locked after three unsuccessful
                   attempts. Tell them briefly that you are connecting them with a team member.
+            else if @variables.verify_failure_message != "":
+                | The check just ran and did not pass. Say exactly "{!@variables.verify_failure_message}"
+                  and nothing about which detail it was. Then ask them to re-enter both the email
+                  and the order number, or offer to connect them with a person.
             else:
                 | Before sharing any order details, you must verify the customer. Ask for the
                   email address used at checkout and the order number (for example A-1001).
-                  When you have both, call {!@actions.verify}. Do not call it with guessed values.
-                  If verification fails, say exactly "{!@variables.verify_failure_message}" and nothing
-                  about which detail it was. Then ask them to re-enter both the email and the order
-                  number, or offer to connect them with a person.
-                  Unsuccessful attempts so far: {!@variables.failed_attempts} of 3.
+                  Every time the customer gives an email and an order number, call
+                  {!@actions.verify} with exactly those values. That includes retries and values
+                  that look mistyped or that you think are wrong: you cannot tell whether details
+                  match, only {!@actions.verify} can. Never tell the customer their details do or
+                  don't match unless {!@actions.verify} ran in this turn. Do not call it with
+                  guessed values.
         actions:
             verify: @actions.verify_customer
                 description: "Verify the customer using their checkout email and order number"

@@ -59,9 +59,13 @@ jobs:
           python scripts/rag_eval.py ci-org tests/rag-eval.yaml > nightly/rag-en.json
           python scripts/rag_eval.py ci-org tests/rag-eval-es.yaml > nightly/rag-es.json
           python scripts/routing_eval.py ci-org nightly > nightly/routing.json
+          python scripts/lockout_eval.py ci-org 3 > nightly/lockout.json
       - name: Check thresholds
         if: steps.login.outputs.ok == 'true'
         run: python scripts/check_eval_thresholds.py --rag nightly/rag-en.json --rag-es nightly/rag-es.json --routing nightly/routing.json
+      - name: Lockout check (every attempt must call verify; handoff on the third failure)
+        if: steps.login.outputs.ok == 'true'
+        run: python -c "import json,sys; d=json.load(open('nightly/lockout.json')); print(d['passed'], '/', d['runs']); sys.exit(0 if d['passed']==d['runs'] else 1)"
       - uses: actions/upload-artifact@v4
         if: always() && steps.login.outputs.ok == 'true'
         with:
