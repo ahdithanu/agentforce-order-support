@@ -174,7 +174,7 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
     <div class="stats">
       <div class="stat"><b>8 <span class="arrow">→</span> <span class="to">0</span></b><span>actions blocked at runtime (no access)</span></div>
       <div class="stat"><b>3 <span class="arrow">→</span> <span class="to">0</span></b><span>replies claiming to check without calling a tool</span></div>
-      <div class="stat"><b>11/11</b><span>Testing Center cases pass on live v11</span></div>
+      <div class="stat"><b>11/11</b><span>Testing Center cases pass on live v12</span></div>
       <div class="stat"><b>92%</b><span>groundedness on the live run (platform evaluator)</span></div>
     </div>
   </header>
@@ -193,14 +193,15 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
       <div class="cat"><b>Voice with coded read-back</b><span class="res">3 / 3 read-backs</span><span>The <a href="https://ahdithanu.github.io/agentforce-order-support/voice/">voice variant</a> reads the order number and email back, and verification stays hidden until the caller confirms. It's enforced in Agent Script, not the prompt.</span></div>
     </div>
     <table>
-      <thead><tr><th>Regression on live v11</th><th>Result</th></tr></thead>
+      <thead><tr><th>Regression</th><th>Result</th></tr></thead>
       <tbody>
-        <tr><td>Testing Center (functional)</td><td>11/11 outcome · topic 9/9 · actions 4/4, no hung cases</td></tr>
-        <tr><td>Red team (OWASP, 12 attacks)</td><td>12/12 resisted · grade A</td></tr>
-        <tr><td>Policy RAG, English</td><td>12/12 answers · 4/4 declines (one grader phrase fixed)</td></tr>
-        <tr><td>Policy RAG, Spanish</td><td>11/12 answers · 4/4 declines. The miss: a "late package" question routed to verification</td></tr>
-        <tr><td>Routing (30 utterances)</td><td>30/30</td></tr>
-        <tr><td>Production traces (<a href="https://ahdithanu.github.io/agentforce-order-support/observability/">dashboard</a>)</td><td>33 published sessions · 79% contained · 0 action errors · turn p50 2.6 s</td></tr>
+        <tr><td>Testing Center (functional), live v12</td><td>11/11 outcome · topic 9/9 · actions 4/4, no hung cases</td></tr>
+        <tr><td>Lockout check (5 live runs)</td><td>0/5 before the fix, 5/5 after: the check runs on every attempt and the third failure hands off. Found through the trace review, not the suites above</td></tr>
+        <tr><td>Red team (OWASP, 12 attacks), v11</td><td>12/12 resisted · grade A</td></tr>
+        <tr><td>Policy RAG, English, v11</td><td>12/12 answers · 4/4 declines (one grader phrase fixed)</td></tr>
+        <tr><td>Policy RAG, Spanish, v11</td><td>11/12 answers · 4/4 declines. The miss: a "late package" question routed to verification</td></tr>
+        <tr><td>Routing (30 utterances), v12 draft</td><td>30/30</td></tr>
+        <tr><td>Production traces (<a href="https://ahdithanu.github.io/agentforce-order-support/observability/">dashboard</a>)</td><td>33 sessions of demo and test traffic · 79% contained · 0 action errors · turn p50 2.6 s</td></tr>
       </tbody>
     </table>
   </section>
@@ -476,7 +477,7 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
           <tr><td>Explain why a prompt failed and what you'd change</td><td>Story 1: diagnosed from the trace, fixed in two layers, turned into a metric</td></tr>
           <tr><td>Own components end-to-end, observable in production</td><td>Local compile → org validation → draft deploy → preview traces → KPI report</td></tr>
           <tr><td>Data modeling, APIs, integration patterns</td><td>Order extension with an external-ID upsert key, Case→Order lookup, idempotent seed, USER_MODE Apex</td></tr>
-          <tr><td>Evaluate AI outputs with engineering rigor</td><td>Testing Center regression against the live agent: now 11/11 on v11, after correcting 4 spec errors early on. OWASP red team: grade A, re-run on v11 with 12/12 resisted. Bilingual RAG eval and a 30-utterance routing set, with nightly live runs in CI.</td></tr>
+          <tr><td>Evaluate AI outputs with engineering rigor</td><td>Testing Center regression against the live agent: now 11/11 on v12, after correcting 4 spec errors early on. OWASP red team: grade A, re-run on v11 with 12/12 resisted. Bilingual RAG eval and a 30-utterance routing set, with nightly live runs in CI.</td></tr>
           <tr><td>Agent performance dashboards and KPI reporting</td><td>Containment, escalation, tool errors, unbacked claims, groundedness, safety, latency</td></tr>
           <tr><td>Surface platform gaps to product</td><td>Testing Center reports action definition names (docs say invocation names); random per-case hangs; the LabBox doc queries a field that doesn't exist in API v67; <code>--sfdx-url-stdin</code> needs <code>-</code>; <code>sf agent test run</code> has no simulate mode; the consumer secret can't be retrieved when the admin email is a provisioning mailbox</td></tr>
         </tbody>
