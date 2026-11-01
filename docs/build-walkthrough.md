@@ -1,6 +1,6 @@
-# Acme Order Support: FDE build walkthrough
+# Acme Order Support: build walkthrough
 
-What I built on the night of Sept 28, 2026 in an Agentforce LabBox, mapped to the Salesforce FDE role. Everything below is in this repo and was run for real. Numbers come from `tests/reports/kpi-report.html`.
+What I built on the night of Sept 28, 2026 in an Agentforce LabBox. Everything below is in this repo and was run for real. Numbers come from `tests/reports/kpi-report.html`.
 
 ## 60-second version
 
@@ -54,7 +54,7 @@ The first Testing Center run against the live agent failed 4 of 11 cases. None w
 
 Bonus setup story: the CLI's OAuth login timed out twice. Node 26 had it listening only on IPv6 (`[::1]:1717`), and the browser kept reusing a different org's session. I fixed it with `NODE_OPTIONS=--dns-result-order=ipv4first`, then switched to the Labs device flow so credentials never went through a browser or chat. Being able to fix environment problems is half the job when you're working on-site with customers.
 
-## Mapping to the job description
+## What it demonstrates
 
 | JD line | Evidence in this repo |
 |---|---|
@@ -76,7 +76,7 @@ Bonus setup story: the CLI's OAuth login timed out twice. Node 26 had it listeni
 4. **Evals in CI:** deploy both suites to a sandbox, run them on every change to the agent file, and block the release on any critical security failure.
 5. **Observability:** turn on Session Tracing and Agent Analytics, feed the same KPIs from production sessions (containment, escalations with reasons, tool errors), and review weekly with the Deployment Strategist against the customer's business KPI (cost per contact, CSAT).
 
-## Likely questions, short answers
+## Questions about the build, short answers
 
 - **Why Agent Script instead of Builder?** You can diff and review it, compile it locally, and deploy it through CI. Builder is great for discovery with the customer; code is what you maintain.
 - **Service vs. employee agent?** A service agent is customer-facing, runs as the Einstein Agent User, needs that license, and can escalate over Messaging. An employee agent runs as the logged-in user and can't have `default_agent_user` or escalation.

@@ -38,7 +38,7 @@ All data is fictional. The agent runs in an Agentforce LabBox, a Salesforce Deve
 | `scripts/bootstrap_org.sh` | One-command rebuild of the whole demo in any Agentforce org |
 | `scripts/agent_api_client.py` | Headless Agent API client (OAuth client credentials) |
 | `scripts/seed-acme-orders.apex` | Idempotent demo data |
-| `docs/` | Agent spec, interview walkthrough, and the GitHub Pages site |
+| `docs/` | Agent spec, build walkthrough, and the GitHub Pages site |
 
 ## Results
 
