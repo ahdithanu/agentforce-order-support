@@ -56,7 +56,7 @@ Bonus setup story: the CLI's OAuth login timed out twice. Node 26 had it listeni
 
 ## What it demonstrates
 
-| JD line | Evidence in this repo |
+| Skill | Evidence in this repo |
 |---|---|
 | Design agent intelligence: prompts, reasoning, tool calls | `Acme_Order_Support.agent`: rules enforced in code vs. left to the model, bound inputs, deterministic lookup, confirmation |
 | Explain why a prompt failed and what you'd change | Story 1, found from the trace, fixed in two layers, tracked as a metric |
