@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acme Order Support Replay</title>
+<meta name="description" content="Self-playing replay of real conversations with an Agentforce service agent, with what ran behind each reply.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root {
+  --bg: #f6f7f4; --surface: #ffffff; --ink: #17201d; --muted: #5d6863; --line: #dde2dc;
+  --accent: #0f6b5c; --accent-soft: #e2f0ec; --model: #7a4bc2; --model-soft: #efe8f9;
+  --bad: #b3261e; --bad-soft: #fbe9e7; --user: #17201d; --user-ink: #ffffff; --code-bg: #eef1ed;
+  --display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", sans-serif;
+  --body: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111614; --surface: #19201d; --ink: #e7ece9; --muted: #9aa6a0; --line: #2a3430;
+    --accent: #4fc2a9; --accent-soft: #173a33; --model: #b99af0; --model-soft: #2c2340;
+    --bad: #f08a80; --bad-soft: #3a1e1b; --user: #e7ece9; --user-ink: #111614; --code-bg: #1f2724; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111614; --surface: #19201d; --ink: #e7ece9; --muted: #9aa6a0; --line: #2a3430;
+  --accent: #4fc2a9; --accent-soft: #173a33; --model: #b99af0; --model-soft: #2c2340;
+  --bad: #f08a80; --bad-soft: #3a1e1b; --user: #e7ece9; --user-ink: #111614; --code-bg: #1f2724; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 16px/1.55 var(--body); margin: 0; }
+a { color: var(--accent); }
+.page { max-width: 1120px; margin: 0 auto; padding: 32px 16px 48px; display: grid; gap: 20px; }
+header { display: grid; gap: 8px; }
+.eyebrow { font: 600 12px/1 var(--body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+h1 { font: 700 clamp(28px, 5vw, 40px)/1.1 var(--display); margin: 0; text-wrap: balance; }
+.sub { color: var(--muted); max-width: 72ch; margin: 0; }
+.bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.tab { font: 500 14px/1 var(--body); padding: 9px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; }
+.tab[aria-selected="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.ctrl { margin-left: auto; display: flex; gap: 8px; }
+.ctrl button { font: 600 14px/1 var(--body); padding: 9px 14px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; }
+button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.stage { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 16px; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; display: flex; flex-direction: column; min-height: 520px; overflow: hidden; }
+.panel h2 { font: 600 13px/1 var(--body); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin: 0; padding: 14px 16px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; gap: 8px; }
+.scn { padding: 12px 16px; border-bottom: 1px solid var(--line); }
+.scn b { font: 700 18px/1.2 var(--display); display: block; }
+.scn span { color: var(--muted); font-size: 14px; }
+.chat, .ran { padding: 16px; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; flex: 1; scroll-behavior: smooth; }
+.msg { max-width: 85%; padding: 10px 13px; border-radius: 14px; font-size: 15px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.msg.user { align-self: flex-end; background: var(--user); color: var(--user-ink); border-bottom-right-radius: 4px; }
+.msg.agent { align-self: flex-start; background: var(--code-bg); border-bottom-left-radius: 4px; }
+.event { align-self: center; font: 600 12px/1.3 var(--body); color: var(--accent); background: var(--accent-soft); padding: 6px 10px; border-radius: 999px; }
+.dots { align-self: flex-start; background: var(--code-bg); border-radius: 14px; padding: 12px 14px; display: flex; gap: 4px; }
+.dots i { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); animation: blink 1s infinite; }
+.dots i:nth-child(2) { animation-delay: .15s; } .dots i:nth-child(3) { animation-delay: .3s; }
+@keyframes blink { 0%, 100% { opacity: .25; } 50% { opacity: 1; } }
+.step { border: 1px solid var(--line); border-radius: 10px; padding: 9px 11px; display: grid; gap: 4px; font-size: 14px; }
+.step .who { font: 600 11px/1 var(--body); letter-spacing: 0.06em; text-transform: uppercase; }
+.step.model { border-left: 3px solid var(--model); } .step.model .who { color: var(--model); }
+.step.code { border-left: 3px solid var(--accent); } .step.code .who { color: var(--accent); }
+.step.code.fail { border-left-color: var(--bad); } .step.code.fail .who { color: var(--bad); }
+.step .what { font-weight: 600; }
+.step .out { font: 12.5px/1.45 var(--mono); color: var(--muted); overflow-wrap: anywhere; }
+.turnlabel { font: 600 12px/1 var(--body); color: var(--muted); margin-top: 4px; }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 13px; color: var(--muted); }
+.legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.legend .m::before { background: var(--model); } .legend .c::before { background: var(--accent); } .legend .f::before { background: var(--bad); }
+footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 14px; display: grid; gap: 6px; }
+@media (max-width: 760px) {
+  .stage { grid-template-columns: 1fr; }
+  .panel { min-height: 0; }
+  .chat { max-height: 420px; } .ran { max-height: 320px; }
+  .ctrl { margin-left: 0; width: 100%; } .ctrl button { flex: 1; }
+}
+@media (prefers-reduced-motion: reduce) { .dots i { animation: none; } .chat, .ran { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+<main class="page">
+  <header>
+    <span class="eyebrow">Replay · plays on its own</span>
+    <h1>Acme Order Support, in action</h1>
+    <p class="sub">Real conversations with an Agentforce service agent, recorded against the live agent and replayed here. On the right is what actually ran for each reply: what the model decided, and what code did. Customers and orders are fictional.</p>
+  </header>
+
+  <div class="bar" role="tablist" aria-label="Scenarios" id="tabs"></div>
+
+  <div class="stage">
+    <section class="panel" aria-label="Conversation">
+      <h2><span>Customer chat</span><span id="progress"></span></h2>
+      <div class="scn"><b id="scnTitle"></b><span id="scnNote"></span></div>
+      <div class="chat" id="chat" aria-live="polite"></div>
+    </section>
+    <section class="panel" aria-label="What ran behind each reply">
+      <h2><span>What ran</span></h2>
+      <div class="scn legend"><span class="m">Model decided</span><span class="c">Code ran</span><span class="f">Check failed</span></div>
+      <div class="ran" id="ran"></div>
+    </section>
+  </div>
+
+  <div class="bar">
+    <span class="sub" id="status"></span>
+    <div class="ctrl"><button id="play" type="button">Pause</button><button id="next" type="button">Next scenario</button></div>
+  </div>
+
+  <footer>
+    <span id="provenance">Loading recordings…</span>
+    <span>Built with Agent Script, Apex, an autolaunched Flow, Data Cloud retrieval and Omni-Channel. <a href="../">Full build walkthrough</a> · <a href="https://github.com/ahdithanu/agentforce-order-support">Source on GitHub</a></span>
+  </footer>
+</main>
+
+<script>
+const LABELS = {
+  verify_customer: ["Apex", "Verify customer"],
+  get_order_status: ["Apex", "Read order status"],
+  record_handoff_context: ["Apex", "Open handoff Case for the person taking over"],
+  search_policies: ["Data Cloud", "Search the policy documents"],
+  create_support_case: ["Apex", "Open support Case"],
+  start_return_flow: ["Flow", "Check return policy and start return"],
+};
+const SUBAGENTS = {
+  identity_verification: "Identity verification", order_status: "Order status", support_case: "Support case",
+  store_policies: "Store policies", escalation: "Hand off to a person", returns: "Returns",
+};
+// ?motion=1 forces the animation, e.g. for a screen recording on a machine with reduced motion on.
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches && !new URLSearchParams(location.search).has("motion");
+const $ = (id) => document.getElementById(id);
+let data, sIdx = 0, playing = true, run = 0;
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, reduce ? 0 : ms));
+function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+function add(box, node) { box.appendChild(node); box.scrollTop = box.scrollHeight; return node; }
+function fmt(out) { return Object.entries(out).map(([k, v]) => `${k}: ${v}`).join(" · "); }
+
+async function waitWhilePaused(token) { while (!reduce && !playing && token === run) await new Promise((r) => setTimeout(r, 200)); }
+
+function selectTab(i) {
+  [...$("tabs").children].forEach((t, j) => t.setAttribute("aria-selected", j === i ? "true" : "false"));
+}
+
+async function playScenario(i, token) {
+  const sc = data.scenarios[i];
+  selectTab(i);
+  $("scnTitle").textContent = sc.title; $("scnNote").textContent = sc.note;
+  $("progress").textContent = `${i + 1} of ${data.scenarios.length}`;
+  $("chat").replaceChildren(); $("ran").replaceChildren();
+  for (const [n, t] of sc.turns.entries()) {
+    if (token !== run) return;
+    await waitWhilePaused(token);
+    // Customer types
+    const bubble = add($("chat"), el("div", "msg user", reduce ? t.user : ""));
+    if (!reduce) for (const ch of t.user) { if (token !== run) return; bubble.textContent += ch; await sleep(Math.min(28, 900 / t.user.length)); }
+    await sleep(350);
+    // What ran
+    add($("ran"), el("div", "turnlabel", `Turn ${n + 1}`));
+    const dots = reduce ? null : add($("chat"), el("div", "dots")); if (dots) dots.innerHTML = "<i></i><i></i><i></i>";
+    if (t.subagent && SUBAGENTS[t.subagent]) {
+      await sleep(450);
+      const s = add($("ran"), el("div", "step model"));
+      s.append(el("span", "who", "Model routed to"), el("span", "what", SUBAGENTS[t.subagent]));
+    }
+    for (const a of t.actions) {
+      await sleep(550);
+      const [who, what] = LABELS[a.name] || ["Code", a.name];
+      const failed = a.out && a.out.verified === false;
+      const s = add($("ran"), el("div", "step code" + (failed ? " fail" : "")));
+      s.append(el("span", "who", who), el("span", "what", what));
+      if (a.out && Object.keys(a.out).length) s.append(el("span", "out", fmt(a.out)));
+    }
+    if (t.handoff) {
+      await sleep(450);
+      const s = add($("ran"), el("div", "step code"));
+      s.append(el("span", "who", "Omni-Channel"), el("span", "what", "Chat routed to the human agent queue"));
+    }
+    await sleep(700);
+    if (dots) dots.remove();
+    if (token !== run) return;
+    for (const text of t.agent) add($("chat"), el("div", "msg agent", text));
+    if (t.handoff) add($("chat"), el("div", "event", "Handed off to a person, with a summary Case"));
+    await sleep(2200);
+  }
+}
+
+async function loop(start) {
+  const token = ++run; sIdx = start;
+  while (token === run) {
+    await playScenario(sIdx, token);
+    if (token !== run || reduce) return;
+    await sleep(2500);
+    sIdx = (sIdx + 1) % data.scenarios.length;
+  }
+}
+
+function setPlaying(p) { playing = p; $("play").textContent = p ? "Pause" : "Play"; $("status").textContent = p ? "" : "Paused"; }
+
+fetch("transcripts.json").then((r) => r.json()).then((d) => {
+  data = d;
+  d.scenarios.forEach((sc, i) => {
+    const b = el("button", "tab", sc.title); b.type = "button"; b.setAttribute("role", "tab");
+    b.addEventListener("click", () => { setPlaying(true); loop(i); });
+    $("tabs").appendChild(b);
+  });
+  $("provenance").textContent = `Recorded ${d.recorded} against agent ${d.version || ""} with live actions (real Apex, Flow and Data Cloud calls in a demo org). Messages are verbatim; a handoff is shown as an event.`;
+  if (reduce) { $("play").hidden = true; $("status").textContent = "Animation is off (reduced motion). Pick a scenario."; }
+  loop(0);
+}).catch(() => { $("provenance").textContent = "Could not load the recordings."; });
+
+$("play").addEventListener("click", () => setPlaying(!playing));
+$("next").addEventListener("click", () => { setPlaying(true); loop((sIdx + 1) % data.scenarios.length); });
+</script>
+</body>
+</html>

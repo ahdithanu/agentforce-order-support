@@ -13,6 +13,8 @@ A customer-facing Agentforce agent for a fictional apparel brand, built end to e
 
 All data is fictional. The agent runs in an Agentforce LabBox, a Salesforce Developer Edition org.
 
+**Replay (no login, plays on its own):** https://ahdithanu.github.io/agentforce-order-support/demo/, real conversations recorded against the live agent, with what ran behind each reply. Re-record with `scripts/capture_replay.py`.
+
 ## What's here
 
 | Path | What it is |

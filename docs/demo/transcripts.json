@@ -1,0 +1,178 @@
+{
+ "recorded": "2026-11-09",
+ "agent": "Acme_Order_Support",
+ "scenarios": [
+  {
+   "id": "status",
+   "title": "Where is my order?",
+   "note": "Verifies first, then reads the real Order record.",
+   "turns": [
+    {
+     "user": "Hi, where is my order?",
+     "agent": [
+      "To help with your order, I need to verify your details. Please provide the email address you used at checkout and your order number (for example, A-1001)."
+     ],
+     "subagent": "identity_verification",
+     "actions": [],
+     "handoff": false
+    },
+    {
+     "user": "jamie@example.com and A-1001",
+     "agent": [
+      "Your order A-1001 has shipped with UPS. The tracking number is 1Z999AA10123456784, and the estimated delivery date is 11/10/2026. You can track your package on the UPS website using your tracking number.\n\nIs there anything else I can help you with regarding your order?"
+     ],
+     "subagent": "order_status",
+     "actions": [
+      {
+       "name": "verify_customer",
+       "out": {
+        "verified": true,
+        "failedAttempts": 0
+       }
+      },
+      {
+       "name": "get_order_status",
+       "out": {
+        "status": "Shipped",
+        "carrier": "UPS",
+        "trackingNumber": "1Z999AA10123456784",
+        "estimatedDelivery": "11/10/2026"
+       }
+      }
+     ],
+     "handoff": false
+    }
+   ]
+  },
+  {
+   "id": "lockout",
+   "title": "Three wrong attempts",
+   "note": "Every attempt is checked in Apex; the third hands off.",
+   "turns": [
+    {
+     "user": "Where is my order?",
+     "agent": [
+      "To check your order status, please provide the email address you used at checkout and your order number (for example, A-1001)."
+     ],
+     "subagent": "identity_verification",
+     "actions": [],
+     "handoff": false
+    },
+    {
+     "user": "sam@example.com and A-1001",
+     "agent": [
+      "Those details don't match our records. Please re-enter both your email and order number, or let me know if you'd like to connect with a person for further help."
+     ],
+     "subagent": "identity_verification",
+     "actions": [
+      {
+       "name": "verify_customer",
+       "out": {
+        "verified": false,
+        "failedAttempts": 1
+       }
+      }
+     ],
+     "handoff": false
+    },
+    {
+     "user": "Try jamie@example.org and A-1001",
+     "agent": [
+      "Those details don't match our records. Please re-enter both your email and order number, or let me know if you'd like to connect with a person for further help."
+     ],
+     "subagent": "identity_verification",
+     "actions": [
+      {
+       "name": "verify_customer",
+       "out": {
+        "verified": false,
+        "failedAttempts": 2
+       }
+      }
+     ],
+     "handoff": false
+    },
+    {
+     "user": "Okay, jamie@example.com and A-1009",
+     "agent": [
+      "Thank you for your patience. Kindly hold as we connect you to the next available agent."
+     ],
+     "subagent": "escalation",
+     "actions": [
+      {
+       "name": "verify_customer",
+       "out": {
+        "verified": false,
+        "failedAttempts": 3
+       }
+      },
+      {
+       "name": "record_handoff_context",
+       "out": {
+        "caseNumber": "00001045"
+       }
+      }
+     ],
+     "handoff": true
+    }
+   ]
+  },
+  {
+   "id": "policy",
+   "title": "Policy questions",
+   "note": "Answered from the policy documents, or declined.",
+   "turns": [
+    {
+     "user": "Do you ship to Canada?",
+     "agent": [
+      "Yes, according to our shipping policy, we do ship to Canada. International orders to Canada take 7 to 12 business days, and you may need to pay import duties on delivery. Would you like help placing an order or have more questions about shipping?"
+     ],
+     "subagent": "store_policies",
+     "actions": [
+      {
+       "name": "search_policies",
+       "out": {}
+      }
+     ],
+     "handoff": false
+    },
+    {
+     "user": "Do you ship to Australia?",
+     "agent": [
+      "I do not have information about shipping to Australia in Acme's policies. If you would like, I can connect you with a person for more help. Would you like to do that?"
+     ],
+     "subagent": "store_policies",
+     "actions": [
+      {
+       "name": "search_policies",
+       "out": {}
+      }
+     ],
+     "handoff": false
+    }
+   ]
+  },
+  {
+   "id": "spanish",
+   "title": "In Spanish",
+   "note": "Replies in the customer's language.",
+   "turns": [
+    {
+     "user": "¿Hacen envíos a Canadá?",
+     "agent": [
+      "Sí, según la política de envíos, realizamos envíos a Canadá y las entregas internacionales a ese país tardan entre 7 y 12 días hábiles. Ten en cuenta que podrías tener que pagar impuestos de importación al recibir tu pedido, según la política de envíos. ¿Te gustaría saber algo más sobre envíos o necesitas ayuda con un pedido específico?"
+     ],
+     "subagent": "store_policies",
+     "actions": [
+      {
+       "name": "search_policies",
+       "out": {}
+      }
+     ],
+     "handoff": false
+    }
+   ]
+  }
+ ],
+ "version": "v12"
+}
