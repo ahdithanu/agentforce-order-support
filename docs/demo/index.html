@@ -126,17 +126,18 @@ const SUBAGENTS = {
   identity_verification: "Identity verification", order_status: "Order status", support_case: "Support case",
   store_policies: "Store policies", escalation: "Hand off to a person", returns: "Returns",
 };
-// ?motion=1 forces the animation, e.g. for a screen recording on a machine with reduced motion on.
+// Reduced motion: the replay still plays and loops, but messages appear whole (no typing effect,
+// no animated dots, no smooth scrolling). ?motion=1 forces the full animation, e.g. for a recording.
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches && !new URLSearchParams(location.search).has("motion");
 const $ = (id) => document.getElementById(id);
 let data, sIdx = 0, playing = true, run = 0;
 
-const sleep = (ms) => new Promise((r) => setTimeout(r, reduce ? 0 : ms));
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
 function add(box, node) { box.appendChild(node); box.scrollTop = box.scrollHeight; return node; }
 function fmt(out) { return Object.entries(out).map(([k, v]) => `${k}: ${v}`).join(" · "); }
 
-async function waitWhilePaused(token) { while (!reduce && !playing && token === run) await new Promise((r) => setTimeout(r, 200)); }
+async function waitWhilePaused(token) { while (!playing && token === run) await new Promise((r) => setTimeout(r, 200)); }
 
 function selectTab(i) {
   [...$("tabs").children].forEach((t, j) => t.setAttribute("aria-selected", j === i ? "true" : "false"));
@@ -189,7 +190,7 @@ async function loop(start) {
   const token = ++run; sIdx = start;
   while (token === run) {
     await playScenario(sIdx, token);
-    if (token !== run || reduce) return;
+    if (token !== run) return;
     await sleep(2500);
     sIdx = (sIdx + 1) % data.scenarios.length;
   }
@@ -205,7 +206,6 @@ fetch("transcripts.json").then((r) => r.json()).then((d) => {
     $("tabs").appendChild(b);
   });
   $("provenance").textContent = `Recorded ${d.recorded} against agent ${d.version || ""} with live actions (real Apex, Flow and Data Cloud calls in a demo org). Messages are verbatim; a handoff is shown as an event.`;
-  if (reduce) { $("play").hidden = true; $("status").textContent = "Animation is off (reduced motion). Pick a scenario."; }
   loop(0);
 }).catch(() => { $("provenance").textContent = "Could not load the recordings."; });
 
