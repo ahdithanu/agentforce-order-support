@@ -13,6 +13,7 @@
   --bg: #f6f7f4; --surface: #ffffff; --ink: #17201d; --muted: #5d6863; --line: #dde2dc;
   --accent: #0f6b5c; --accent-soft: #e2f0ec; --model: #7a4bc2; --model-soft: #efe8f9;
   --bad: #b3261e; --bad-soft: #fbe9e7; --user: #17201d; --user-ink: #ffffff; --code-bg: #eef1ed;
+  --data: #1d5fa8; --data-soft: #e4eefa; --human: #9a5200; --human-soft: #fbefe0;
   --display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", sans-serif;
   --body: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
   --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
@@ -21,13 +22,13 @@
   :root:not([data-theme="light"]) {
     --bg: #111614; --surface: #19201d; --ink: #e7ece9; --muted: #9aa6a0; --line: #2a3430;
     --accent: #4fc2a9; --accent-soft: #173a33; --model: #b99af0; --model-soft: #2c2340;
-    --bad: #f08a80; --bad-soft: #3a1e1b; --user: #e7ece9; --user-ink: #111614; --code-bg: #1f2724; color-scheme: dark;
+    --data: #7fb2ec; --data-soft: #1a2a3d; --human: #f0b061; --human-soft: #3a2a16; --bad: #f08a80; --bad-soft: #3a1e1b; --user: #e7ece9; --user-ink: #111614; --code-bg: #1f2724; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #111614; --surface: #19201d; --ink: #e7ece9; --muted: #9aa6a0; --line: #2a3430;
   --accent: #4fc2a9; --accent-soft: #173a33; --model: #b99af0; --model-soft: #2c2340;
-  --bad: #f08a80; --bad-soft: #3a1e1b; --user: #e7ece9; --user-ink: #111614; --code-bg: #1f2724; color-scheme: dark;
+  --data: #7fb2ec; --data-soft: #1a2a3d; --human: #f0b061; --human-soft: #3a2a16; --bad: #f08a80; --bad-soft: #3a1e1b; --user: #e7ece9; --user-ink: #111614; --code-bg: #1f2724; color-scheme: dark;
 }
 * { box-sizing: border-box; }
 body { background: var(--bg); color: var(--ink); font: 16px/1.55 var(--body); margin: 0; }
@@ -76,35 +77,189 @@ footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line)
   .chat { max-height: 420px; } .ran { max-height: 320px; }
   .ctrl { margin-left: 0; width: 100%; } .ctrl button { flex: 1; }
 }
+
+/* Narrative sections */
+.summary { font-size: 19px; line-height: 1.5; border-left: 3px solid var(--accent); padding-left: 16px; margin: 0; max-width: 72ch; }
+.jump { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.jump a, .jump button { font: 500 14px/1 var(--body); padding: 9px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); text-decoration: none; cursor: pointer; }
+.jump button.se { background: var(--accent); border-color: var(--accent); color: var(--bg); font-weight: 600; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.block { display: grid; gap: 14px; scroll-margin-top: 28px; border-radius: 16px; transition: box-shadow .2s; }
+.block.focus { box-shadow: 0 0 0 2px var(--accent), 0 0 0 10px var(--accent-soft); }
+.block h2.title { font: 700 26px/1.15 var(--display); margin: 0; text-transform: none; letter-spacing: 0; color: var(--ink); padding: 0; border: 0; }
+.lede { color: var(--muted); max-width: 74ch; margin: 0; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; display: grid; gap: 6px; align-content: start; }
+.card h3 { font: 700 17px/1.25 var(--display); margin: 0; }
+.card p { margin: 0; font-size: 15px; }
+.card .how { font-size: 13.5px; color: var(--muted); }
+.card ul { margin: 0; padding-left: 18px; font-size: 15px; display: grid; gap: 4px; }
+.tag { font: 600 11px/1 var(--body); letter-spacing: 0.06em; text-transform: uppercase; padding: 5px 8px; border-radius: 999px; justify-self: start; }
+.tag.proposed { background: var(--code-bg); color: var(--muted); }
+.tag.live { background: var(--accent-soft); color: var(--accent); }
+.tag.gap { background: var(--bad-soft); color: var(--bad); }
+.tag.concept { background: var(--code-bg); color: var(--muted); border: 1px dashed var(--muted); }
+.arch { display: grid; gap: 8px; }
+.arch .row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.arch .row.one { grid-template-columns: minmax(0, 1fr); }
+.node { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--c, var(--ink)); border-radius: 10px; padding: 10px 12px; display: grid; gap: 3px; }
+.node b { font-size: 15px; } .node .k { font: 600 11px/1 var(--body); letter-spacing: 0.06em; text-transform: uppercase; color: var(--c, var(--muted)); }
+.node span:not(.k) { font-size: 13.5px; color: var(--muted); }
+.node.model { --c: var(--model); } .node.code { --c: var(--accent); } .node.data { --c: var(--data); } .node.human { --c: var(--human); }
+.node.concept { border-style: dashed; --c: var(--muted); }
+.down { text-align: center; color: var(--muted); font-size: 13px; }
+.steps4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--surface); }
+.steps4 > div { padding: 12px 14px; border-right: 1px solid var(--line); display: grid; gap: 4px; align-content: start; font-size: 14.5px; }
+.steps4 > div:last-child { border-right: 0; }
+.steps4 b { font: 600 11px/1.2 var(--body); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.exc { display: grid; gap: 10px; }
+.exc .head { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.exc .head h3 { font: 700 18px/1.2 var(--display); margin: 0; }
+.exc button, .playbtn { font: 600 14px/1 var(--body); padding: 9px 12px; border-radius: 8px; border: 1px solid var(--accent); background: var(--accent-soft); color: var(--accent); cursor: pointer; }
+.measured { display: flex; flex-wrap: wrap; gap: 8px; font-size: 14px; }
+.measured span { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; }
+.sebar { position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); width: min(760px, calc(100% - 32px)); background: var(--ink); color: var(--bg); border-radius: 14px; padding: 12px 14px; display: grid; grid-template-columns: 1fr auto; gap: 6px 12px; align-items: center; z-index: 10; box-shadow: 0 8px 30px rgba(0,0,0,.25); }
+.sebar[hidden] { display: none; }
+.sebar .t { font: 600 14px/1.3 var(--body); } .sebar .say { grid-column: 1 / -1; font-size: 14px; opacity: .85; }
+.sebar .btns { display: flex; gap: 6px; }
+.sebar button { font: 600 13px/1 var(--body); padding: 8px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,.3); background: transparent; color: inherit; cursor: pointer; }
+body.se-on { padding-bottom: 130px; }
+@media (max-width: 760px) {
+  .arch .row { grid-template-columns: 1fr; }
+  .steps4 { grid-template-columns: 1fr; } .steps4 > div { border-right: 0; border-bottom: 1px solid var(--line); }
+  .steps4 > div:last-child { border-bottom: 0; }
+  .sebar { grid-template-columns: 1fr; } .sebar .btns { justify-content: stretch; } .sebar button { flex: 1; }
+}
 @media (prefers-reduced-motion: reduce) { .dots i { animation: none; } .chat, .ran { scroll-behavior: auto; } }
 </style>
 </head>
 <body>
 <main class="page">
   <header>
-    <span class="eyebrow">Replay · plays on its own</span>
+    <span class="eyebrow">Agentforce order support · prototype</span>
     <h1>Acme Order Support, in action</h1>
-    <p class="sub">Real conversations with an Agentforce service agent, recorded against the live agent and replayed here. On the right is what actually ran for each reply: what the model decided, and what code did. Customers and orders are fictional.</p>
+    <p class="summary">An Agentforce order support prototype demonstrating how conversational AI, enterprise workflows, and deterministic business logic can work together to automate customer interactions.</p>
+    <p class="sub">Built to explore the technical architecture, reliability considerations, and business value of enterprise AI automation.</p>
+    <nav class="jump" aria-label="Sections">
+      <button type="button" class="se" id="seStart">SE Walkthrough (2 min)</button>
+      <a href="#problem">Problem</a><a href="#demo">Live replay</a><a href="#how">How it works</a><a href="#decisions">Engineering decisions</a><a href="#reliability">Exceptions</a><a href="#value">Business value</a>
+    </nav>
   </header>
 
-  <div class="bar" role="tablist" aria-label="Scenarios" id="tabs"></div>
+  <section class="block" id="problem" aria-labelledby="problemTitle">
+    <span class="eyebrow">The business problem</span>
+    <h2 class="title" id="problemTitle">How can enterprises automate repetitive order support requests while keeping execution reliable, escalation appropriate, and AI decisions visible?</h2>
+    <div class="cards">
+      <div class="card"><h3>Repetitive volume</h3><p>"Where is my order?" and similar questions follow the same steps every time, yet they consume human support capacity.</p></div>
+      <div class="card"><h3>Sensitive actions</h3><p>Answering means reading customer and order data, and some requests create records. An AI agent must not guess, skip a check, or reveal another customer's order.</p></div>
+      <div class="card"><h3>Trust and oversight</h3><p>Support leaders need to see what the agent did and why, and customers who need a person must reach one with context.</p></div>
+    </div>
+  </section>
 
-  <div class="stage">
-    <section class="panel" aria-label="Conversation">
-      <h2><span>Customer chat</span><span id="progress"></span></h2>
-      <div class="scn"><b id="scnTitle"></b><span id="scnNote"></span></div>
-      <div class="chat" id="chat" aria-live="polite"></div>
-    </section>
-    <section class="panel" aria-label="What ran behind each reply">
-      <h2><span>What ran</span></h2>
-      <div class="scn legend"><span class="m">Model decided</span><span class="c">Code ran</span><span class="f">Check failed</span></div>
-      <div class="ran" id="ran"></div>
-    </section>
-  </div>
+  <section class="block" id="demo" aria-labelledby="demoTitle">
+    <span class="eyebrow">Customer interaction · replay, plays on its own</span>
+    <h2 class="title" id="demoTitle">Real conversations, and what ran behind each reply</h2>
+    <p class="lede">Recorded against the agent running in a Salesforce demo org, with real actions, and replayed here. Left: the customer's chat. Right: what the model decided and what code did. Customers and orders are fictional.</p>
+    <div class="bar" role="tablist" aria-label="Scenarios" id="tabs"></div>
+    <div class="stage">
+      <section class="panel" aria-label="Conversation">
+        <h2><span>Customer chat</span><span id="progress"></span></h2>
+        <div class="scn"><b id="scnTitle"></b><span id="scnNote"></span></div>
+        <div class="chat" id="chat" aria-live="polite"></div>
+      </section>
+      <section class="panel" aria-label="What ran behind each reply">
+        <h2><span>What ran</span></h2>
+        <div class="scn legend"><span class="m">Model decided</span><span class="c">Code ran</span><span class="f">Check failed</span></div>
+        <div class="ran" id="ran"></div>
+      </section>
+    </div>
+    <div class="bar">
+      <span class="sub" id="status"></span>
+      <div class="ctrl"><button id="play" type="button">Pause</button><button id="next" type="button">Next scenario</button></div>
+    </div>
+  </section>
 
-  <div class="bar">
-    <span class="sub" id="status"></span>
-    <div class="ctrl"><button id="play" type="button">Pause</button><button id="next" type="button">Next scenario</button></div>
+  <section class="block" id="how" aria-labelledby="howTitle">
+    <span class="eyebrow">Technical execution</span>
+    <h2 class="title" id="howTitle">How the Solution Works</h2>
+    <p class="lede">Each layer has one job. The model interprets the customer; code decides what is allowed and does the work; data comes from systems of record; people handle what the agent should not.</p>
+    <div class="arch" role="img" aria-label="Architecture: customer request to Agentforce reasoning, which calls deterministic Apex and Flow logic, enterprise data, or human escalation, then responds to the customer.">
+      <div class="row one"><div class="node"><span class="k">Customer</span><b>Request in web chat or voice</b><span>Enhanced Chat embedded on a web page, and a voice variant on Agentforce Voice.</span></div></div>
+      <div class="down" aria-hidden="true">↓</div>
+      <div class="row one"><div class="node model"><span class="k">AI interpretation</span><b>Agentforce reasoning, defined in Agent Script</b><span>A router and subagents (verification, order status, support case, returns, policies, escalation). The model works out intent and picks an action, but only from the actions code has made available at that moment.</span></div></div>
+      <div class="down" aria-hidden="true">↓ calls only the actions code has unlocked</div>
+      <div class="row">
+        <div class="node code"><span class="k">Deterministic logic</span><b>Apex and an autolaunched Flow</b><span>Apex verifies the customer, reads order status, opens Cases and records handoffs. A Flow decides return eligibility (delivered, within 30 days).</span></div>
+        <div class="node data"><span class="k">Enterprise data</span><b>Order records and policy documents</b><span>Orders are read from Salesforce records by Apex, with the agent user's permissions. Policy answers come from a Data Cloud Data Library search over the policy documents.</span></div>
+        <div class="node human"><span class="k">Human escalation</span><b>Omni-Channel routing</b><span>A routing Flow sends the chat to the service queue, with a handoff Case holding the reason and a summary.</span></div>
+      </div>
+      <div class="down" aria-hidden="true">↓</div>
+      <div class="row one"><div class="node"><span class="k">Customer</span><b>Response grounded in what the actions returned</b><span>Every turn is recorded in Agentforce session tracing, which this build queries for its observability report.</span></div></div>
+      <div class="row one"><div class="node concept"><span class="k">Conceptual · not in this prototype</span><b>Production integrations</b><span>Order sync from a commerce system, a carrier tracking API, and skipping verification for logged-in customers. Demo orders are seeded test data.</span></div></div>
+    </div>
+    <div class="card"><h3>Why the separation matters</h3><p>Language models are good at understanding what a customer means and unreliable at following a rule every time. So the rules live in code: the order tools do not exist for the model until verification succeeds, their inputs come from the verified record rather than from what the customer typed, and the return window is enforced by a Flow. If the model misreads a request, the worst case is a wrong question or a handoff, not a wrong refund or someone else's order.</p></div>
+  </section>
+
+  <section class="block" id="decisions" aria-labelledby="decTitle">
+    <span class="eyebrow">Engineering decisions</span>
+    <h2 class="title" id="decTitle">Engineering Decisions</h2>
+    <div class="cards">
+      <div class="card"><span class="tag live">Implemented</span><h3>Sensitive operations are gated in code</h3>
+        <ul><li>Order, Case and return actions are only available after Apex returns <code>verified = true</code>.</li><li>Their inputs are bound to the verified order and email, not filled in by the model.</li><li>Apex queries run in user mode and re-check that the email owns the order.</li><li>Three failed checks hand off; five on one order lock it for 30 minutes across chats.</li></ul>
+        <p class="how">Found and fixed: the agent once replied "details don't match" without running the check. A live regression went from 0/5 to 5/5 after the fix.</p></div>
+      <div class="card"><span class="tag live">Implemented</span><h3>Structured data by tool, documents by retrieval</h3>
+        <ul><li>Order status comes from an Apex lookup on the order record, so the agent cannot invent a tracking number.</li><li>Policy questions go to a Data Cloud Data Library (hybrid search over the policy documents). The agent must search before answering and decline if nothing covers it.</li></ul>
+        <p class="how">Policy eval: 12/12 answered and 4/4 out-of-scope questions declined (English, agent v11).</p></div>
+      <div class="card"><span class="tag live">Implemented</span><h3>Exceptions end in a clear next step</h3>
+        <ul><li>Failed verification gets one fixed sentence that never says which detail was wrong.</li><li>Unsupported questions are declined with an offer of a person; off-topic requests are redirected.</li><li>Escalation opens a handoff Case with a summary before routing the chat.</li></ul>
+        <p class="how"><span class="tag gap">Proposed improvement</span> A retrieval outage currently looks like a normal "not covered" reply, and a handoff with nobody online waits in the queue. Production needs an outage message, an alert, and an offline path.</p></div>
+    </div>
+  </section>
+
+  <section class="block" id="reliability" aria-labelledby="relTitle">
+    <span class="eyebrow">Enterprise Reliability: Handling Exceptions</span>
+    <h2 class="title" id="relTitle">When the request cannot be completed</h2>
+    <div class="exc">
+      <div class="head"><h3>Three failed verifications (recorded)</h3><button type="button" data-play="lockout">Play this scenario</button></div>
+      <div class="steps4">
+        <div><b>Customer asked</b>Order status, giving an email and order number that don't match, three times.</div>
+        <div><b>System attempted</b>Apex <code>verify_customer</code> on every attempt.</div>
+        <div><b>What happened</b><code>verified: false</code> each time; the attempt counter went 1, 2, 3. No order data was shown.</div>
+        <div><b>Workflow response</b>The same fixed sentence twice, then verification locked, a handoff Case was opened and Omni-Channel routed the chat to a person.</div>
+      </div>
+    </div>
+    <div class="exc">
+      <div class="head"><h3>A question the policies don't cover (recorded)</h3><button type="button" data-play="policy">Play this scenario</button></div>
+      <div class="steps4">
+        <div><b>Customer asked</b>"Do you ship to Australia?"</div>
+        <div><b>System attempted</b>A Data Cloud search of the policy documents.</div>
+        <div><b>What happened</b>No policy covers Australia.</div>
+        <div><b>Workflow response</b>Said it doesn't have that information and offered to connect a person, instead of guessing.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="value" aria-labelledby="valueTitle">
+    <span class="eyebrow">Business impact</span>
+    <h2 class="title" id="valueTitle">From AI Capability to Business Value</h2>
+    <p class="lede">Support teams spend a large share of their time on repetitive order questions, status requests and exceptions. That work carries operational cost and takes capacity away from the cases that need judgment. This prototype automates the repetitive path end to end, enforces the rules in code, and hands the rest to people with context, so the value can be measured rather than assumed.</p>
+    <p class="lede"><span class="tag proposed">Proposed production KPIs</span> These are the measures I would agree with a customer before launch. They have not been measured: the prototype has no production traffic.</p>
+    <div class="cards">
+      <div class="card"><h3>Automated Resolution Rate</h3><p>Share of eligible inquiries resolved without a person.</p><p class="how">Measure from Agentforce session tracing: sessions that end without the escalation path, over eligible sessions. This build already queries session tracing.</p></div>
+      <div class="card"><h3>Average Handling Time</h3><p>Average time from first message to resolution or handoff.</p><p class="how">Measure from session and turn timestamps in session tracing, compared with the same contact types handled by people.</p></div>
+      <div class="card"><h3>Escalation Accuracy</h3><p>Share of conversations escalated, or not, according to the agreed rules.</p><p class="how">Measure against a labeled set: explicit requests for a person and three failed verifications must escalate; answerable questions must not.</p></div>
+      <div class="card"><h3>Cost per Resolution</h3><p>Average cost to resolve one inquiry.</p><p class="how">Measure Agentforce consumption for resolved sessions over the number resolved, against the loaded cost of a human-handled contact.</p></div>
+    </div>
+    <div>
+      <p class="lede" style="margin-bottom:8px">What has been measured so far is correctness, not business outcomes:</p>
+      <div class="measured"><span>Testing Center 11/11 (agent v12)</span><span>Lockout check 0/5 → 5/5 after a fix</span><span>Routing 30/30</span><span>Policy answers 12/12 (English, v11)</span><span>"Which detail was wrong?" probe: 0/10 leaks</span></div>
+    </div>
+  </section>
+
+  <div class="sebar" id="sebar" hidden role="region" aria-label="SE walkthrough">
+    <span class="t" id="seTitle"></span>
+    <div class="btns"><button type="button" id="sePrev">Back</button><button type="button" id="seNext">Next</button><button type="button" id="seExit">Exit</button></div>
+    <span class="say" id="seSay"></span>
   </div>
 
   <footer>
@@ -211,6 +366,40 @@ fetch("transcripts.json").then((r) => r.json()).then((d) => {
 
 $("play").addEventListener("click", () => setPlaying(!playing));
 $("next").addEventListener("click", () => { setPlaying(true); loop((sIdx + 1) % data.scenarios.length); });
+
+// SE walkthrough: five stops, about 25 seconds each.
+const STEPS = [
+  ["problem", "Business problem", "Repetitive order questions cost support capacity, but the actions behind them are sensitive. The question is how to automate them reliably and visibly."],
+  ["demo", "Customer interaction", "A real recorded conversation: the agent verifies first, then reads the order record. The right panel shows what ran."],
+  ["how", "Technical execution", "The model interprets; Apex and a Flow enforce the rules; data comes from records and Data Cloud; Omni-Channel brings in a person."],
+  ["reliability", "Reliability and exceptions", "Wrong details three times: every attempt is checked in Apex, nothing leaks, and the chat is handed off with a summary Case."],
+  ["value", "Business impact", "The KPIs I would agree with a customer before launch. Proposed, not yet measured: this is a prototype."],
+];
+let seIdx = -1;
+function seGo(i) {
+  seIdx = Math.max(0, Math.min(STEPS.length - 1, i));
+  const [id, title, say] = STEPS[seIdx];
+  document.querySelectorAll(".block.focus").forEach((b) => b.classList.remove("focus"));
+  const sec = $(id); sec.classList.add("focus");
+  sec.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+  $("seTitle").textContent = `SE Walkthrough · ${seIdx + 1} of ${STEPS.length} · ${title}`;
+  $("seSay").textContent = say;
+  $("sePrev").disabled = seIdx === 0;
+  $("seNext").textContent = seIdx === STEPS.length - 1 ? "Finish" : "Next";
+  if (id === "demo" && data) { setPlaying(true); loop(0); }
+}
+function seStop() { $("sebar").hidden = true; document.body.classList.remove("se-on"); document.querySelectorAll(".block.focus").forEach((b) => b.classList.remove("focus")); }
+$("seStart").addEventListener("click", () => { $("sebar").hidden = false; document.body.classList.add("se-on"); seGo(0); $("seNext").focus(); });
+$("sePrev").addEventListener("click", () => seGo(seIdx - 1));
+$("seNext").addEventListener("click", () => (seIdx === STEPS.length - 1 ? seStop() : seGo(seIdx + 1)));
+$("seExit").addEventListener("click", seStop);
+document.addEventListener("keydown", (e) => { if (!$("sebar").hidden && e.key === "Escape") seStop(); });
+document.querySelectorAll("[data-play]").forEach((b) => b.addEventListener("click", () => {
+  const i = data ? data.scenarios.findIndex((sc) => sc.id === b.dataset.play) : -1;
+  if (i < 0) return;
+  $("demo").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+  setPlaying(true); loop(i);
+}));
 </script>
 </body>
 </html>
