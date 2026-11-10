@@ -6,6 +6,8 @@ A customer-facing Agentforce agent for a fictional apparel brand, built end to e
 
 **Try it live:** https://ahdithanu.github.io/agentforce-order-support/ (open the chat in the corner and use `jamie@example.com` with order `A-1001`).
 **Knowledge (RAG):** policy questions ("Do you ship to Canada?") are answered from the documents in `knowledge/` via an Agentforce Data Library.
+**Build walkthrough:** https://ahdithanu.github.io/agentforce-order-support/build.html (how it was built, what broke, full test results)
+
 **Voice demo:** https://ahdithanu.github.io/agentforce-order-support/voice/ (talk to the voice variant; mic-enabled Enhanced Chat)
 **Retrieval lab:** https://ahdithanu.github.io/agentforce-order-support/retrieval-lab/ (recall@k for keyword, vector, hybrid, and embeddings; chunking strategies; paraphrase robustness)
 **Observability:** https://ahdithanu.github.io/agentforce-order-support/observability/ (session tracing: containment, latency breakdown, topics, production vs preview traffic)
@@ -13,7 +15,7 @@ A customer-facing Agentforce agent for a fictional apparel brand, built end to e
 
 All data is fictional. The agent runs in an Agentforce LabBox, a Salesforce Developer Edition org.
 
-**Replay (no login, plays on its own):** https://ahdithanu.github.io/agentforce-order-support/demo/, real conversations recorded against the live agent, with what ran behind each reply. Re-record with `scripts/capture_replay.py`.
+**Replay (no login, plays on its own):** https://ahdithanu.github.io/agentforce-order-support/, real conversations recorded against the live agent, with what ran behind each reply. Re-record with `scripts/capture_replay.py`.
 
 ## What's here
 
