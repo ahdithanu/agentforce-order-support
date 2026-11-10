@@ -130,6 +130,35 @@ body.se-on { padding-bottom: 130px; }
   .steps4 > div:last-child { border-bottom: 0; }
   .sebar { grid-template-columns: 1fr; } .sebar .btns { justify-content: stretch; } .sebar button { flex: 1; }
 }
+
+.diagram { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px; overflow-x: auto; }
+.diagram svg { display: block; width: 100%; min-width: 760px; height: auto; }
+.d-box { fill: var(--surface); stroke: var(--line); stroke-width: 1.5; }
+.d-model { fill: var(--model-soft); stroke: var(--model); stroke-width: 1.5; }
+.d-code { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+.d-data { fill: var(--data-soft); stroke: var(--data); stroke-width: 1.5; }
+.d-human { fill: var(--human-soft); stroke: var(--human); stroke-width: 1.5; }
+.d-concept { fill: none; stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 6 5; }
+.d-gate { fill: var(--surface); stroke: var(--accent); stroke-width: 2; }
+.d-chip, .d-pill { fill: var(--surface); stroke: var(--line); stroke-width: 1; }
+.d-pill.strong { fill: var(--model); stroke: var(--model); }
+.d-pill.strong + text { fill: var(--surface); }
+.tg-code { fill: var(--accent); } .tg-flow { fill: var(--data); }
+.d-tag { fill: var(--surface); font: 600 10.5px var(--body); }
+.d-line { stroke: var(--muted); stroke-width: 1.6; fill: none; } .d-line.thin { stroke-width: 1.2; } .d-line.dash { stroke-dasharray: 5 4; }
+.d-ahf { fill: var(--muted); }
+.d-ico { fill: var(--muted); } .d-ico2 { fill: var(--surface); stroke: var(--data); stroke-width: 1.6; } .d-ico3 { fill: var(--human); }
+.d-lock { fill: var(--accent); } .d-lockarc { fill: none; stroke: var(--accent); stroke-width: 2; }
+.d-dot { fill: var(--accent); }
+.diagram text { font-family: var(--body); }
+.d-t { fill: var(--ink); font: 700 16px var(--display); }
+.d-c { fill: var(--ink); font-size: 13px; } .d-c.b, .d-c .b { font-weight: 600; }
+.d-s { fill: var(--muted); font-size: 12px; }
+.d-k { fill: var(--muted); font: 600 11px var(--body); letter-spacing: 0.06em; }
+.k-model { fill: var(--model); } .k-code { fill: var(--accent); } .k-data { fill: var(--data); } .k-human { fill: var(--human); }
+.legend4 .card { border-top: 3px solid var(--c); } .legend4 .k { font: 600 11px/1 var(--body); letter-spacing: 0.06em; text-transform: uppercase; color: var(--c); }
+.legend4 .lm { --c: var(--model); } .legend4 .lc { --c: var(--accent); } .legend4 .ld { --c: var(--data); } .legend4 .lh { --c: var(--human); }
+.legend4 p { font-size: 14px; }
 @media (prefers-reduced-motion: reduce) { .dots i { animation: none; } .chat, .ran { scroll-behavior: auto; } }
 </style>
 </head>
@@ -183,19 +212,90 @@ body.se-on { padding-bottom: 130px; }
     <span class="eyebrow">Technical execution</span>
     <h2 class="title" id="howTitle">How the Solution Works</h2>
     <p class="lede">Each layer has one job. The model interprets the customer; code decides what is allowed and does the work; data comes from systems of record; people handle what the agent should not.</p>
-    <div class="arch" role="img" aria-label="Architecture: customer request to Agentforce reasoning, which calls deterministic Apex and Flow logic, enterprise data, or human escalation, then responds to the customer.">
-      <div class="row one"><div class="node"><span class="k">Customer</span><b>Request in web chat or voice</b><span>Enhanced Chat embedded on a web page, and a voice variant on Agentforce Voice.</span></div></div>
-      <div class="down" aria-hidden="true">↓</div>
-      <div class="row one"><div class="node model"><span class="k">AI interpretation</span><b>Agentforce reasoning, defined in Agent Script</b><span>A router and subagents (verification, order status, support case, returns, policies, escalation). The model works out intent and picks an action, but only from the actions code has made available at that moment.</span></div></div>
-      <div class="down" aria-hidden="true">↓ calls only the actions code has unlocked</div>
-      <div class="row">
-        <div class="node code"><span class="k">Deterministic logic</span><b>Apex and an autolaunched Flow</b><span>Apex verifies the customer, reads order status, opens Cases and records handoffs. A Flow decides return eligibility (delivered, within 30 days).</span></div>
-        <div class="node data"><span class="k">Enterprise data</span><b>Order records and policy documents</b><span>Orders are read from Salesforce records by Apex, with the agent user's permissions. Policy answers come from a Data Cloud Data Library search over the policy documents.</span></div>
-        <div class="node human"><span class="k">Human escalation</span><b>Omni-Channel routing</b><span>A routing Flow sends the chat to the service queue, with a handoff Case holding the reason and a summary.</span></div>
-      </div>
-      <div class="down" aria-hidden="true">↓</div>
-      <div class="row one"><div class="node"><span class="k">Customer</span><b>Response grounded in what the actions returned</b><span>Every turn is recorded in Agentforce session tracing, which this build queries for its observability report.</span></div></div>
-      <div class="row one"><div class="node concept"><span class="k">Conceptual · not in this prototype</span><b>Production integrations</b><span>Order sync from a commerce system, a carrier tracking API, and skipping verification for logged-in customers. Demo orders are seeded test data.</span></div></div>
+    <div class="diagram" role="img" aria-label="Architecture. A customer request from web chat or voice goes to Agentforce reasoning, defined in Agent Script, where a router picks a subagent. Order, Case and return actions pass a code-enforced gate and run in Apex and a Flow, which read Salesforce order records in user mode. Policy questions search a Data Cloud index of the policy documents. Escalation records a handoff Case and routes the chat through Omni-Channel to a support agent. Session tracing records every turn.">
+      <svg viewBox="0 0 1000 600" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+        <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="d-ahf"/></marker></defs>
+
+        <!-- Customer -->
+        <rect x="20" y="30" width="170" height="160" rx="14" class="d-box"/>
+        <circle cx="105" cy="66" r="14" class="d-ico"/><path d="M79 106a26 22 0 0 1 52 0z" class="d-ico"/>
+        <text x="105" y="132" text-anchor="middle" class="d-t">Customer</text>
+        <rect x="30" y="148" width="72" height="28" rx="14" class="d-pill"/><text x="66.0" y="166.5" text-anchor="middle" class="d-c">Web chat</text><rect x="110" y="148" width="70" height="28" rx="14" class="d-pill"/><text x="145.0" y="166.5" text-anchor="middle" class="d-c">Voice</text>
+
+        <!-- Request / reply -->
+        <path d="M190 85H248" class="d-line" marker-end="url(#ah)"/><text x="219" y="77" text-anchor="middle" class="d-s">request</text>
+        <path d="M250 150H192" class="d-line dash" marker-end="url(#ah)"/><text x="221" y="168" text-anchor="middle" class="d-s">reply</text>
+
+        <!-- Reasoning -->
+        <rect x="250" y="30" width="520" height="175" rx="14" class="d-model"/>
+        <text x="268" y="54" class="d-k k-model">AI INTERPRETATION</text>
+        <text x="268" y="76" class="d-t">Agentforce reasoning · Agent Script</text>
+        <text x="268" y="96" class="d-s">Understands intent, then picks an action from those code has made available</text>
+        <rect x="268" y="128" width="84" height="28" rx="14" class="d-pill strong"/><text x="310.0" y="146.5" text-anchor="middle" class="d-c b">Router</text>
+        <path d="M352 142H362V122H372M362 142V162H372" class="d-line thin"/>
+        <rect x="372" y="108" width="70" height="28" rx="14" class="d-pill"/><text x="407.0" y="126.5" text-anchor="middle" class="d-c">Verify</text><rect x="448" y="108" width="104" height="28" rx="14" class="d-pill"/><text x="500.0" y="126.5" text-anchor="middle" class="d-c">Order status</text><rect x="558" y="108" width="108" height="28" rx="14" class="d-pill"/><text x="612.0" y="126.5" text-anchor="middle" class="d-c">Support case</text><rect x="672" y="108" width="82" height="28" rx="14" class="d-pill"/><text x="713.0" y="126.5" text-anchor="middle" class="d-c">Returns</text>
+        <rect x="372" y="148" width="80" height="28" rx="14" class="d-pill"/><text x="412.0" y="166.5" text-anchor="middle" class="d-c">Policies</text><rect x="458" y="148" width="96" height="28" rx="14" class="d-pill"/><text x="506.0" y="166.5" text-anchor="middle" class="d-c">Escalation</text><rect x="560" y="148" width="88" height="28" rx="14" class="d-pill"/><text x="604.0" y="166.5" text-anchor="middle" class="d-c">Off-topic</text><rect x="654" y="148" width="78" height="28" rx="14" class="d-pill"/><text x="693.0" y="166.5" text-anchor="middle" class="d-c">Clarify</text>
+
+        <!-- Conceptual -->
+        <rect x="796" y="30" width="184" height="110" rx="14" class="d-concept"/>
+        <text x="812" y="54" class="d-k">CONCEPTUAL</text>
+        <text x="812" y="76" class="d-t">Commerce system</text>
+        <text x="812" y="96" class="d-s">Order sync</text><text x="812" y="114" class="d-s">Carrier tracking API</text>
+        <text x="812" y="132" class="d-s">Not in this prototype</text>
+
+        <!-- Connectors from reasoning -->
+        <path d="M300 205V214H170V226" class="d-line" marker-end="url(#ah)"/>
+        <path d="M170 270V288" class="d-line" marker-end="url(#ah)"/>
+        <path d="M500 205V288" class="d-line" marker-end="url(#ah)"/><text x="508" y="252" class="d-s">policy search</text>
+        <path d="M770 170H830V288" class="d-line" marker-end="url(#ah)"/><text x="838" y="252" class="d-s">hand off</text>
+
+        <!-- Gate -->
+        <rect x="20" y="226" width="300" height="44" rx="12" class="d-gate"/>
+        <rect x="34" y="244" width="16" height="13" rx="2" class="d-lock"/><path d="M37 244v-4a5 5 0 0 1 10 0v4" class="d-lockarc"/>
+        <text x="60" y="244" class="d-c b">Gate in code: order, Case and return</text>
+        <text x="60" y="261" class="d-c b">actions unlock only after Verify succeeds</text>
+
+        <!-- Deterministic logic -->
+        <rect x="20" y="290" width="300" height="230" rx="14" class="d-code"/>
+        <text x="38" y="314" class="d-k k-code">DETERMINISTIC LOGIC</text>
+        <text x="38" y="336" class="d-t">Apex and Flow</text>
+        <g><rect x="36" y="350" width="268" height="30" rx="8" class="d-chip"/><rect x="42" y="356" width="38" height="18" rx="5" class="tg-code"/><text x="61" y="369" text-anchor="middle" class="d-tag">Apex</text><text x="88" y="370" class="d-c">Verify customer (every attempt)</text></g>
+        <g><rect x="36" y="388" width="268" height="30" rx="8" class="d-chip"/><rect x="42" y="394" width="38" height="18" rx="5" class="tg-code"/><text x="61" y="407" text-anchor="middle" class="d-tag">Apex</text><text x="88" y="408" class="d-c">Read order status</text></g>
+        <g><rect x="36" y="426" width="268" height="30" rx="8" class="d-chip"/><rect x="42" y="432" width="38" height="18" rx="5" class="tg-code"/><text x="61" y="445" text-anchor="middle" class="d-tag">Apex</text><text x="88" y="446" class="d-c">Create support Case</text></g>
+        <g><rect x="36" y="464" width="268" height="30" rx="8" class="d-chip"/><rect x="42" y="470" width="38" height="18" rx="5" class="tg-flow"/><text x="61" y="483" text-anchor="middle" class="d-tag">Flow</text><text x="88" y="484" class="d-c">Return eligibility, 30 days</text></g>
+
+        <!-- Enterprise data -->
+        <rect x="355" y="290" width="290" height="230" rx="14" class="d-data"/>
+        <text x="373" y="314" class="d-k k-data">ENTERPRISE DATA</text>
+        <text x="373" y="336" class="d-t">Systems of record</text>
+        <ellipse cx="395" cy="380" rx="18" ry="6" class="d-ico2"/><path d="M377 380v34a18 6 0 0 0 36 0v-34" class="d-ico2"/><ellipse cx="395" cy="380" rx="18" ry="6" class="d-ico2"/>
+        <text x="425" y="393" class="d-c b">Order records</text><text x="425" y="411" class="d-s">Salesforce Order object</text>
+        <path d="M304 403H372" class="d-line" marker-end="url(#ah)"/><text x="338" y="396" text-anchor="middle" class="d-s">user mode</text>
+        <path d="M381 446h22l8 8v36h-30z" class="d-ico2"/><path d="M386 462h20M386 470h20M386 478h14" class="d-line thin"/>
+        <text x="425" y="463" class="d-c b">Policy documents</text><text x="425" y="481" class="d-s">Data Cloud search index</text><text x="425" y="497" class="d-s">(hybrid, section chunks)</text>
+
+        <!-- Human escalation -->
+        <rect x="680" y="290" width="300" height="230" rx="14" class="d-human"/>
+        <text x="698" y="314" class="d-k k-human">HUMAN ESCALATION</text>
+        <text x="698" y="336" class="d-t">Omni-Channel</text>
+        <g><rect x="696" y="350" width="268" height="30" rx="8" class="d-chip"/><rect x="702" y="356" width="38" height="18" rx="5" class="tg-code"/><text x="721" y="369" text-anchor="middle" class="d-tag">Apex</text><text x="748" y="370" class="d-c">Handoff Case with summary</text></g>
+        <path d="M830 380V394" class="d-line" marker-end="url(#ah)"/>
+        <g><rect x="696" y="396" width="268" height="30" rx="8" class="d-chip"/><rect x="702" y="402" width="38" height="18" rx="5" class="tg-flow"/><text x="721" y="415" text-anchor="middle" class="d-tag">Flow</text><text x="748" y="416" class="d-c">Route to service queue</text></g>
+        <path d="M830 426V440" class="d-line" marker-end="url(#ah)"/>
+        <circle cx="722" cy="458" r="9" class="d-ico3"/><path d="M706 488a16 14 0 0 1 32 0z" class="d-ico3"/>
+        <text x="748" y="465" class="d-c b">Support agent</text><text x="748" y="483" class="d-s">picks up with the context Case</text>
+
+        <!-- Observability -->
+        <rect x="20" y="545" width="960" height="40" rx="12" class="d-box"/>
+        <circle cx="44" cy="565" r="7" class="d-dot"/>
+        <text x="60" y="570" class="d-c"><tspan class="b">Session tracing (Data Cloud)</tspan> records every turn: route, actions, results and Trust Layer checks</text>
+      </svg>
+    </div>
+    <div class="cards legend4">
+      <div class="card lm"><span class="k">AI interpretation</span><p>A router and subagents in Agent Script. The model works out intent and chooses an action, only from the actions available at that moment.</p></div>
+      <div class="card lc"><span class="k">Deterministic logic</span><p>Apex verifies the customer, reads order status and opens Cases; a Flow decides return eligibility. Inputs come from the verified record, not from the model.</p></div>
+      <div class="card ld"><span class="k">Enterprise data</span><p>Orders are read from Salesforce records with the agent user's permissions. Policy answers come from a Data Cloud search over the policy documents.</p></div>
+      <div class="card lh"><span class="k">Human escalation</span><p>A handoff Case records the reason and a summary, and a routing Flow sends the chat to the service queue in Omni-Channel.</p></div>
     </div>
     <div class="card"><h3>Why the separation matters</h3><p>Language models are good at understanding what a customer means and unreliable at following a rule every time. So the rules live in code: the order tools do not exist for the model until verification succeeds, their inputs come from the verified record rather than from what the customer typed, and the return window is enforced by a Flow. If the model misreads a request, the worst case is a wrong question or a handoff, not a wrong refund or someone else's order.</p></div>
   </section>
