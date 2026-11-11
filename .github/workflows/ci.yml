@@ -9,6 +9,25 @@ permissions:
   contents: read
 
 jobs:
+  trace-miner:
+    name: Offline trace to eval loop
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install PyYAML==6.0.3
+      - name: Test reconstruction, masking, flags, deduplication and outputs
+        run: python -m unittest discover -s tests -p 'test_trace_miner.py' -v
+      - name: Reproduce the fixture loop without Salesforce credentials
+        run: python scripts/trace_miner.py --fixture tests/fixtures/stdm_synthetic.json --out traces/offline
+      - uses: actions/upload-artifact@v4
+        with:
+          name: offline-trace-review
+          path: traces/offline/
+          if-no-files-found: error
+
   agent-script:
     name: Compile Agent Script
     runs-on: ubuntu-latest
